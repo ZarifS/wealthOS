@@ -1,4 +1,8 @@
 import express from 'express'
+import bcrypt from 'bcrypt'
+import UserModel from '../models/userModel'
+import { validateRegistration } from '../helpers/validate'
+
 const router = express.Router()
 
 // Login Page
@@ -12,24 +16,13 @@ router.get('/register', (req, res) => {
 })
 
 // User Register
-router.post('/register', (req, res) => {
+router.post('/register', async (req, res) => {
   const { name, email, password, password2 } = req.body
-  let errors = []
 
-  // Basic user validation - change to 3rd party later
-  if (!name || !email || !password || !password2) {
-    errors.push({ msg: 'Please enter all fields' })
-  }
+  // Validate Fields
+  let errors = await validateRegistration(req.body)
 
-  if (password != password2) {
-    errors.push({ msg: 'Passwords do not match' })
-  }
-
-  if (password.length < 6) {
-    errors.push({ msg: 'Password must be at least 6 characters' })
-  }
-
-  // Send back error messages to partials/messages.ejs
+  // Send back error messages to partials/messages.ejs -> In API mode change to 400 error with error response
   if (errors.length > 0) {
     res.render('register', {
       errors,
@@ -38,9 +31,32 @@ router.post('/register', (req, res) => {
       password,
       password2
     })
+    return
   }
-  // Encrypt Password, Add User to MongoDB
-  else res.send('Ok')
+
+  // Register the new user
+  let newUser = new UserModel({
+    name,
+    email,
+    password
+  })
+  bcrypt
+    .genSalt(12)
+    .then(salt => {
+      return bcrypt.hash(password, salt)
+    })
+    .then(hashedPassword => {
+      newUser.password = hashedPassword
+      return newUser.save()
+    })
+    .then(doc => {
+      console.log('Added new user: ' + doc)
+      // In API send back 200 with confirmation
+      res.redirect('/users/login')
+    })
+    .catch(err => {
+      res.status(400).send({ error: err.message })
+    })
 })
 
 export default router

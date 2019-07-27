@@ -5,7 +5,10 @@ const dbConnection = (local = true) => {
   if (local) {
     console.log(`Trying to connect to mongodb locally.`)
     mongoose
-      .connect(`mongodb://localhost:27017/${dbName}`, { useNewUrlParser: true })
+      .connect(`mongodb://localhost:27017/${dbName}`, {
+        useCreateIndex: true,
+        useNewUrlParser: true
+      })
       .then(() => {
         console.log('Mongoose: Connected to database successfully!')
       })
@@ -17,7 +20,10 @@ const dbConnection = (local = true) => {
       `Trying to connect to: mongodb+srv://${dbUser}:${dbPassword}@${dbURI}/${dbName}${dbOptions}}`
     )
     mongoose
-      .connect(`mongodb+srv://${dbUser}:${dbPassword}@${dbURI}/${dbName}${dbOptions}}`)
+      .connect(`mongodb+srv://${dbUser}:${dbPassword}@${dbURI}/${dbName}${dbOptions}}`, {
+        useCreateIndex: true,
+        useNewUrlParser: true
+      })
       .then(() => {
         console.log('Mongoose: Connected to database successfully!')
       })
