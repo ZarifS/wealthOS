@@ -1,5 +1,6 @@
 import express from 'express'
 import bcrypt from 'bcrypt'
+import passport from 'passport'
 import UserModel from '../models/userModel'
 import { validateRegistration } from '../helpers/validate'
 
@@ -57,6 +58,18 @@ router.post('/register', async (req, res) => {
     .catch(err => {
       res.status(400).send({ error: err.message })
     })
+})
+
+// Login Handler
+router.post('/login', passport.authenticate('local'), (req, res) => {
+  console.log('User has been authenticated')
+  res.redirect('/dashboard')
+})
+
+// Logout Handler
+router.get('/logout', (req, res) => {
+  req.logout()
+  res.redirect('/users/login')
 })
 
 export default router
