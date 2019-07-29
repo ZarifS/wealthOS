@@ -41,15 +41,8 @@ router.post('/register', async (req, res) => {
     email,
     password
   })
-  bcrypt
-    .genSalt(12)
-    .then(salt => {
-      return bcrypt.hash(password, salt)
-    })
-    .then(hashedPassword => {
-      newUser.password = hashedPassword
-      return newUser.save()
-    })
+  newUser
+    .save()
     .then(doc => {
       console.log('Added new user: ' + doc)
       // In API send back 200 with confirmation

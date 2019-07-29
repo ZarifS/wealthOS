@@ -3,29 +3,27 @@ import { dbName, dbUser, dbPassword, dbOptions, dbURI } from './secrets'
 
 const dbConnection = (local = true) => {
   if (local) {
-    console.log(`Trying to connect to mongodb locally.`)
+    console.log(`Connecting to local database..`)
     mongoose
       .connect(`mongodb://localhost:27017/${dbName}`, {
         useCreateIndex: true,
         useNewUrlParser: true
       })
       .then(() => {
-        console.log('Mongoose: Connected to database successfully!')
+        console.log('Connected to database successfully!')
       })
       .catch(err => {
         console.error(err)
       })
   } else {
-    console.log(
-      `Trying to connect to: mongodb+srv://${dbUser}:${dbPassword}@${dbURI}/${dbName}${dbOptions}}`
-    )
+    console.log(`Connecting to database..`)
     mongoose
       .connect(`mongodb+srv://${dbUser}:${dbPassword}@${dbURI}/${dbName}${dbOptions}}`, {
         useCreateIndex: true,
         useNewUrlParser: true
       })
       .then(() => {
-        console.log('Mongoose: Connected to database successfully!')
+        console.log('Connected to database successfully!')
       })
       .catch(err => {
         console.error(err)

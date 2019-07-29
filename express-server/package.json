@@ -4,7 +4,7 @@
   "description": "Server for Wealth-X using Plaid, MongoDB and Express",
   "main": "app.js",
   "scripts": {
-    "start": "nodemon -r esm app.js",
+    "start": "nodemon --exec babel-node app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -34,6 +34,10 @@
     "passport-local": "^1.0.0"
   },
   "devDependencies": {
+    "@babel/cli": "^7.5.5",
+    "@babel/core": "^7.5.5",
+    "@babel/node": "^7.5.5",
+    "@babel/preset-env": "^7.5.5",
     "nodemon": "^1.19.1"
   }
 }

@@ -1,7 +1,7 @@
 import UserModel from '../models/userModel'
 
 // Validate the registration credentials for a user
-export async function validateRegistration(userInput) {
+export const validateRegistration = async userInput => {
   const { name, email, password, password2 } = userInput
   let errors = []
 
