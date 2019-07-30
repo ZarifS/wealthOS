@@ -15,6 +15,7 @@ export const ensureAuthenticated = (req, res, next) => {
   }
 }
 
+// Create a secure JSON WebToken
 export const createToken = payload => {
   return jwt.sign(payload, webTokenSecret, {
     expiresIn: '1h'
