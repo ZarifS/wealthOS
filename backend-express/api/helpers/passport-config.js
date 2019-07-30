@@ -7,17 +7,14 @@ const opts = {
   secretOrKey: webTokenSecret
 }
 
+// Utilize the JWT Strategy to verify token
 export default function(passport) {
   passport.use(
     new Strategy(opts, (payload, done) => {
       UserModel.findById(payload.id)
         .then(user => {
           if (user) {
-            return done(null, {
-              id: user.id,
-              name: user.name,
-              email: user.email
-            })
+            return done(null, user)
           }
           return done(null, false)
         })

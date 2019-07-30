@@ -66,12 +66,14 @@ router.post('/login', (req, res) => {
     .then(user => {
       // No user found
       if (!user) {
-        return done(null, false, { message: 'That email is not registered' })
+        errors.email = 'No Account Found'
+        return res.status(404).json(errors)
       }
 
       // Incorrect Password
       if (!user.checkPassword(password)) {
-        return done(null, false, { message: 'Incorrect password' })
+        errors.password = 'Password is incorrect'
+        return res.status(400).json(errors)
       }
 
       // Verified User

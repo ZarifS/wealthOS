@@ -5,7 +5,7 @@ import passport from 'passport'
 import dbConnection from './api/dbConnection'
 import userRoute from './api/routes/users'
 import indexRoute from './api/routes/index'
-import passportConfig from './api/helpers/passport'
+import passportConfig from './api/helpers/passport-config'
 
 // Init Server
 const port = process.env.PORT || 5000
@@ -20,13 +20,13 @@ app.set('view engine', 'ejs')
 app.use(express.urlencoded({ extended: true }))
 
 // Express session
-app.use(
-  session({
-    secret: 'secret',
-    resave: true,
-    saveUninitialized: true
-  })
-)
+// app.use(
+//   session({
+//     secret: 'secret',
+//     resave: true,
+//     saveUninitialized: true
+//   })
+// )
 
 // Passport Config
 passportConfig(passport)
@@ -37,10 +37,10 @@ app.use(passport.session())
 
 // Custom middleware for logging the each request going to the API
 app.use((req, res, next) => {
-  if (req.body) log.info(req.body)
-  if (req.params) log.info(req.params)
-  if (req.query) log.info(req.query)
-  log.info(`Received a ${req.method} request from ${req.ip} for ${req.url}`)
+  if (req.body) console.log(req.body)
+  if (req.params) console.info(req.params)
+  if (req.query) console.info(req.query)
+  console.info(`Received a ${req.method} request from ${req.ip} for ${req.url}`)
   next()
 })
 

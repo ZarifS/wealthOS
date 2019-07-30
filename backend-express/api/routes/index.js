@@ -1,5 +1,5 @@
 import express from 'express'
-import { ensureAuthenticated } from '../helpers/auth'
+import passport from 'passport'
 const router = express.Router()
 
 // Welcome
@@ -8,7 +8,7 @@ router.get('/', (req, res) => {
 })
 
 // Dashboard
-router.get('/dashboard', ensureAuthenticated, (req, res) => {
+router.get('/dashboard', passport.authenticate('jwt', { session: false }), (req, res) => {
   res.render('dashboard', {
     user: req.user
   })
