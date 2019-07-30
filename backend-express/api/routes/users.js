@@ -1,38 +1,26 @@
 import express from 'express'
-import passport from 'passport'
-import jwt from 'jsonwebtoken'
 import UserModel from '../models/userModel'
 import { validateRegistration } from '../helpers/validate'
+import { createToken } from '../helpers/auth'
 
 const router = express.Router()
 
-// Login Page
-router.get('/login', (req, res) => {
-  res.render('login')
-})
-
-// Register Page
-router.get('/register', (req, res) => {
-  res.render('register')
-})
-
 // User Register
-router.post('/register', async (req, res) => {
-  const { name, email, password, password2 } = req.body
+router.post('/', async (req, res) => {
+  // User Inputs
+  const { name, email, password } = req.body
 
   // Validate Fields
   let errors = await validateRegistration(req.body)
 
-  // Send back error messages to partials/messages.ejs -> In API mode change to 400 error with error response
+  // Send back error messages
   if (errors.length > 0) {
-    res.render('register', {
-      errors,
-      name,
-      email,
-      password,
-      password2
+    res.status(400)
+    return res.json({
+      error: {
+        messages: errors
+      }
     })
-    return
   }
 
   // Register the new user
@@ -41,22 +29,19 @@ router.post('/register', async (req, res) => {
     email,
     password
   })
+
   newUser
     .save()
     .then(doc => {
       console.log('Added new user: ' + doc)
-      // In API send back 200 with confirmation
-      res.redirect('/users/login')
+      // In API send back 201 with confirmation
+      res.status(201).json({
+        message: 'User created.'
+      })
     })
     .catch(err => {
       res.status(400).send({ error: err.message })
     })
-})
-
-// Login Handler
-router.post('/loginLocal', passport.authenticate('local'), (req, res) => {
-  console.log('User has been authenticated')
-  res.redirect('/dashboard')
 })
 
 // JSON Webtoken Version
@@ -79,28 +64,25 @@ router.post('/login', (req, res) => {
       // Verified User
       const payload = {
         id: user.id,
-        name: user.name
+        name: user.name,
+        email: user.email
       }
 
-      // Send JSON Webtoken to client
-      jwt.sign(payload, secret, { expiresIn: 36000 }, (err, token) => {
-        if (err) res.status(500).json({ error: 'Error signing token', raw: err })
-        res.json({
-          success: true,
-          token: `Bearer ${token}`
-        })
+      // Create JSON Webtoken
+      const token = createToken(payload)
+
+      // Return Token
+      return res.status(200).json({
+        message: 'Auth successful',
+        token: token
       })
     })
     .catch(err => {
-      console.log('Error: ' + err)
-      throw err
+      console.log(err)
+      res.status(500).json({
+        error: err
+      })
     })
-})
-
-// Logout Handler
-router.get('/logout', (req, res) => {
-  req.logout()
-  res.redirect('/users/login')
 })
 
 export default router

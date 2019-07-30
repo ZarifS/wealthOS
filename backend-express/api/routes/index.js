@@ -1,17 +1,15 @@
 import express from 'express'
-import passport from 'passport'
+import { ensureAuthenticated } from '../helpers/auth'
 const router = express.Router()
 
 // Welcome
 router.get('/', (req, res) => {
-  res.render('welcome')
+  res.send('welcome')
 })
 
 // Dashboard
-router.get('/dashboard', passport.authenticate('jwt', { session: false }), (req, res) => {
-  res.render('dashboard', {
-    user: req.user
-  })
+router.get('/dashboard', ensureAuthenticated, (req, res) => {
+  res.json(req.user)
 })
 
 export default router
