@@ -1,0 +1,27 @@
+{
+  "name": "wealth-x",
+  "version": "1.0.0",
+  "description": "Wealth-X App, including client and server.",
+  "scripts": {
+    "start": "concurrently \"(cd client-react && npm run start)\" \"(cd backend-express && npm run start)\"",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ZarifS/wealth-x.git"
+  },
+  "keywords": [
+    "React",
+    "Express",
+    "Mongo",
+    "Plaid"
+  ],
+  "author": "Zarif Shahriar",
+  "bugs": {
+    "url": "https://github.com/ZarifS/wealth-x/issues"
+  },
+  "homepage": "https://github.com/ZarifS/wealth-x#readme",
+  "devDependencies": {
+    "concurrently": "^4.1.1"
+  }
+}

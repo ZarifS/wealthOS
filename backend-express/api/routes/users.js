@@ -1,5 +1,4 @@
 import express from 'express'
-import bcrypt from 'bcrypt'
 import passport from 'passport'
 import UserModel from '../models/userModel'
 import { validateRegistration } from '../helpers/validate'

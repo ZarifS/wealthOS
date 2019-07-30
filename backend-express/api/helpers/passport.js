@@ -1,5 +1,4 @@
 import passport from 'passport-local'
-import bcrypt from 'bcrypt'
 import UserModel from '../models/userModel'
 
 // Define local strategy
@@ -15,18 +14,6 @@ export default function(passport) {
           if (!user) {
             return done(null, false, { message: 'That email is not registered' })
           }
-          // // User found, verify and match password
-          // bcrypt
-          //   .compare(password, user.password)
-          //   .then(isMatch => {
-          //     if (isMatch) {
-          //       return done(null, user)
-          //     }
-          //     return done(null, false, { message: 'Password incorrect' })
-          //   })
-          //   .catch(err => {
-          //     throw err
-          //   })
           // Verify Password
           if (!user.checkPassword(password)) {
             return done(null, false, { message: 'Incorrect password' })

@@ -35,6 +35,15 @@ passportConfig(passport)
 app.use(passport.initialize())
 app.use(passport.session())
 
+// Custom middleware for logging the each request going to the API
+app.use((req, res, next) => {
+  if (req.body) log.info(req.body)
+  if (req.params) log.info(req.params)
+  if (req.query) log.info(req.query)
+  log.info(`Received a ${req.method} request from ${req.ip} for ${req.url}`)
+  next()
+})
+
 // Server Routing
 app.use('/', indexRoute)
 app.use('/users', userRoute)
