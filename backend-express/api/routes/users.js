@@ -1,5 +1,6 @@
 import express from 'express'
 import passport from 'passport'
+import jwt from 'jsonwebtoken'
 import UserModel from '../models/userModel'
 import { validateRegistration } from '../helpers/validate'
 
@@ -53,9 +54,45 @@ router.post('/register', async (req, res) => {
 })
 
 // Login Handler
-router.post('/login', passport.authenticate('local'), (req, res) => {
+router.post('/loginLocal', passport.authenticate('local'), (req, res) => {
   console.log('User has been authenticated')
   res.redirect('/dashboard')
+})
+
+// JSON Webtoken Version
+router.post('/login', (req, res) => {
+  const { email, password } = req.body
+  UserModel.findOne({ email: email })
+    .then(user => {
+      // No user found
+      if (!user) {
+        return done(null, false, { message: 'That email is not registered' })
+      }
+
+      // Incorrect Password
+      if (!user.checkPassword(password)) {
+        return done(null, false, { message: 'Incorrect password' })
+      }
+
+      // Verified User
+      const payload = {
+        id: user.id,
+        name: user.name
+      }
+
+      // Send JSON Webtoken to client
+      jwt.sign(payload, secret, { expiresIn: 36000 }, (err, token) => {
+        if (err) res.status(500).json({ error: 'Error signing token', raw: err })
+        res.json({
+          success: true,
+          token: `Bearer ${token}`
+        })
+      })
+    })
+    .catch(err => {
+      console.log('Error: ' + err)
+      throw err
+    })
 })
 
 // Logout Handler
