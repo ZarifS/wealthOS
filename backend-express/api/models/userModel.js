@@ -1,9 +1,18 @@
 import mongoose from 'mongoose'
 import bcrypt from 'bcrypt'
 
+const LinksSchema = new mongoose.Schema({
+  access_token: String,
+  item_id: String
+})
+
 // Define User Schema
 const UserSchema = new mongoose.Schema({
-  name: {
+  firstName: {
+    type: String,
+    required: true
+  },
+  lastName: {
     type: String,
     required: true
   },
@@ -19,6 +28,10 @@ const UserSchema = new mongoose.Schema({
   date: {
     type: Date,
     default: Date.now
+  },
+  links: {
+    type: Map,
+    of: LinksSchema
   }
 })
 

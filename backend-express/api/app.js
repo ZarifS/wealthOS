@@ -1,9 +1,10 @@
 import express from 'express'
 import morgan from 'morgan'
 import bodyParser from 'body-parser'
-import dbConnection from './api/dbConnection'
-import userRoute from './api/routes/users'
-import indexRoute from './api/routes/index'
+import dbConnection from './dbConnection'
+import authRoute from './routes/auth'
+import indexRoute from './routes/index'
+import userRoute from './routes/user'
 
 // Init Server
 const port = process.env.PORT || 5000
@@ -18,6 +19,11 @@ app.use(morgan('dev'))
 
 // Server Routing
 app.use('/', indexRoute)
+
+// Register, Login
+app.use('/auth', authRoute)
+
+// User Linking
 app.use('/user', userRoute)
 
 // Connect to Mongo DB

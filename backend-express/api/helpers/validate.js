@@ -2,11 +2,11 @@ import UserModel from '../models/userModel'
 
 // Validate the registration credentials for a user
 export const validateRegistration = async userInput => {
-  const { name, email, password, password2 } = userInput
+  const { firstName, lastName, email, password, password2 } = userInput
   let errors = []
 
   // Basic user validation - change to 3rd party later
-  if (!name || !email || !password || !password2) {
+  if (!firstName || !lastName || !email || !password || !password2) {
     errors.push({ msg: 'Please enter all fields' })
   }
 

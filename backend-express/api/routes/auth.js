@@ -8,7 +8,7 @@ const router = express.Router()
 // User Register
 router.post('/', async (req, res) => {
   // User Inputs
-  const { name, email, password } = req.body
+  const { firstName, lastName, email, password } = req.body
 
   // Validate Fields
   let errors = await validateRegistration(req.body)
@@ -25,7 +25,8 @@ router.post('/', async (req, res) => {
 
   // Register the new user
   let newUser = new UserModel({
-    name,
+    firstName,
+    lastName,
     email,
     password
   })
@@ -64,7 +65,6 @@ router.post('/login', (req, res) => {
       // Verified User
       const payload = {
         id: user.id,
-        name: user.name,
         email: user.email
       }
 
