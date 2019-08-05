@@ -1,16 +1,18 @@
 import jwt from 'jsonwebtoken'
+import UserModel from '../models/userModel'
 import { WEB_TOKEN_SECRET } from '../secrets'
 
 // Lock resource if not authenticated
-export const ensureAuthenticated = (req, res, next) => {
+export const ensureAuthenticated = async (req, res, next) => {
   try {
-    const token = req.headers.authorization.split(' ')[1]
-    const decoded = jwt.verify(token, WEB_TOKEN_SECRET)
-    req.user = decoded
+    let token = req.headers.authorization.split(' ')[1]
+    let decodedUser = jwt.verify(token, WEB_TOKEN_SECRET)
+    let user = await UserModel.findById(decodedUser.id)
+    req.user = user
     next()
   } catch (error) {
     return res.status(401).json({
-      message: 'Auth failed'
+      message: 'Authentication failed.'
     })
   }
 }

@@ -9,7 +9,7 @@ router.get('/', (req, res) => {
 
 // Dashboard
 router.get('/dashboard', ensureAuthenticated, (req, res) => {
-  res.json(req.user)
+  res.json({ msg: 'Token Verified.' })
 })
 
 export default router

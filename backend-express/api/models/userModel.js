@@ -6,6 +6,14 @@ const LinksSchema = new mongoose.Schema({
   item_id: String
 })
 
+const AccountsSchema = new mongoose.Schema({
+  name: String,
+  balance: Number,
+  institution_name: String,
+  currency: String,
+  type: String
+})
+
 // Define User Schema
 const UserSchema = new mongoose.Schema({
   firstName: {
@@ -32,6 +40,16 @@ const UserSchema = new mongoose.Schema({
   links: {
     type: Map,
     of: LinksSchema
+  },
+  accounts: {
+    type: Map,
+    of: AccountsSchema
+  },
+  balance: {
+    type: Number
+  },
+  holdings: {
+    type: Number
   }
 })
 
@@ -49,13 +67,14 @@ UserSchema.methods = {
 
 // Define hooks for pre-saving, ensure password is never added to database unencrypted
 UserSchema.pre('save', function(next) {
-  // Password is not being updated
-  if (!this.password) {
-    return next()
+  // Password is being updated
+  if (this.isModified('password')) {
+    console.log('Password was modified, encrypting.')
+    this.password = this.hashPassword(this.password)
+    next()
   }
-  // Encrypt provided password
-  this.password = this.hashPassword(this.password)
-  next()
+  // Skip
+  else next()
 })
 
 export default mongoose.model('User', UserSchema)

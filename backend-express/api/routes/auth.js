@@ -48,24 +48,26 @@ router.post('/', async (req, res) => {
 // JSON Webtoken Version
 router.post('/login', (req, res) => {
   const { email, password } = req.body
+  let error
   UserModel.findOne({ email: email })
     .then(user => {
       // No user found
       if (!user) {
-        errors.email = 'No Account Found'
-        return res.status(404).json(errors)
+        error = 'No Account Found'
+        return res.status(404).json(error)
       }
 
       // Incorrect Password
       if (!user.checkPassword(password)) {
-        errors.password = 'Password is incorrect'
-        return res.status(400).json(errors)
+        error = 'Password is incorrect'
+        return res.status(400).json(error)
       }
 
       // Verified User
       const payload = {
         id: user.id,
-        email: user.email
+        email: user.email,
+        links: user.links
       }
 
       // Create JSON Webtoken
