@@ -2,14 +2,14 @@ import mongoose from 'mongoose'
 import bcrypt from 'bcrypt'
 
 const LinksSchema = new mongoose.Schema({
-  access_token: String,
-  item_id: String
+  accessToken: String,
+  itemId: String
 })
 
 const AccountsSchema = new mongoose.Schema({
   name: String,
   balance: Number,
-  institution_name: String,
+  institutionName: String,
   currency: String,
   type: String
 })

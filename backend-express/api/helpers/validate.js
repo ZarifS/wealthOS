@@ -1,21 +1,22 @@
 import UserModel from '../models/userModel'
 
-// Validate the registration credentials for a user
-export const validateRegistration = async userInput => {
-  const { firstName, lastName, email, password, password2 } = userInput
+// Middleware to validate the registration credentials for a user
+export const validateRegistration = async (req, res, next) => {
+  const { firstName, lastName, email, password, password2 } = req.body
+
   let errors = []
 
   // Basic user validation - change to 3rd party later
   if (!firstName || !lastName || !email || !password || !password2) {
-    errors.push({ msg: 'Please enter all fields' })
+    errors.push({ message: 'Please enter all fields.' })
   }
 
   if (password != password2) {
-    errors.push({ msg: 'Passwords do not match' })
+    errors.push({ message: 'Passwords do not match.' })
   }
 
   if (password.length < 6) {
-    errors.push({ msg: 'Password must be at least 6 characters' })
+    errors.push({ message: 'Password must be at least 6 characters.' })
   }
 
   // User Validation
@@ -23,8 +24,15 @@ export const validateRegistration = async userInput => {
 
   // User already exists
   if (user) {
-    errors.push({ msg: 'Email is already registered.' })
+    errors.push({ message: 'Email is already registered.' })
   }
+
   // Send back error messages
-  return errors
+  if (errors.length > 0) {
+    res.status(401)
+    return res.json(errors)
+  }
+
+  // Continue if there is no errors
+  else next()
 }
