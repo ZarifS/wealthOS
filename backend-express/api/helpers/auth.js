@@ -2,7 +2,7 @@ import jwt from 'jsonwebtoken'
 import UserModel from '../models/userModel'
 import { WEB_TOKEN_SECRET } from '../secrets'
 
-// Lock resource if not authenticated
+// Middleware to lock resource if not authenticated
 export const ensureAuthenticated = async (req, res, next) => {
   try {
     let token = req.headers.authorization.split(' ')[1]
@@ -11,9 +11,7 @@ export const ensureAuthenticated = async (req, res, next) => {
     req.user = user
     next()
   } catch (error) {
-    return res.status(401).json({
-      message: 'Authentication failed.'
-    })
+    return res.status(401).json([{ message: 'Authentication failed.' }])
   }
 }
 
