@@ -4,14 +4,12 @@ const router = express.Router()
 
 // Welcome
 router.get('/', (req, res) => {
-  res.render('welcome')
+  res.send('welcome')
 })
 
 // Dashboard
 router.get('/dashboard', ensureAuthenticated, (req, res) => {
-  res.render('dashboard', {
-    user: req.user
-  })
+  res.json({ msg: 'Token Verified.' })
 })
 
 export default router
