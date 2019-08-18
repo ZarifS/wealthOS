@@ -8,7 +8,7 @@ router.get('/', (req, res) => {
 })
 
 // Dashboard
-router.get('/dashboard', ensureAuthenticated, (req, res) => {
+router.get('/verifyToken', ensureAuthenticated, (req, res) => {
   res.json({ msg: 'Token Verified.' })
 })
 

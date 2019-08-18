@@ -31,6 +31,16 @@ export const exchangeToken = publicToken => {
   return client.exchangePublicToken(publicToken)
 }
 
+export const addWebhook = accessToken => {
+  return client.updateItemWebhook(accessToken, 'https://enhay4am0y9l9.x.pipedream.net')
+}
+
+export const fireTransactionWebhook = accessToken => {
+  return client.sandboxItemFireWebhook(accessToken, 'DEFAULT_UPDATE', function() {
+    console.log('Fired Webhook!')
+  })
+}
+
 // Makes a call to the Plaids Transactions API for a given Item/Institution
 export const getTransactions = async accessToken => {
   // Last 30 Days

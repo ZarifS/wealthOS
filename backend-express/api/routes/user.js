@@ -1,10 +1,15 @@
 import express from 'express'
 import { createPublicToken } from '../controllers/plaidController'
-import { linkPlaidToUser, initAccounts, getAccounts } from '../controllers/userController'
+import {
+  linkPlaidToUser,
+  initAccounts,
+  addWebhookToUser,
+  fireWebhook
+} from '../controllers/userController'
 
 const router = express.Router()
 
-// Query all info on User
+// Query all info on User - no body
 router.get('/', (req, res) => {
   let user = req.user
   user.password = undefined
@@ -15,13 +20,19 @@ router.get('/', (req, res) => {
   })
 })
 
-// Generate a public token for Sandbox Environment with CIBC
+// Generate a public token for Sandbox Environment with CIBC - no body
 router.get('/getPublicToken', createPublicToken)
 
-// User Links Plaid
+// User Links Plaid - {institutionName:"CIBC", publicToken: "string"}
 router.post('/link', linkPlaidToUser)
 
-// Initialize accounts for a newly linked Item
+// Initialize accounts for a newly linked Item - {institutionName:"string"}
 router.post('/initAccounts', initAccounts)
+
+// Setup a webhook for one of the users items - {institutionName:"string"}
+router.post('/addWebhook', addWebhookToUser)
+
+// Fire a webhook for one of the institutions - {institutionName:"string"}
+router.post('/fireWebhook', fireWebhook)
 
 export default router
