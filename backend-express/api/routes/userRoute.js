@@ -4,7 +4,8 @@ import {
   linkPlaidToUser,
   initAccounts,
   addWebhookToUser,
-  fireWebhook
+  fireWebhook,
+  linkItemToUser
 } from '../controllers/userController'
 
 const router = express.Router()
@@ -34,5 +35,8 @@ router.post('/addWebhook', addWebhookToUser)
 
 // Fire a webhook for one of the institutions - {institutionName:"string"}
 router.post('/fireWebhook', fireWebhook)
+
+// Find all users who have a certain itemId associated with them - {institutionName:"string"}
+router.get('/linkItem', linkItemToUser)
 
 export default router

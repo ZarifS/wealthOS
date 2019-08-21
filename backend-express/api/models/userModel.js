@@ -1,11 +1,13 @@
 import mongoose from 'mongoose'
 import bcrypt from 'bcrypt'
 
+// Holds the Plaid accessToken needed to access the itemId associated with the item
 const LinksSchema = new mongoose.Schema({
   accessToken: String,
   itemId: String
 })
 
+// Simplified account information to store from Plaids integration
 const AccountsSchema = new mongoose.Schema({
   name: String,
   balance: Number,

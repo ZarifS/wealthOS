@@ -1,6 +1,6 @@
 import plaid from 'plaid'
 import moment from 'moment'
-import { PLAID_CLIENT_ID, PLAID_PUBLIC_KEY, PLAID_SECRET, PLAID_ENV } from '../secrets'
+import { PLAID_CLIENT_ID, PLAID_PUBLIC_KEY, PLAID_SECRET, PLAID_ENV } from '../helpers/secrets'
 
 // Initialize the Plaid client
 const client = new plaid.Client(

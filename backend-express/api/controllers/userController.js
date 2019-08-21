@@ -4,6 +4,29 @@ import {
   addWebhook,
   fireTransactionWebhook
 } from '../controllers/plaidController'
+import ItemModel from '../models/itemModel'
+
+// Create a new item to store in Item db
+export const linkItemToUser = (req, res) => {
+  let { institutionName } = req.body
+  let { itemId } = req.user.links.get(institutionName)
+  let item = new ItemModel({
+    itemId: itemId,
+    users: [req.user.id]
+  })
+  // Save to DB
+  item
+    .save()
+    .then(item => {
+      res.status(201).json({
+        message: 'Item created.',
+        item: item
+      })
+    })
+    .catch(err => {
+      res.status(400).send({ message: err.message })
+    })
+}
 
 // Set up bank linking to user profile
 export const linkPlaidToUser = (req, res) => {

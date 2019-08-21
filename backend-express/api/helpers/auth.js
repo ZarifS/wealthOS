@@ -1,6 +1,6 @@
 import jwt from 'jsonwebtoken'
 import UserModel from '../models/userModel'
-import { WEB_TOKEN_SECRET } from '../secrets'
+import { WEB_TOKEN_SECRET } from './secrets'
 
 // Middleware to lock resource if not authenticated
 export const ensureAuthenticated = async (req, res, next) => {

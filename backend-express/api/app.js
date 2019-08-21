@@ -1,10 +1,9 @@
 import express from 'express'
 import morgan from 'morgan'
 import bodyParser from 'body-parser'
-import dbConnection from './dbConnection'
-import authRoute from './routes/auth'
-import indexRoute from './routes/index'
-import userRoute from './routes/user'
+import authRoute from './routes/authRoute'
+import userRoute from './routes/userRoute'
+import dbConnection from './helpers/dbConnection'
 import { ensureAuthenticated } from './helpers/auth'
 
 // Init Server
@@ -17,9 +16,6 @@ app.use(bodyParser.json())
 
 //Logger Middleware
 app.use(morgan('dev'))
-
-// Server Routing
-app.use('/', indexRoute)
 
 // Register, Login
 app.use('/auth', authRoute)
