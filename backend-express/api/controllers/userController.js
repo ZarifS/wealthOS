@@ -1,9 +1,4 @@
-import {
-  exchangeToken,
-  getAccounts,
-  addWebhook,
-  fireTransactionWebhook
-} from '../controllers/plaidController'
+import { exchangeToken, getAccounts } from '../controllers/plaidController'
 import ItemModel from '../models/itemModel'
 
 // Create a new item to store in Item db
@@ -92,26 +87,6 @@ const setUserAccounts = (user, accounts, institutionName) => {
   user.balance = calculateUserBalance(user.accounts)
 
   return user
-}
-
-export const addWebhookToUser = (req, res) => {
-  let { institutionName } = req.body
-  let { accessToken } = req.user.links.get(institutionName)
-  addWebhook(accessToken).then(item => {
-    console.log(item)
-    res.status(200).json({
-      message: 'Updated Webhook Successfully'
-    })
-  })
-}
-
-export const fireWebhook = async (req, res) => {
-  let { institutionName } = req.body
-  let { accessToken } = req.user.links.get(institutionName)
-  fireTransactionWebhook(accessToken)
-  res.status(200).json({
-    message: 'Fired Webhook Successfully'
-  })
 }
 
 // Whenever accounts are modified, update.

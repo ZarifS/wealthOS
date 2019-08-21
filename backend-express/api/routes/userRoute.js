@@ -1,12 +1,6 @@
 import express from 'express'
 import { createPublicToken } from '../controllers/plaidController'
-import {
-  linkPlaidToUser,
-  initAccounts,
-  addWebhookToUser,
-  fireWebhook,
-  linkItemToUser
-} from '../controllers/userController'
+import { linkPlaidToUser, initAccounts, linkItemToUser } from '../controllers/userController'
 
 const router = express.Router()
 
@@ -29,12 +23,6 @@ router.post('/link', linkPlaidToUser)
 
 // Initialize accounts for a newly linked Item - {institutionName:"string"}
 router.post('/initAccounts', initAccounts)
-
-// Setup a webhook for one of the users items - {institutionName:"string"}
-router.post('/addWebhook', addWebhookToUser)
-
-// Fire a webhook for one of the institutions - {institutionName:"string"}
-router.post('/fireWebhook', fireWebhook)
 
 // Find all users who have a certain itemId associated with them - {institutionName:"string"}
 router.get('/linkItem', linkItemToUser)

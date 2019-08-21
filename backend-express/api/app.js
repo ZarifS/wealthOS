@@ -3,6 +3,7 @@ import morgan from 'morgan'
 import bodyParser from 'body-parser'
 import authRoute from './routes/authRoute'
 import userRoute from './routes/userRoute'
+import webhookRoute from './routes/webhookRoute'
 import dbConnection from './helpers/dbConnection'
 import { ensureAuthenticated } from './helpers/auth'
 
@@ -22,6 +23,9 @@ app.use('/auth', authRoute)
 
 // User Linking
 app.use('/user', ensureAuthenticated, userRoute)
+
+// Getting updates to/from webhook handler
+app.use('/webhook', ensureAuthenticated, webhookRoute)
 
 // Connect to Mongo DB
 dbConnection(false)
