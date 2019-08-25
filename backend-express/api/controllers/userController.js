@@ -1,27 +1,5 @@
-import { exchangeToken, getAccounts } from '../controllers/plaidController'
-import ItemModel from '../models/itemModel'
-
-// Create a new item to store in Item db
-export const linkItemToUser = (req, res) => {
-  let { institutionName } = req.body
-  let { itemId } = req.user.links.get(institutionName)
-  let item = new ItemModel({
-    itemId: itemId,
-    users: [req.user.id]
-  })
-  // Save to DB
-  item
-    .save()
-    .then(item => {
-      res.status(201).json({
-        message: 'Item created.',
-        item: item
-      })
-    })
-    .catch(err => {
-      res.status(400).send({ message: err.message })
-    })
-}
+import { exchangeToken, getAccounts, getTransactions } from '../controllers/plaidController'
+import ItemModel from '../models/itemLinkModel'
 
 // Set up bank linking to user profile
 export const linkPlaidToUser = (req, res) => {
@@ -46,8 +24,30 @@ export const linkPlaidToUser = (req, res) => {
     })
 }
 
+// Create a new item to store in Item db
+export const linkItemToUser = (req, res) => {
+  let { institutionName } = req.body
+  let { itemId } = req.user.links.get(institutionName)
+  let item = new ItemModel({
+    itemId: itemId,
+    users: [req.user.id]
+  })
+  // Save to DB
+  item
+    .save()
+    .then(item => {
+      res.status(201).json({
+        message: 'Item created.',
+        item: item
+      })
+    })
+    .catch(err => {
+      res.status(400).send({ message: err.message })
+    })
+}
+
 // Add bank accounts to user profile
-export const initAccounts = (req, res) => {
+export const updateAccounts = (req, res) => {
   let { institutionName } = req.body
   let { accessToken } = req.user.links.get(institutionName)
 
@@ -59,8 +59,8 @@ export const initAccounts = (req, res) => {
     })
     .then(user => {
       res.status(200).json({
-        message: 'Initialized User Accounts',
-        user: user.id
+        message: 'Updated User Accounts',
+        accounts: user.accounts
       })
     })
     .catch(err => {
@@ -71,17 +71,20 @@ export const initAccounts = (req, res) => {
 // Add new institution accounts to the User
 const setUserAccounts = (user, accounts, institutionName) => {
   // Setup user accounts for each account associated with the Plaid item
+  let newAccounts = []
   accounts.forEach(account => {
-    let { account_id, balances, name, type } = account
+    let { account_id, balances, name, type, mask } = account
     let newAccount = {
       name: name,
       balance: balances.current,
       type: type,
-      institutionName: institutionName,
-      currency: balances.iso_currency_code
+      currency: balances.iso_currency_code,
+      mask: mask,
+      accountId: account_id
     }
-    user.accounts.set(account_id, newAccount)
+    newAccounts.push(newAccount)
   })
+  user.accounts.set(institutionName, newAccounts)
 
   // Recalculate the users current balance
   user.balance = calculateUserBalance(user.accounts)
@@ -92,13 +95,31 @@ const setUserAccounts = (user, accounts, institutionName) => {
 // Whenever accounts are modified, update.
 const calculateUserBalance = accounts => {
   let sum = 0
-  accounts.forEach(account => {
-    let { balance, type } = account
-    if (type === 'depository') {
-      sum = sum + balance
-    } else if (type === 'credit') {
-      sum = sum - balance
-    }
+  accounts.forEach(institution => {
+    institution.forEach(account => {
+      let { balance, type } = account
+      if (type === 'depository') {
+        sum = sum + balance
+      } else if (type === 'credit') {
+        sum = sum - balance
+      }
+    })
   })
   return sum
+}
+
+export const getTransactionsForUser = async (req, res) => {
+  let { startDate, endDate } = req.body
+  let links = req.user.links
+  let allTransactions = []
+  for (let [key, value] of links) {
+    let { accessToken } = value
+    try {
+      let transactions = await getTransactions(accessToken, startDate, endDate)
+      allTransactions = allTransactions.concat(transactions)
+    } catch (err) {
+      return res.status(400).json([{ message: err.message }])
+    }
+  }
+  res.status(200).json(allTransactions)
 }

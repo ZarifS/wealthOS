@@ -26,33 +26,27 @@ export const createPublicToken = (req, res) => {
     })
 }
 
-// Exchange public token
-export const exchangeToken = publicToken => {
-  return client.exchangePublicToken(publicToken)
-}
-
+// Manually add a webhook URL to a existing linked item
 export const addWebhook = accessToken => {
   return client.updateItemWebhook(accessToken, 'https://enhay4am0y9l9.x.pipedream.net')
 }
 
+// Manually fire a webhook update to a linked item
 export const fireTransactionWebhook = accessToken => {
   return client.sandboxItemFireWebhook(accessToken, 'DEFAULT_UPDATE', function() {
     console.log('Fired Webhook!')
   })
 }
 
+// Exchange public token
+export const exchangeToken = publicToken => {
+  return client.exchangePublicToken(publicToken)
+}
+
 // Makes a call to the Plaids Transactions API for a given Item/Institution
-export const getTransactions = async accessToken => {
-  // Last 30 Days
-  let startDate = moment()
-    .subtract(30, 'days')
-    .format('YYYY-MM-DD')
-  let endDate = moment().format('YYYY-MM-DD')
+export const getTransactions = async (accessToken, startDate, endDate) => {
   try {
-    let { transactions } = await client.getTransactions(accessToken, startDate, endDate, {
-      count: 30,
-      offset: 0
-    })
+    let { transactions } = await client.getTransactions(accessToken, startDate, endDate)
     return transactions
   } catch (error) {
     throw error

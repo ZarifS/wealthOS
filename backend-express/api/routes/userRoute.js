@@ -1,6 +1,11 @@
 import express from 'express'
 import { createPublicToken } from '../controllers/plaidController'
-import { linkPlaidToUser, initAccounts, linkItemToUser } from '../controllers/userController'
+import {
+  linkPlaidToUser,
+  updateAccounts,
+  linkItemToUser,
+  getTransactionsForUser
+} from '../controllers/userController'
 
 const router = express.Router()
 
@@ -21,10 +26,13 @@ router.get('/getPublicToken', createPublicToken)
 // User Links Plaid - {institutionName:"CIBC", publicToken: "string"}
 router.post('/link', linkPlaidToUser)
 
-// Initialize accounts for a newly linked Item - {institutionName:"string"}
-router.post('/initAccounts', initAccounts)
-
-// Find all users who have a certain itemId associated with them - {institutionName:"string"}
+// Create an ItemLink to associate item with user(s) based on institutionName - {institutionName:"string"}
 router.get('/linkItem', linkItemToUser)
+
+// Initialize or update accounts for a linked Item - {institutionName:"string"}
+router.post('/getAccounts', updateAccounts)
+
+// Get user transactions for a specified period of time - {startDate: "2019-08-01", endDate: "2019-09-01"}
+router.get('/transactions', getTransactionsForUser)
 
 export default router

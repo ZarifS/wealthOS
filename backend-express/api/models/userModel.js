@@ -7,15 +7,6 @@ const LinksSchema = new mongoose.Schema({
   itemId: String
 })
 
-// Simplified account information to store from Plaids integration
-const AccountsSchema = new mongoose.Schema({
-  name: String,
-  balance: Number,
-  institutionName: String,
-  currency: String,
-  type: String
-})
-
 // Define User Schema
 const UserSchema = new mongoose.Schema({
   firstName: {
@@ -45,7 +36,7 @@ const UserSchema = new mongoose.Schema({
   },
   accounts: {
     type: Map,
-    of: AccountsSchema
+    of: Array
   },
   balance: {
     type: Number
