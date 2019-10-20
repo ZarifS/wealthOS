@@ -1,19 +1,19 @@
-import express from 'express'
-import { registerUser, logInUser } from '../controllers/authController'
-import { validateRegistration } from '../helpers/validate'
-import { ensureAuthenticated } from '../helpers/auth'
+import express from 'express';
+import { registerUser, logInUser } from '../controllers/authController';
+import { validateRegistration } from '../helpers/validate';
+import { ensureAuthenticated } from '../helpers/auth';
 
-const router = express.Router()
+const router = express.Router();
 
-// User Register
-router.post('/', validateRegistration, registerUser)
+// User Register - {"firstName":"Jon","lastName":"Snow","email":"jon.snow@gmail.com","password":"testing","password2":"testing"}
+router.post('/', validateRegistration, registerUser);
 
-// JSON Webtoken Version
-router.post('/login', logInUser)
+// JSON Webtoken Version - {"email":"zshah011@uottawa.ca","password":"testing"}
+router.post('/login', logInUser);
 
-// Verify a Token
+// Verify a Token - no body, header bearer with token
 router.get('/verifyToken', ensureAuthenticated, (req, res) => {
-  res.json({ msg: 'Token Verified.' })
-})
+  res.json({ message: 'Token Verified.' });
+});
 
-export default router
+export default router;
