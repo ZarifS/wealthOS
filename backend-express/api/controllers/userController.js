@@ -47,8 +47,7 @@ const linkItemToUser = (user, institutionName) => {
   return item.save();
 };
 
-// To-DO Change this to a helper function that runs after a successful link happens.
-// Add bank accounts to user profile
+// Add bank accounts to user profile after link
 export const updateAccounts = (req, res) => {
   let { institutionName } = req.body;
   let { accessToken } = req.user.links.get(institutionName);
