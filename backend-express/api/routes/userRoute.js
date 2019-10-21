@@ -3,7 +3,6 @@ import { createPublicToken } from '../controllers/plaidController';
 import {
   linkPlaidToUser,
   updateAccounts,
-  linkItemToUser,
   getTransactionsForUser
 } from '../controllers/userController';
 
@@ -25,9 +24,6 @@ router.get('/getPublicToken', createPublicToken);
 
 // User Links Plaid - {institutionName:"CIBC", publicToken: "string"}
 router.post('/link', linkPlaidToUser);
-
-// Create an ItemLink to associate item with user(s) based on institutionName - {institutionName:"string"}
-router.post('/linkItem', linkItemToUser);
 
 // Initialize or update accounts for a linked Item - {institutionName:"string"}
 router.post('/setAccounts', updateAccounts);
