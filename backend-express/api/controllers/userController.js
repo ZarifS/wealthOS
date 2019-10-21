@@ -12,6 +12,7 @@ export const linkPlaidToUser = (req, res) => {
   let user = req.user;
   // Exchange Token
   exchangeToken(publicToken)
+    // Save into UserModel
     .then(token => {
       let { access_token, item_id } = token;
       user.links.set(institutionName, {
@@ -20,10 +21,14 @@ export const linkPlaidToUser = (req, res) => {
       });
       return user.save();
     })
+    // Save itemId with associated user into ItemLinksModel
     .then(user => {
+      return linkItemToUser(user, institutionName);
+    })
+    // Return API Response
+    .then(item => {
       return res.status(200).json({
-        message: 'Added Link Successfully',
-        userId: user.id
+        message: 'Added Link Successfully'
       });
     })
     .catch(err => {
@@ -32,25 +37,14 @@ export const linkPlaidToUser = (req, res) => {
 };
 
 // Create a new item to store in Item db
-export const linkItemToUser = (req, res) => {
-  let { institutionName } = req.body;
-  let { itemId } = req.user.links.get(institutionName);
+export const linkItemToUser = (user, institutionName) => {
+  let { itemId } = user.links.get(institutionName);
   let item = new ItemModel({
     itemId: itemId,
-    users: [req.user.id]
+    users: [user.id]
   });
   // Save to DB
-  item
-    .save()
-    .then(item => {
-      res.status(201).json({
-        message: 'Item created.',
-        item: item
-      });
-    })
-    .catch(err => {
-      res.status(400).send({ message: err.message });
-    });
+  return item.save();
 };
 
 // To-DO Change this to a helper function that runs after a successful link happens.
