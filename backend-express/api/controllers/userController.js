@@ -37,7 +37,7 @@ export const linkPlaidToUser = (req, res) => {
 };
 
 // Create a new item to store in Item db
-export const linkItemToUser = (user, institutionName) => {
+const linkItemToUser = (user, institutionName) => {
   let { itemId } = user.links.get(institutionName);
   let item = new ItemModel({
     itemId: itemId,

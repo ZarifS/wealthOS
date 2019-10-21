@@ -3,7 +3,6 @@ import { createPublicToken } from '../controllers/plaidController';
 import {
   linkPlaidToUser,
   updateAccounts,
-  linkItemToUser,
   getTransactionsForUser
 } from '../controllers/userController';
 
