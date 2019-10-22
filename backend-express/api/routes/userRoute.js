@@ -10,12 +10,12 @@ const router = express.Router();
 
 // Query all info on User - no body
 router.get('/', (req, res) => {
-  let user = req.user;
+  const { user } = req;
   user.password = undefined;
   user.__v = undefined;
   // Return user object
   res.status(200).json({
-    user: user
+    user
   });
 });
 

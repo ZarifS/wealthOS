@@ -1,11 +1,11 @@
-import express from 'express'
-import { addWebhookToUser, fireWebhook } from '../controllers/webhookController'
+import express from 'express';
+import { addWebhookToUser, fireWebhook } from '../controllers/webhookController';
 
-const router = express.Router()
+const router = express.Router();
 // Setup a webhook for one of the users items - {institutionName:"string"}
-router.post('/addWebhook', addWebhookToUser)
+router.post('/addWebhook', addWebhookToUser);
 
 // Fire a webhook for one of the institutions - {institutionName:"string"}
-router.post('/fireWebhook', fireWebhook)
+router.post('/fireWebhook', fireWebhook);
 
-export default router
+export default router;

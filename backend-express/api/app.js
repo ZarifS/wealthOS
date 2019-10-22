@@ -15,7 +15,7 @@ const app = express();
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
-//Logger Middleware
+// Logger Middleware
 app.use(morgan('dev'));
 
 // Register, Login
