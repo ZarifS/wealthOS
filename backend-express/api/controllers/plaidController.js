@@ -43,24 +43,32 @@ export const exchangeToken = (publicToken) => client.exchangePublicToken(publicT
 // Makes a call to the Plaids Transactions API for a given Item/Institution
 export const getTransactions = async (accessToken, startDate, endDate) => {
   try {
-    let allTransactions = []
-    let { transactions, total_transactions } = await client.getTransactions(accessToken, startDate, endDate, {count: 500});
-    console.log('Total transactions for this range:', total_transactions)
+    let allTransactions = [];
+    const { transactions, total_transactions } = await client.getTransactions(
+      accessToken,
+      startDate,
+      endDate,
+      { count: 500 }
+    );
+    console.log('Total transactions for this range:', total_transactions);
     // Got all transactions
-    if (total_transactions <= 500) return transactions
+    if (total_transactions <= 500) return transactions;
     // Need to paginate
-    allTransactions = allTransactions.concat(transactions)
+    allTransactions = allTransactions.concat(transactions);
     // Grab next 500
     let offset = 500;
     while (allTransactions.length < total_transactions) {
-      let {transactions} = await client.getTransactions(accessToken, startDate, endDate, {count: 500, offset: offset});
+      const { transactions } = await client.getTransactions(accessToken, startDate, endDate, {
+        count: 500,
+        offset
+      });
       offset += 500;
       allTransactions = allTransactions.concat(transactions);
-      console.log("Pulled more data, total data so far:", allTransactions.length)
+      console.log('Pulled more data, total data so far:', allTransactions.length);
     }
     // All transactions received
-    console.log('Total transactions pulled:', allTransactions.length)
-    return allTransactions
+    console.log('Total transactions pulled:', allTransactions.length);
+    return allTransactions;
   }
   catch (error) {
     throw error;
