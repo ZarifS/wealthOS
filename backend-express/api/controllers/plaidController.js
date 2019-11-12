@@ -24,7 +24,7 @@ export const createPublicToken = (req, res) => {
         publicToken: token.public_token
       });
     })
-    .catch((err) => {
+    .catch((error) => {
       res.status(400).json([{ message: error.message }]);
     });
 };
@@ -43,8 +43,24 @@ export const exchangeToken = (publicToken) => client.exchangePublicToken(publicT
 // Makes a call to the Plaids Transactions API for a given Item/Institution
 export const getTransactions = async (accessToken, startDate, endDate) => {
   try {
-    const { transactions } = await client.getTransactions(accessToken, startDate, endDate);
-    return transactions;
+    let allTransactions = []
+    let { transactions, total_transactions } = await client.getTransactions(accessToken, startDate, endDate, {count: 500});
+    console.log('Total transactions for this range:', total_transactions)
+    // Got all transactions
+    if (total_transactions <= 500) return transactions
+    // Need to paginate
+    allTransactions = allTransactions.concat(transactions)
+    // Grab next 500
+    let offset = 500;
+    while (allTransactions.length < total_transactions) {
+      let {transactions} = await client.getTransactions(accessToken, startDate, endDate, {count: 500, offset: offset});
+      offset += 500;
+      allTransactions = allTransactions.concat(transactions);
+      console.log("Pulled more data, total data so far:", allTransactions.length)
+    }
+    // All transactions received
+    console.log('Total transactions pulled:', allTransactions.length)
+    return allTransactions
   }
   catch (error) {
     throw error;

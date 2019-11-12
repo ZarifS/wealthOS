@@ -7,6 +7,44 @@ const LinksSchema = new mongoose.Schema({
   itemId: String
 });
 
+const TransactionsSchema = new mongoose.Schema({
+  name: {
+    type: String,
+    required: true
+  },
+  category: {
+    type: Array,
+    required: true
+  },
+  amount: {
+    type: Number,
+    required: true
+  },
+  accountID: {
+    type: String,
+    required: true
+  },
+  date: {
+    type: Date,
+    required: true
+  },
+  pending: {
+    type: Boolean,
+    required: true
+  },
+  pending_id: {
+    type: String
+  },
+  id: {
+    type: String,
+    required: true
+  },
+  currency: {
+    type: String,
+    required: true
+  }
+});
+
 // Define User Schema
 const UserSchema = new mongoose.Schema({
   firstName: {
@@ -43,6 +81,10 @@ const UserSchema = new mongoose.Schema({
   },
   holdings: {
     type: Number
+  },
+  transactions: {
+    type: Array,
+    of: TransactionsSchema
   }
 });
 
