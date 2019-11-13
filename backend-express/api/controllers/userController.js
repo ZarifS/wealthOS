@@ -50,7 +50,7 @@ export const updateAccounts = (req, res) => {
     })
     .then((user) => {
       res.status(200).json({
-        message: 'Updated User Accounts',
+        message: 'Updated User Accounts.',
         accounts: user.accounts
       });
     })
@@ -100,19 +100,16 @@ const calculateUserBalance = (accounts) => {
   return sum;
 };
 
-export const getTransactionsForUser = async (req, res) => {
-  const { startDate, endDate } = req.body;
-  const { links } = req.user;
+export const setTransactionsForUser = async (req, res) => {
+  const { startDate, endDate, institutionName } = req.body;
+  const { accessToken } = req.user.links.get(institutionName);
   let allTransactions = [];
-  for (const [key, value] of links) {
-    const { accessToken } = value;
-    try {
-      const transactions = await getTransactions(accessToken, startDate, endDate);
-      allTransactions = allTransactions.concat(transactions);
-    }
-    catch (err) {
-      return res.status(400).json([{ message: err.message }]);
-    }
+  try {
+    const transactions = await getTransactions(accessToken, startDate, endDate);
+    allTransactions = allTransactions.concat(transactions);
+  }
+  catch (err) {
+    return res.status(400).json([{ message: err.message }]);
   }
   res.status(200).json(allTransactions);
 };
