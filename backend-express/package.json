@@ -24,32 +24,6 @@
     "lint": "eslint '**/*.js'",
     "lint:fix": "prettier-eslint '**/*.js' --write"
   },
-  "eslintConfig": {
-    "extends": "airbnb-base",
-    "env": {
-      "es6": true,
-      "browser": true
-    },
-    "rules": {
-      "brace-style": [
-        "error",
-        "stroustrup"
-      ],
-      "comma-dangle": [
-        "error",
-        "never"
-      ],
-      "no-unused-vars": [
-        "warn"
-      ],
-      "no-var": [
-        "off"
-      ],
-      "one-var": [
-        "off"
-      ]
-    }
-  },
   "dependencies": {
     "bcrypt": "^3.0.6",
     "body-parser": "^1.19.0",
@@ -65,7 +39,7 @@
     "@babel/core": "^7.5.5",
     "@babel/node": "^7.5.5",
     "@babel/preset-env": "^7.5.5",
-    "eslint": "^6.5.1",
+    "eslint": "^6.6.0",
     "eslint-config-airbnb-base": "^14.0.0",
     "eslint-plugin-import": "^2.18.2",
     "nodemon": "^1.19.1",
