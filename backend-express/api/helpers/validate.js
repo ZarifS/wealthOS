@@ -12,7 +12,7 @@ export const validateRegistration = async (req, res, next) => {
   if (!firstName || !lastName || !email || !password || !password2) {
     errors.push({ message: 'Please enter all fields.' });
   }
-  else if (password != password2) {
+  else if (password !== password2) {
     errors.push({ message: 'Passwords do not match.' });
   }
   else if (password.length < 6) {

@@ -103,12 +103,12 @@ const calculateUserBalance = (accounts) => {
 // Pulls historical data for a institution to gather user transactions
 export const setTransactionsForUser = async (req, res) => {
   const { startDate, endDate, institutionName } = req.body;
-  const user = req.user
+  const { user } = req;
   const { accessToken } = user.links.get(institutionName);
   try {
-    let transactions = await getTransactions(accessToken, startDate, endDate);
-    transactions.map(transaction => {
-      let transactionObject = {
+    const transactions = await getTransactions(accessToken, startDate, endDate);
+    transactions.map((transaction) => {
+      const transactionObject = {
         name: transaction.name,
         category: transaction.category,
         amount: transaction.amount,
@@ -118,26 +118,26 @@ export const setTransactionsForUser = async (req, res) => {
         pending_id: transactions.pending_transaction_id,
         _id: transaction.transaction_id,
         currency: transaction.iso_currency_code
-      }
+      };
       // Check for duplicated transactions, if already exists, replace it.
       if (user.transactions.id(transaction.transaction_id)) {
-        console.log('Transaction already exists, replacing!')
-        user.transactions.pull(transaction.transaction_id)
+        console.log('Transaction already exists, replacing!');
+        user.transactions.pull(transaction.transaction_id);
       }
-      user.transactions.push(transactionObject)
-    })
-    let result = await user.save()
+      user.transactions.push(transactionObject);
+    });
+    const result = await user.save();
     return res.status(200).json({ message: 'User Transactions Added Successfully.', user: result });
   }
   catch (err) {
-    console.log(err)
+    console.log(err);
     return res.status(400).json([{ message: err.message }]);
   }
 };
 
 export const testAPI = async (req, res) => {
-  req.user.transactions = []
-  let result = await req.user.save()
+  req.user.transactions = [];
+  const result = await req.user.save();
   // const id = mongoose.Types.ObjectId().toString();
   // console.log('ID:', id)
   // let object = {
@@ -159,5 +159,5 @@ export const testAPI = async (req, res) => {
   // console.log(req.user)
   // const result = req.user.transactions.id(id)
   // console.log(result)
-  return res.status(200).json({ message: 'This works.', result: result });
-}
+  return res.status(200).json({ message: 'This works.', result });
+};
