@@ -95,3 +95,25 @@ export const getAccounts = async (accessToken) => {
     throw error;
   }
 };
+
+export const getCategories = async (req, res) => {
+  try {
+    const { categories } = await client.getCategories()
+    let mainCategories = {}
+    categories.map(category => {
+      let top = category.hierarchy[0]
+      if (mainCategories[top]) {
+        for (let item of category.hierarchy) {
+          if (!mainCategories[top].includes(item)) mainCategories[top].push(item)
+        }
+        // let last = category.hierarchy[category.hierarchy.length - 1]
+        // if (!mainCategories[top].includes(last)) mainCategories[top].push(last)
+      }
+      else mainCategories[top] = []
+    })
+    return res.status(200).json({ hierarchical: mainCategories, original: categories })
+  } catch (error) {
+    console.log(error)
+    res.status(400).json({ message: error.message })
+  }
+}

@@ -6,6 +6,7 @@ import {
   setTransactionsForUser,
   testAPI
 } from '../controllers/userController';
+import { getCategories } from '../controllers/plaidController'
 
 const router = express.Router();
 
@@ -34,5 +35,8 @@ router.post('/setTransactions', setTransactionsForUser);
 
 // Get user transaction
 router.get('/testAPI/:id', testAPI);
+
+// Get user transaction
+router.get('/categories/', getCategories);
 
 export default router;
