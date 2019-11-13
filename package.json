@@ -20,8 +20,5 @@
   "bugs": {
     "url": "https://github.com/ZarifS/wealth-x/issues"
   },
-  "homepage": "https://github.com/ZarifS/wealth-x#readme",
-  "devDependencies": {
-    "concurrently": "^4.1.1"
-  }
+  "homepage": "https://github.com/ZarifS/wealth-x#readme"
 }
