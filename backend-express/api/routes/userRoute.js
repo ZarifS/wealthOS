@@ -1,9 +1,10 @@
 import express from 'express';
-import { createPublicToken } from '../controllers/plaidController';
+import { createPublicToken, getCategories } from '../controllers/plaidController';
 import {
   linkPlaidToUser,
   updateAccounts,
-  getTransactionsForUser
+  setTransactionsForUser,
+  testAPI
 } from '../controllers/userController';
 
 const router = express.Router();
@@ -28,7 +29,13 @@ router.post('/link', linkPlaidToUser);
 // Initialize or update accounts for a linked Item - {institutionName:"string"}
 router.post('/setAccounts', updateAccounts);
 
-// Get user transactions for a specified period of time - {startDate: "2019-08-01", endDate: "2019-09-01"}
-router.get('/transactions', getTransactionsForUser);
+// Set user transactions for a the last year - {startDate: "2019-08-01", endDate: "2019-09-01"}
+router.post('/setTransactions', setTransactionsForUser);
+
+// Get user transaction
+router.get('/testAPI/:id', testAPI);
+
+// Get user transaction
+router.get('/categories/', getCategories);
 
 export default router;
