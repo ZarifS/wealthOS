@@ -101,11 +101,11 @@ UserSchema.methods = {
     return bcrypt.compareSync(inputPassword, this.password);
   },
   // Creates a encrypted password for the user
-  hashPassword: (plainTextPassword) => bcrypt.hashSync(plainTextPassword, 10)
+  hashPassword: plainTextPassword => bcrypt.hashSync(plainTextPassword, 10)
 };
 
 // Define hooks for pre-saving, ensure password is never added to database unencrypted
-UserSchema.pre('save', function (next) {
+UserSchema.pre('save', function(next) {
   // Password is being updated
   if (this.isModified('password')) {
     console.log('Password was modified, encrypting.');

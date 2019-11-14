@@ -1,8 +1,6 @@
 import plaid from 'plaid';
 import moment from 'moment';
-import {
-  PLAID_CLIENT_ID, PLAID_PUBLIC_KEY, PLAID_SECRET, PLAID_ENV
-} from '../helpers/secrets';
+import { PLAID_CLIENT_ID, PLAID_PUBLIC_KEY, PLAID_SECRET, PLAID_ENV } from '../helpers/secrets';
 
 // Initialize the Plaid client
 const client = new plaid.Client(
@@ -18,27 +16,29 @@ export const createPublicToken = (req, res) => {
   const institutionId = 'ins_37';
   client
     .sandboxPublicTokenCreate(institutionId, ['transactions'])
-    .then((token) => {
+    .then(token => {
       console.log(token);
       return res.status(200).json({
         publicToken: token.public_token
       });
     })
-    .catch((error) => {
+    .catch(error => {
       res.status(400).json([{ message: error.message }]);
     });
 };
 
 // Manually add a webhook URL to a existing linked item
-export const addWebhook = (accessToken) => client.updateItemWebhook(accessToken, 'https://enhay4am0y9l9.x.pipedream.net');
+export const addWebhook = accessToken =>
+  client.updateItemWebhook(accessToken, 'https://enhay4am0y9l9.x.pipedream.net');
 
 // Manually fire a webhook update to a linked item
-export const fireTransactionWebhook = (accessToken) => client.sandboxItemFireWebhook(accessToken, 'DEFAULT_UPDATE', () => {
-  console.log('Fired Webhook!');
-});
+export const fireTransactionWebhook = accessToken =>
+  client.sandboxItemFireWebhook(accessToken, 'DEFAULT_UPDATE', () => {
+    console.log('Fired Webhook!');
+  });
 
 // Exchange public token
-export const exchangeToken = (publicToken) => client.exchangePublicToken(publicToken);
+export const exchangeToken = publicToken => client.exchangePublicToken(publicToken);
 
 // Makes a call to the Plaids Transactions API for a given Item/Institution
 export const getTransactions = async (accessToken, startDate, endDate) => {
@@ -69,14 +69,13 @@ export const getTransactions = async (accessToken, startDate, endDate) => {
     // All transactions received
     console.log('Total transactions pulled:', allTransactions.length);
     return allTransactions;
-  }
-  catch (error) {
+  } catch (error) {
     throw error;
   }
 };
 
 // Makes a call to the Plaids Transactions API for Account information for a given Item/Institution
-export const getAccounts = async (accessToken) => {
+export const getAccounts = async accessToken => {
   // Last 30 Days
   const startDate = moment()
     .subtract(1, 'days')
@@ -90,30 +89,28 @@ export const getAccounts = async (accessToken) => {
       offset: 0
     });
     return accounts;
-  }
-  catch (error) {
+  } catch (error) {
     throw error;
   }
 };
 
 export const getCategories = async (req, res) => {
   try {
-    const { categories } = await client.getCategories()
-    let mainCategories = {}
+    const { categories } = await client.getCategories();
+    const mainCategories = {};
     categories.map(category => {
-      let top = category.hierarchy[0]
+      const top = category.hierarchy[0];
       if (mainCategories[top]) {
-        for (let item of category.hierarchy) {
-          if (!mainCategories[top].includes(item)) mainCategories[top].push(item)
+        for (const item of category.hierarchy) {
+          if (!mainCategories[top].includes(item)) mainCategories[top].push(item);
         }
         // let last = category.hierarchy[category.hierarchy.length - 1]
         // if (!mainCategories[top].includes(last)) mainCategories[top].push(last)
-      }
-      else mainCategories[top] = []
-    })
-    return res.status(200).json({ hierarchical: mainCategories, original: categories })
+      } else mainCategories[top] = [];
+    });
+    return res.status(200).json({ hierarchical: mainCategories, original: categories });
   } catch (error) {
-    console.log(error)
-    res.status(400).json({ message: error.message })
+    console.log(error);
+    res.status(400).json({ message: error.message });
   }
-}
+};

@@ -1,12 +1,11 @@
 import express from 'express';
-import { createPublicToken } from '../controllers/plaidController';
+import { createPublicToken, getCategories } from '../controllers/plaidController';
 import {
   linkPlaidToUser,
   updateAccounts,
   setTransactionsForUser,
   testAPI
 } from '../controllers/userController';
-import { getCategories } from '../controllers/plaidController'
 
 const router = express.Router();
 

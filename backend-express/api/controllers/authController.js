@@ -3,9 +3,7 @@ import { createToken } from '../helpers/auth';
 
 // Register a new user
 export const registerUser = (req, res) => {
-  const {
-    firstName, lastName, email, password
-  } = req.body;
+  const { firstName, lastName, email, password } = req.body;
 
   // Register the new user
   const newUser = new UserModel({
@@ -22,13 +20,13 @@ export const registerUser = (req, res) => {
   // Save to DB
   newUser
     .save()
-    .then((user) => {
+    .then(user => {
       res.status(201).json({
         message: 'User created.',
         userId: user.id
       });
     })
-    .catch((err) => {
+    .catch(err => {
       res.status(400).send({ message: err.message });
     });
 };
@@ -37,7 +35,7 @@ export const registerUser = (req, res) => {
 export const logInUser = (req, res) => {
   const { email, password } = req.body;
   UserModel.findOne({ email })
-    .then((user) => {
+    .then(user => {
       // No user found
       if (!user) {
         return res.status(404).json([{ message: 'No account found.' }]);
@@ -56,11 +54,13 @@ export const logInUser = (req, res) => {
       // Create JSON Webtoken
       return createToken(payload);
     })
-    .then((token) => res.status(200).json({
-      message: 'Auth successful.',
-      token
-    }))
-    .catch((err) => {
+    .then(token =>
+      res.status(200).json({
+        message: 'Auth successful.',
+        token
+      })
+    )
+    .catch(err => {
       res.status(400).json([{ message: err.message }]);
     });
 };

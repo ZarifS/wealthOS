@@ -10,13 +10,13 @@ export const ensureAuthenticated = async (req, res, next) => {
     const user = await UserModel.findById(decodedUser.id);
     req.user = user;
     next();
-  }
-  catch (error) {
+  } catch (error) {
     return res.status(401).json([{ message: 'Authentication failed.' }]);
   }
 };
 
 // Create a secure JSON WebToken
-export const createToken = (payload) => jwt.sign(payload, WEB_TOKEN_SECRET, {
-  expiresIn: '1h'
-});
+export const createToken = payload =>
+  jwt.sign(payload, WEB_TOKEN_SECRET, {
+    expiresIn: '1h'
+  });

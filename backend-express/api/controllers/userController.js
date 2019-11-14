@@ -9,7 +9,7 @@ export const linkPlaidToUser = (req, res) => {
   // Exchange Token
   exchangeToken(publicToken)
     // Save into UserModel
-    .then((token) => {
+    .then(token => {
       const { access_token, item_id } = token;
       user.links.set(institutionName, {
         accessToken: access_token,
@@ -18,12 +18,14 @@ export const linkPlaidToUser = (req, res) => {
       return user.save();
     })
     // Save itemId with associated user into ItemLinksModel
-    .then((user) => linkItemToUser(user, institutionName))
+    .then(user => linkItemToUser(user, institutionName))
     // Return API Response
-    .then((item) => res.status(200).json({
-      message: 'Added Link Successfully'
-    }))
-    .catch((err) => res.status(400).json([{ message: err.message }]));
+    .then(() =>
+      res.status(200).json({
+        message: 'Added Link Successfully'
+      })
+    )
+    .catch(err => res.status(400).json([{ message: err.message }]));
 };
 
 // Create a new item to store in Item db
@@ -44,27 +46,25 @@ export const updateAccounts = (req, res) => {
 
   // Pull accounts for the Item
   getAccounts(accessToken)
-    .then((accounts) => {
+    .then(accounts => {
       const user = setUserAccounts(req.user, accounts, institutionName);
       return user.save();
     })
-    .then((user) => {
+    .then(user => {
       res.status(200).json({
         message: 'Updated User Accounts.',
         accounts: user.accounts
       });
     })
-    .catch((err) => res.status(400).json([{ message: err.message }]));
+    .catch(err => res.status(400).json([{ message: err.message }]));
 };
 
 // Add new institution accounts to the User
 const setUserAccounts = (user, accounts, institutionName) => {
   // Setup user accounts for each account associated with the Plaid item
   const newAccounts = [];
-  accounts.forEach((account) => {
-    const {
-      account_id, balances, name, type, mask
-    } = account;
+  accounts.forEach(account => {
+    const { account_id, balances, name, type, mask } = account;
     const newAccount = {
       name,
       balance: balances.current,
@@ -84,15 +84,14 @@ const setUserAccounts = (user, accounts, institutionName) => {
 };
 
 // Whenever accounts are modified, update.
-const calculateUserBalance = (accounts) => {
+const calculateUserBalance = accounts => {
   let sum = 0;
-  accounts.forEach((institution) => {
-    institution.forEach((account) => {
+  accounts.forEach(institution => {
+    institution.forEach(account => {
       const { balance, type } = account;
       if (type === 'depository') {
         sum += balance;
-      }
-      else if (type === 'credit') {
+      } else if (type === 'credit') {
         sum -= balance;
       }
     });
@@ -107,7 +106,7 @@ export const setTransactionsForUser = async (req, res) => {
   const { accessToken } = user.links.get(institutionName);
   try {
     const transactions = await getTransactions(accessToken, startDate, endDate);
-    transactions.map((transaction) => {
+    transactions.map(transaction => {
       const transactionObject = {
         name: transaction.name,
         category: transaction.category,
@@ -128,8 +127,7 @@ export const setTransactionsForUser = async (req, res) => {
     });
     const result = await user.save();
     return res.status(200).json({ message: 'User Transactions Added Successfully.', user: result });
-  }
-  catch (err) {
+  } catch (err) {
     console.log(err);
     return res.status(400).json([{ message: err.message }]);
   }
