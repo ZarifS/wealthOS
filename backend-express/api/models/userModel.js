@@ -37,7 +37,7 @@ const TransactionsSchema = new mongoose.Schema({
     type: Boolean,
     required: true
   },
-  pending_id: {
+  pendingID: {
     type: String
   },
   currency: {
@@ -105,15 +105,13 @@ UserSchema.methods = {
 };
 
 // Define hooks for pre-saving, ensure password is never added to database unencrypted
-UserSchema.pre('save', function(next) {
+UserSchema.pre('save', next => {
   // Password is being updated
   if (this.isModified('password')) {
     console.log('Password was modified, encrypting.');
     this.password = this.hashPassword(this.password);
     next();
-  }
-  // Skip
-  else next();
+  } else next();
 });
 
 export default mongoose.model('User', UserSchema);

@@ -1,7 +1,7 @@
 import UserModel from '../models/userModel';
 
 // Middleware to validate the registration credentials for a user
-export const validateRegistration = async (req, res, next) => {
+export default async (req, res, next) => {
   const { firstName, lastName, email, password, password2 } = req.body;
 
   const errors = [];
@@ -30,5 +30,5 @@ export const validateRegistration = async (req, res, next) => {
   }
 
   // Continue if there is no errors
-  next();
+  return next();
 };

@@ -1,33 +1,6 @@
 import { exchangeToken, getAccounts, getTransactions } from './plaidController';
 import ItemModel from '../models/itemLinkModel';
 
-// Set up bank linking to user profile
-export const linkPlaidToUser = (req, res) => {
-  // Grab public token from body
-  const { publicToken, institutionName } = req.body;
-  const { user } = req;
-  // Exchange Token
-  exchangeToken(publicToken)
-    // Save into UserModel
-    .then(token => {
-      const { access_token, item_id } = token;
-      user.links.set(institutionName, {
-        accessToken: access_token,
-        itemId: item_id
-      });
-      return user.save();
-    })
-    // Save itemId with associated user into ItemLinksModel
-    .then(user => linkItemToUser(user, institutionName))
-    // Return API Response
-    .then(() =>
-      res.status(200).json({
-        message: 'Added Link Successfully'
-      })
-    )
-    .catch(err => res.status(400).json([{ message: err.message }]));
-};
-
 // Create a new item to store in Item db
 const linkItemToUser = (user, institutionName) => {
   const { itemId } = user.links.get(institutionName);
@@ -39,24 +12,20 @@ const linkItemToUser = (user, institutionName) => {
   return item.save();
 };
 
-// Add bank accounts to user profile after link
-export const updateAccounts = (req, res) => {
-  const { institutionName } = req.body;
-  const { accessToken } = req.user.links.get(institutionName);
-
-  // Pull accounts for the Item
-  getAccounts(accessToken)
-    .then(accounts => {
-      const user = setUserAccounts(req.user, accounts, institutionName);
-      return user.save();
-    })
-    .then(user => {
-      res.status(200).json({
-        message: 'Updated User Accounts.',
-        accounts: user.accounts
-      });
-    })
-    .catch(err => res.status(400).json([{ message: err.message }]));
+// Whenever accounts are modified, update.
+const calculateUserBalance = accounts => {
+  let sum = 0;
+  accounts.forEach(institution => {
+    institution.forEach(account => {
+      const { balance, type } = account;
+      if (type === 'depository') {
+        sum += balance;
+      } else if (type === 'credit') {
+        sum -= balance;
+      }
+    });
+  });
+  return sum;
 };
 
 // Add new institution accounts to the User
@@ -83,20 +52,50 @@ const setUserAccounts = (user, accounts, institutionName) => {
   return user;
 };
 
-// Whenever accounts are modified, update.
-const calculateUserBalance = accounts => {
-  let sum = 0;
-  accounts.forEach(institution => {
-    institution.forEach(account => {
-      const { balance, type } = account;
-      if (type === 'depository') {
-        sum += balance;
-      } else if (type === 'credit') {
-        sum -= balance;
-      }
-    });
-  });
-  return sum;
+// Set up bank linking to user profile
+export const linkPlaidToUser = (req, res) => {
+  // Grab public token from body
+  const { publicToken, institutionName } = req.body;
+  const { user } = req;
+  // Exchange Token
+  exchangeToken(publicToken)
+    // Save into UserModel
+    .then(token => {
+      user.links.set(institutionName, {
+        accessToken: token.access_token,
+        itemId: token.item_id
+      });
+      return user.save();
+    })
+    // Save itemId with associated user into ItemLinksModel
+    .then(doc => linkItemToUser(doc, institutionName))
+    // Return API Response
+    .then(() =>
+      res.status(200).json({
+        message: 'Added Link Successfully'
+      })
+    )
+    .catch(err => res.status(400).json([{ message: err.message }]));
+};
+
+// Add bank accounts to user profile after link
+export const updateAccounts = (req, res) => {
+  const { institutionName } = req.body;
+  const { accessToken } = req.user.links.get(institutionName);
+
+  // Pull accounts for the Item
+  getAccounts(accessToken)
+    .then(accounts => {
+      const user = setUserAccounts(req.user, accounts, institutionName);
+      return user.save();
+    })
+    .then(user => {
+      res.status(200).json({
+        message: 'Updated User Accounts.',
+        accounts: user.accounts
+      });
+    })
+    .catch(err => res.status(400).json([{ message: err.message }]));
 };
 
 // Pulls historical data for a institution to gather user transactions
@@ -114,7 +113,7 @@ export const setTransactionsForUser = async (req, res) => {
         accountID: transaction.account_id,
         date: transaction.date,
         pending: transaction.pending,
-        pending_id: transactions.pending_transaction_id,
+        pendingID: transactions.pending_transaction_id,
         _id: transaction.transaction_id,
         currency: transaction.iso_currency_code
       };
@@ -123,7 +122,7 @@ export const setTransactionsForUser = async (req, res) => {
         console.log('Transaction already exists, replacing!');
         user.transactions.pull(transaction.transaction_id);
       }
-      user.transactions.push(transactionObject);
+      return user.transactions.push(transactionObject);
     });
     const result = await user.save();
     return res.status(200).json({ message: 'User Transactions Added Successfully.', user: result });
