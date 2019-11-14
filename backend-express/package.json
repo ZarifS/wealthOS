@@ -39,11 +39,6 @@
     "@babel/core": "^7.5.5",
     "@babel/node": "^7.5.5",
     "@babel/preset-env": "^7.5.5",
-    "eslint": "^6.6.0",
-    "eslint-config-airbnb-base": "^14.0.0",
-    "eslint-plugin-import": "^2.18.2",
-    "nodemon": "^1.19.1",
-    "prettier-eslint": "^9.0.0",
-    "prettier-eslint-cli": "^5.0.0"
+    "nodemon": "^1.19.1"
   }
 }
