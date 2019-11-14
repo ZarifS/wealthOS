@@ -1,0 +1,26 @@
+{
+  "extends": ["airbnb", "prettier"],
+  "plugins": ["prettier"],
+  "env": {
+    "browser": true,
+    "node": true
+  },
+  "rules": {
+    "prettier/prettier": ["error"],
+    "brace-style": ["error"],
+    "comma-dangle": ["error", "never"],
+    "no-unused-vars": ["warn"],
+    "no-restricted-syntax": ["off"],
+    "array-callback-return": ["warn"],
+    "no-var": ["off"],
+    "one-var": ["off"],
+    // allow console and debugger in development
+    "no-console": ["off"],
+    "no-param-reassign": ["off"],
+    "no-underscore-dangle": ["warn", { "allow": ["__v"] }],
+    "camelcase": [
+      "warn",
+      { "allow": ["total_transactions", "account_id"], "ignoreDestructuring": true }
+    ]
+  }
+}

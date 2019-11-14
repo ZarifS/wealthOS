@@ -17,7 +17,6 @@ export const createPublicToken = (req, res) => {
   client
     .sandboxPublicTokenCreate(institutionId, ['transactions'])
     .then(token => {
-      console.log(token);
       return res.status(200).json({
         publicToken: token.public_token
       });
@@ -42,36 +41,33 @@ export const exchangeToken = publicToken => client.exchangePublicToken(publicTok
 
 // Makes a call to the Plaids Transactions API for a given Item/Institution
 export const getTransactions = async (accessToken, startDate, endDate) => {
-  try {
-    let allTransactions = [];
-    const { transactions, total_transactions } = await client.getTransactions(
-      accessToken,
-      startDate,
-      endDate,
-      { count: 500 }
-    );
-    console.log('Total transactions for this range:', total_transactions);
-    // Got all transactions
-    if (total_transactions <= 500) return transactions;
-    // Need to paginate
-    allTransactions = allTransactions.concat(transactions);
-    // Grab next 500
-    let offset = 500;
-    while (allTransactions.length < total_transactions) {
-      const { transactions } = await client.getTransactions(accessToken, startDate, endDate, {
-        count: 500,
-        offset
-      });
-      offset += 500;
-      allTransactions = allTransactions.concat(transactions);
-      console.log('Pulled more data, total data so far:', allTransactions.length);
-    }
-    // All transactions received
-    console.log('Total transactions pulled:', allTransactions.length);
-    return allTransactions;
-  } catch (error) {
-    throw error;
+  let allTransactions = [];
+  const { transactions, total_transactions } = await client.getTransactions(
+    accessToken,
+    startDate,
+    endDate,
+    { count: 500 }
+  );
+  console.log('Total transactions for this range:', total_transactions);
+  // Got all transactions
+  if (total_transactions <= 500) return transactions;
+  // Need to paginate
+  allTransactions = allTransactions.concat(transactions);
+  // Grab next 500
+  let offset = 500;
+  while (allTransactions.length < total_transactions) {
+    // eslint-disable-next-line no-await-in-loop
+    const result = await client.getTransactions(accessToken, startDate, endDate, {
+      count: 500,
+      offset
+    });
+    offset += 500;
+    allTransactions = allTransactions.concat(result.transactions);
+    console.log('Pulled more data, total data so far:', allTransactions.length);
   }
+  // All transactions received
+  console.log('Total transactions pulled:', allTransactions.length);
+  return allTransactions;
 };
 
 // Makes a call to the Plaids Transactions API for Account information for a given Item/Institution
@@ -83,15 +79,11 @@ export const getAccounts = async accessToken => {
   const endDate = moment().format('YYYY-MM-DD');
 
   // Call Plaid API Transactions
-  try {
-    const { accounts } = await client.getTransactions(accessToken, startDate, endDate, {
-      count: 1,
-      offset: 0
-    });
-    return accounts;
-  } catch (error) {
-    throw error;
-  }
+  const { accounts } = await client.getTransactions(accessToken, startDate, endDate, {
+    count: 1,
+    offset: 0
+  });
+  return accounts;
 };
 
 export const getCategories = async (req, res) => {
@@ -107,10 +99,11 @@ export const getCategories = async (req, res) => {
         // let last = category.hierarchy[category.hierarchy.length - 1]
         // if (!mainCategories[top].includes(last)) mainCategories[top].push(last)
       } else mainCategories[top] = [];
+      return null;
     });
     return res.status(200).json({ hierarchical: mainCategories, original: categories });
   } catch (error) {
     console.log(error);
-    res.status(400).json({ message: error.message });
+    return res.status(400).json({ message: error.message });
   }
 };

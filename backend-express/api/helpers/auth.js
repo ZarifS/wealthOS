@@ -9,7 +9,7 @@ export const ensureAuthenticated = async (req, res, next) => {
     const decodedUser = jwt.verify(token, WEB_TOKEN_SECRET);
     const user = await UserModel.findById(decodedUser.id);
     req.user = user;
-    next();
+    return next();
   } catch (error) {
     return res.status(401).json([{ message: 'Authentication failed.' }]);
   }
