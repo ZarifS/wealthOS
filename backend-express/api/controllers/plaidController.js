@@ -27,8 +27,8 @@ export const createPublicToken = (req, res) => {
 };
 
 // Manually add a webhook URL to a existing linked item
-export const addWebhook = accessToken =>
-  client.updateItemWebhook(accessToken, 'https://enhay4am0y9l9.x.pipedream.net');
+export const addWebhook = (accessToken, webhookURL) =>
+  client.updateItemWebhook(accessToken, webhookURL);
 
 // Manually fire a webhook update to a linked item
 export const fireTransactionWebhook = accessToken =>

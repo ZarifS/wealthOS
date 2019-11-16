@@ -25,7 +25,7 @@ app.use('/auth', authRoute);
 app.use('/user', ensureAuthenticated, userRoute);
 
 // Getting updates to/from webhook handler
-app.use('/webhook', ensureAuthenticated, webhookRoute);
+app.use('/webhook', webhookRoute);
 
 // Connect to Mongo DB
 dbConnection(true);
