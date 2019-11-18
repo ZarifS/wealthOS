@@ -1,11 +1,12 @@
+import moment from 'moment';
 import { exchangeToken, getAccounts, getTransactions } from './plaidController';
 import ItemModel from '../models/itemLinkModel';
+import UserModel from '../models/userModel';
 
 // Create a new item to store in Item db
-const linkItemToUser = (user, institutionName) => {
-  const { itemId } = user.links.get(institutionName);
+const linkItemToUser = (user, itemID) => {
   const item = new ItemModel({
-    itemId,
+    itemID,
     users: [user.id]
   });
   // Save to DB
@@ -40,7 +41,7 @@ const setUserAccounts = (user, accounts, institutionName) => {
       type,
       currency: balances.iso_currency_code,
       mask,
-      accountId: account_id
+      accountID: account_id
     };
     newAccounts.push(newAccount);
   });
@@ -56,32 +57,40 @@ const setUserAccounts = (user, accounts, institutionName) => {
 export const linkPlaidToUser = (req, res) => {
   // Grab public token from body
   const { publicToken, institutionName } = req.body;
+  let itemID;
   const { user } = req;
   // Exchange Token
   exchangeToken(publicToken)
     // Save into UserModel
     .then(token => {
-      user.links.set(institutionName, {
+      user.links.set(token.item_id, {
         accessToken: token.access_token,
-        itemId: token.item_id
+        institutionName
       });
+      itemID = token.item_id;
       return user.save();
     })
     // Save itemId with associated user into ItemLinksModel
-    .then(doc => linkItemToUser(doc, institutionName))
+    .then(doc => {
+      console.log(itemID);
+      linkItemToUser(doc, itemID);
+    })
     // Return API Response
     .then(() =>
       res.status(200).json({
         message: 'Added Link Successfully'
       })
     )
-    .catch(err => res.status(400).json([{ message: err.message }]));
+    .catch(err => {
+      console.log(err);
+      res.status(400).json([{ message: err.message }]);
+    });
 };
 
-// Add bank accounts to user profile after link
+// Add bank accounts to user profile after link - TO-DO Change Update Accounts to work for every LinkedItem.
 export const updateAccounts = (req, res) => {
-  const { institutionName } = req.body;
-  const { accessToken } = req.user.links.get(institutionName);
+  const { itemID } = req.body;
+  const { accessToken, institutionName } = req.user.links.get(itemID);
 
   // Pull accounts for the Item
   getAccounts(accessToken)
@@ -100,9 +109,9 @@ export const updateAccounts = (req, res) => {
 
 // Pulls historical data for a institution to gather user transactions
 export const setTransactionsForUser = async (req, res) => {
-  const { startDate, endDate, institutionName } = req.body;
+  const { startDate, endDate, itemID } = req.body;
   const { user } = req;
-  const { accessToken } = user.links.get(institutionName);
+  const { accessToken } = user.links.get(itemID);
   try {
     const transactions = await getTransactions(accessToken, startDate, endDate);
     transactions.map(transaction => {
@@ -157,4 +166,28 @@ export const testAPI = async (req, res) => {
   // const result = req.user.transactions.id(id)
   // console.log(result)
   return res.status(200).json({ message: 'This works.', result });
+};
+
+export const syncTransactionsForUser = async user => {
+  const { lastSynced, transactions, links } = user;
+  console.log('Last synch time for this user is:', lastSynced);
+  if (lastSynced) {
+    // sync from this time
+    console.log('Hello');
+  }
+};
+
+export const updateUserTransactions = async itemID => {
+  try {
+    const itemLink = await ItemModel.find({ itemID });
+    // Usually just one id.
+    for (const id of itemLink.users) {
+      // Update this users transactions.
+      const user = await UserModel.findById(id);
+      await syncTransactionsForUser(user);
+    }
+  } catch (err) {
+    console.log(err);
+    throw err;
+  }
 };

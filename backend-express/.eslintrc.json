@@ -11,6 +11,7 @@
     "comma-dangle": ["error", "never"],
     "no-unused-vars": ["warn"],
     "no-restricted-syntax": ["off"],
+    "no-await-in-loop": ["off"],
     "array-callback-return": ["warn"],
     "no-var": ["off"],
     "one-var": ["off"],

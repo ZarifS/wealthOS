@@ -27,7 +27,7 @@ export const registerUser = (req, res) => {
       });
     })
     .catch(err => {
-      res.status(400).send({ message: err.message });
+      res.status(400).json({ message: err.message });
     });
 };
 
@@ -61,6 +61,7 @@ export const logInUser = (req, res) => {
       })
     )
     .catch(err => {
+      console.log(err);
       res.status(400).json([{ message: err.message }]);
     });
 };

@@ -1,5 +1,5 @@
 import express from 'express';
-import { addWebhookToUser, fireWebhook } from '../controllers/webhookController';
+import { addWebhookToUser, fireWebhook, handleWebhook } from '../controllers/webhookController';
 import { ensureAuthenticated } from '../helpers/auth';
 
 const router = express.Router();
@@ -10,9 +10,6 @@ router.post('/addWebhook', ensureAuthenticated, addWebhookToUser);
 router.post('/fireWebhook', ensureAuthenticated, fireWebhook);
 
 // Webhook Listener
-router.post('/', (req, res) => {
-  console.log('Got A Wekbook!');
-  return res.status(200).json('Got it.');
-});
+router.post('/', handleWebhook);
 
 export default router;
