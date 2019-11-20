@@ -1,11 +1,12 @@
+import moment from 'moment';
 import { exchangeToken, getAccounts, getTransactions } from './plaidController';
 import ItemModel from '../models/itemLinkModel';
+import UserModel from '../models/userModel';
 
 // Create a new item to store in Item db
-const linkItemToUser = (user, institutionName) => {
-  const { itemId } = user.links.get(institutionName);
+const linkItemToUser = (user, itemID) => {
   const item = new ItemModel({
-    itemId,
+    itemID,
     users: [user.id]
   });
   // Save to DB
@@ -40,7 +41,7 @@ const setUserAccounts = (user, accounts, institutionName) => {
       type,
       currency: balances.iso_currency_code,
       mask,
-      accountId: account_id
+      accountID: account_id
     };
     newAccounts.push(newAccount);
   });
@@ -56,32 +57,39 @@ const setUserAccounts = (user, accounts, institutionName) => {
 export const linkPlaidToUser = (req, res) => {
   // Grab public token from body
   const { publicToken, institutionName } = req.body;
+  let itemID;
   const { user } = req;
   // Exchange Token
   exchangeToken(publicToken)
     // Save into UserModel
     .then(token => {
-      user.links.set(institutionName, {
+      user.links.set(token.item_id, {
         accessToken: token.access_token,
-        itemId: token.item_id
+        institutionName
       });
+      itemID = token.item_id;
       return user.save();
     })
     // Save itemId with associated user into ItemLinksModel
-    .then(doc => linkItemToUser(doc, institutionName))
+    .then(doc => {
+      linkItemToUser(doc, itemID);
+    })
     // Return API Response
     .then(() =>
       res.status(200).json({
         message: 'Added Link Successfully'
       })
     )
-    .catch(err => res.status(400).json([{ message: err.message }]));
+    .catch(err => {
+      console.log(err);
+      res.status(400).json([{ message: err.message }]);
+    });
 };
 
-// Add bank accounts to user profile after link
+// Add bank accounts to user profile after link - TO-DO Change Update Accounts to work for every LinkedItem.
 export const updateAccounts = (req, res) => {
-  const { institutionName } = req.body;
-  const { accessToken } = req.user.links.get(institutionName);
+  const { itemID } = req.body;
+  const { accessToken, institutionName } = req.user.links.get(itemID);
 
   // Pull accounts for the Item
   getAccounts(accessToken)
@@ -99,12 +107,11 @@ export const updateAccounts = (req, res) => {
 };
 
 // Pulls historical data for a institution to gather user transactions
-export const setTransactionsForUser = async (req, res) => {
-  const { startDate, endDate, institutionName } = req.body;
-  const { user } = req;
-  const { accessToken } = user.links.get(institutionName);
+export const syncTransactions = async (user, startDate, endDate, accessToken) => {
   try {
+    console.log('Getting transactions from:', startDate, 'till:', endDate);
     const transactions = await getTransactions(accessToken, startDate, endDate);
+    console.log('Got transactions. Adding into DB...');
     transactions.map(transaction => {
       const transactionObject = {
         name: transaction.name,
@@ -119,42 +126,49 @@ export const setTransactionsForUser = async (req, res) => {
       };
       // Check for duplicated transactions, if already exists, replace it.
       if (user.transactions.id(transaction.transaction_id)) {
-        console.log('Transaction already exists, replacing!');
+        console.log('Transaction already exists, replacing.');
         user.transactions.pull(transaction.transaction_id);
       }
       return user.transactions.push(transactionObject);
     });
-    const result = await user.save();
-    return res.status(200).json({ message: 'User Transactions Added Successfully.', user: result });
+    return await user.save();
   } catch (err) {
     console.log(err);
-    return res.status(400).json([{ message: err.message }]);
+    return Promise.reject(err);
+  }
+};
+
+// Sync transactions for an item and update associated users - sync by default from 1 month ago.
+export const updateItemTransactions = async (
+  startDate = moment(Date.now())
+    .subtract(1, 'month')
+    .format('YYYY-MM-DD'),
+  endDate = Date.now(),
+  itemID
+) => {
+  try {
+    endDate = moment(endDate).format('YYYY-MM-DD');
+    const itemLink = await ItemModel.findOne({ itemID });
+    // Usually just one id.
+    for (const id of itemLink.users) {
+      // Update this users transactions.
+      console.log('Item is associated with userID:', id);
+      const user = await UserModel.findById(id);
+      const { accessToken } = user.links.get(itemID);
+      await syncTransactions(user, startDate, endDate, accessToken);
+    }
+    return Promise.resolve();
+  } catch (err) {
+    console.log(err);
+    return Promise.reject(err);
   }
 };
 
 export const testAPI = async (req, res) => {
-  req.user.transactions = [];
-  const result = await req.user.save();
-  // const id = mongoose.Types.ObjectId().toString();
-  // console.log('ID:', id)
-  // let object = {
-  //   "category": [
-  //     "Food and Drink",
-  //     "Restaurants"
-  //   ],
-  //   "name": "TESTING TESTING TESTING 5",
-  //   "amount": 89.4,
-  //   "accountID": "zpwozvo6X5cVbg9z8EEJHQKlqrevnNuoGWpe8",
-  //   "date": "2019-11-13T00:00:00.000Z",
-  //   "_id": id,
-  //   "pending": false,
-  //   "currency": "CAD"
-  // }
-  // req.user.transactions.push(object)
-  // let result = await req.user.save()
-  // let id = req.params.id;
-  // console.log(req.user)
-  // const result = req.user.transactions.id(id)
-  // console.log(result)
-  return res.status(200).json({ message: 'This works.', result });
+  const startDate = moment()
+    .subtract(1, 'year')
+    .format('YYYY-MM-DD');
+  const endDate = Date.now();
+  await updateItemTransactions(startDate, endDate, req.body.itemID);
+  return res.status(200).json({ message: 'This works.' });
 };

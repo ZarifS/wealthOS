@@ -4,9 +4,10 @@ import bcrypt from 'bcrypt';
 // Holds the Plaid accessToken needed to access the itemId associated with the item
 const LinksSchema = new mongoose.Schema({
   accessToken: String,
-  itemId: String
+  institutionName: String
 });
 
+// Transaction data for both manual entries and Plaid aggregated ones
 const TransactionsSchema = new mongoose.Schema({
   _id: {
     type: String,
@@ -105,7 +106,8 @@ UserSchema.methods = {
 };
 
 // Define hooks for pre-saving, ensure password is never added to database unencrypted
-UserSchema.pre('save', next => {
+// eslint-disable-next-line func-names
+UserSchema.pre('save', function(next) {
   // Password is being updated
   if (this.isModified('password')) {
     console.log('Password was modified, encrypting.');

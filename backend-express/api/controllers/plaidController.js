@@ -31,10 +31,11 @@ export const addWebhook = (accessToken, webhookURL) =>
   client.updateItemWebhook(accessToken, webhookURL);
 
 // Manually fire a webhook update to a linked item
-export const fireTransactionWebhook = accessToken =>
-  client.sandboxItemFireWebhook(accessToken, 'DEFAULT_UPDATE', () => {
+export const fireTransactionWebhook = (accessToken, type) => {
+  client.sandboxItemFireWebhook(accessToken, type, () => {
     console.log('Fired Webhook!');
   });
+};
 
 // Exchange public token
 export const exchangeToken = publicToken => client.exchangePublicToken(publicToken);
