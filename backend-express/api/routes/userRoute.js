@@ -3,7 +3,7 @@ import { createPublicToken, getCategories } from '../controllers/plaidController
 import {
   linkPlaidToUser,
   updateAccounts,
-  setTransactionsForUser,
+  updateItemTransactions,
   testAPI
 } from '../controllers/userController';
 
@@ -29,8 +29,17 @@ router.post('/link', linkPlaidToUser);
 // Initialize or update accounts for a linked Item - {institutionName:"string"}
 router.post('/setAccounts', updateAccounts);
 
-// Set user transactions for a the last year - {startDate: "2019-08-01", endDate: "2019-09-01"}
-router.post('/setTransactions', setTransactionsForUser);
+// Sync user transactions - {startDate: (default 1month prior), endDate: (default now), itemID: string}
+router.post('/syncTransactions', async (req, res) => {
+  const { startDate, endDate, itemID } = req.body;
+  try {
+    await updateItemTransactions(startDate, endDate, itemID);
+    return res.status(200).json({ message: 'Transactions synced successfully.' });
+  } catch (err) {
+    console.log(err);
+    return res.status(400).json({ message: err.message });
+  }
+});
 
 // Get user transaction
 router.get('/testAPI/', testAPI);
