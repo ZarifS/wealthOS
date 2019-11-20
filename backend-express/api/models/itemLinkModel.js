@@ -4,7 +4,8 @@ import mongoose from 'mongoose';
 const ItemLinkSchema = new mongoose.Schema({
   itemID: {
     type: String,
-    index: true
+    index: true,
+    unique: true
   },
   users: {
     type: Array,

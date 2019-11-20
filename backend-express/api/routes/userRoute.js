@@ -33,7 +33,7 @@ router.post('/setAccounts', updateAccounts);
 router.post('/setTransactions', setTransactionsForUser);
 
 // Get user transaction
-router.get('/testAPI/:id', testAPI);
+router.get('/testAPI/', testAPI);
 
 // Get user transaction
 router.get('/categories/', getCategories);

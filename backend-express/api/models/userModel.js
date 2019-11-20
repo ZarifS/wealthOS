@@ -1,12 +1,13 @@
 import mongoose from 'mongoose';
 import bcrypt from 'bcrypt';
 
-// // Holds the Plaid accessToken needed to access the itemId associated with the item
-// const LinksSchema = new mongoose.Schema({
-//   accessToken: String,
-//   itemID: String
-// });
+// Holds the Plaid accessToken needed to access the itemId associated with the item
+const LinksSchema = new mongoose.Schema({
+  accessToken: String,
+  institutionName: String
+});
 
+// Transaction data for both manual entries and Plaid aggregated ones
 const TransactionsSchema = new mongoose.Schema({
   _id: {
     type: String,
@@ -78,7 +79,8 @@ const UserSchema = new mongoose.Schema({
     default: Date.now
   },
   links: {
-    type: Map
+    type: Map,
+    of: LinksSchema
   },
   accounts: {
     type: Map,
@@ -90,10 +92,7 @@ const UserSchema = new mongoose.Schema({
   holdings: {
     type: Number
   },
-  transactions: [TransactionsSchema],
-  lastSynced: {
-    type: Date
-  }
+  transactions: [TransactionsSchema]
 });
 
 // Define schema methods

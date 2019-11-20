@@ -72,7 +72,6 @@ export const linkPlaidToUser = (req, res) => {
     })
     // Save itemId with associated user into ItemLinksModel
     .then(doc => {
-      console.log(itemID);
       linkItemToUser(doc, itemID);
     })
     // Return API Response
@@ -141,53 +140,63 @@ export const setTransactionsForUser = async (req, res) => {
   }
 };
 
-export const testAPI = async (req, res) => {
-  req.user.transactions = [];
-  const result = await req.user.save();
-  // const id = mongoose.Types.ObjectId().toString();
-  // console.log('ID:', id)
-  // let object = {
-  //   "category": [
-  //     "Food and Drink",
-  //     "Restaurants"
-  //   ],
-  //   "name": "TESTING TESTING TESTING 5",
-  //   "amount": 89.4,
-  //   "accountID": "zpwozvo6X5cVbg9z8EEJHQKlqrevnNuoGWpe8",
-  //   "date": "2019-11-13T00:00:00.000Z",
-  //   "_id": id,
-  //   "pending": false,
-  //   "currency": "CAD"
-  // }
-  // req.user.transactions.push(object)
-  // let result = await req.user.save()
-  // let id = req.params.id;
-  // console.log(req.user)
-  // const result = req.user.transactions.id(id)
-  // console.log(result)
-  return res.status(200).json({ message: 'This works.', result });
-};
-
-export const syncTransactionsForUser = async user => {
-  const { lastSynced, transactions, links } = user;
-  console.log('Last synch time for this user is:', lastSynced);
-  if (lastSynced) {
-    // sync from this time
-    console.log('Hello');
+// Pulls historical data for a institution to gather user transactions
+export const syncTransactions = async (user, startDate, endDate = Date.now(), accessToken) => {
+  try {
+    endDate = moment(endDate).format('YYYY-MM-DD');
+    console.log('Getting transactions from:', startDate, 'till:', endDate);
+    const transactions = await getTransactions(accessToken, startDate, endDate);
+    console.log('Got transactions. Adding into DB...');
+    transactions.map(transaction => {
+      const transactionObject = {
+        name: transaction.name,
+        category: transaction.category,
+        amount: transaction.amount,
+        accountID: transaction.account_id,
+        date: transaction.date,
+        pending: transaction.pending,
+        pendingID: transactions.pending_transaction_id,
+        _id: transaction.transaction_id,
+        currency: transaction.iso_currency_code
+      };
+      // Check for duplicated transactions, if already exists, replace it.
+      if (user.transactions.id(transaction.transaction_id)) {
+        console.log('Transaction already exists, replacing.');
+        user.transactions.pull(transaction.transaction_id);
+      }
+      return user.transactions.push(transactionObject);
+    });
+    return await user.save();
+  } catch (err) {
+    console.log(err);
+    return Promise.reject(err);
   }
 };
 
-export const updateUserTransactions = async itemID => {
+// Sync transactions for an item and update associated users
+export const updateItemTransactions = async (startDate, endDate, itemID) => {
   try {
-    const itemLink = await ItemModel.find({ itemID });
+    const itemLink = await ItemModel.findOne({ itemID });
     // Usually just one id.
     for (const id of itemLink.users) {
       // Update this users transactions.
+      console.log('Item is associated with userID:', id);
       const user = await UserModel.findById(id);
-      await syncTransactionsForUser(user);
+      const { accessToken } = user.links.get(itemID);
+      await syncTransactions(user, startDate, endDate, accessToken);
     }
+    return Promise.resolve();
   } catch (err) {
     console.log(err);
-    throw err;
+    return Promise.reject(err);
   }
+};
+
+export const testAPI = async (req, res) => {
+  const startDate = moment()
+    .subtract(1, 'year')
+    .format('YYYY-MM-DD');
+  const endDate = Date.now();
+  await updateItemTransactions(startDate, endDate, req.body.itemID);
+  return res.status(200).json({ message: 'This works.' });
 };

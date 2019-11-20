@@ -21,7 +21,10 @@
     "no-underscore-dangle": ["warn", { "allow": ["__v"] }],
     "camelcase": [
       "warn",
-      { "allow": ["total_transactions", "account_id"], "ignoreDestructuring": true }
+      {
+        "allow": ["total_transactions", "account_id", "webhook_type", "webhook_code", "item_id"],
+        "ignoreDestructuring": true
+      }
     ]
   }
 }
