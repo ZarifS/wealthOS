@@ -7,19 +7,19 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		00E356F31AD99517003FC87E /* WealthOSTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* WealthOSTests.m */; };
+		00E356F31AD99517003FC87E /* wealthOSTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* wealthOSTests.m */; };
 		13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
 		13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB11A68108700A75B9A /* LaunchScreen.xib */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
+		1CB1415E3A4B9BDD7062D007 /* libPods-wealthOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 957F94E988176CA4D9E63E98 /* libPods-wealthOS.a */; };
 		2D02E4BC1E0B4A80006451C7 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
 		2D02E4BD1E0B4A84006451C7 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		2D02E4BF1E0B4AB3006451C7 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
-		2DCD954D1E0B4F2C00145EB5 /* WealthOSTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* WealthOSTests.m */; };
-		5CB96C3094289277FF2A8AA5 /* libPods-WealthOSTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AB842B76C092463E02C45AC8 /* libPods-WealthOSTests.a */; };
-		78FCCA5300B1B1C4937233C7 /* libPods-WealthOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7B0BF8AF87E7A1086CF2887C /* libPods-WealthOS.a */; };
-		7B1AA26A2D567CBFCAF212C7 /* libPods-WealthOS-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A736894FD1BDD2033CBE1452 /* libPods-WealthOS-tvOS.a */; };
-		9433A23FFB2471E98ABF0F2F /* libPods-WealthOS-tvOSTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0D39E9E589DAB0CE4C225A63 /* libPods-WealthOS-tvOSTests.a */; };
+		2DCD954D1E0B4F2C00145EB5 /* wealthOSTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* wealthOSTests.m */; };
+		8C154B5609DD073041ECEA31 /* libPods-wealthOS-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5D8C8F22564CEE7AD866B02F /* libPods-wealthOS-tvOS.a */; };
+		ABD2788B50FFD3BBC6AE8EFB /* libPods-wealthOS-tvOSTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C97C651C2A41D70B341B7341 /* libPods-wealthOS-tvOSTests.a */; };
+		D75BEF8B9896FDE81D736D62 /* libPods-wealthOSTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 651DACC56BD03117D8AE2571 /* libPods-wealthOSTests.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -28,45 +28,45 @@
 			containerPortal = 83CBB9F71A601CBA00E9B192 /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = 13B07F861A680F5B00A75B9A;
-			remoteInfo = WealthOS;
+			remoteInfo = wealthOS;
 		};
 		2D02E4911E0B4A5D006451C7 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 83CBB9F71A601CBA00E9B192 /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = 2D02E47A1E0B4A5D006451C7;
-			remoteInfo = "WealthOS-tvOS";
+			remoteInfo = "wealthOS-tvOS";
 		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		008F07F21AC5B25A0029DE68 /* main.jsbundle */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = main.jsbundle; sourceTree = "<group>"; };
-		00E356EE1AD99517003FC87E /* WealthOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = WealthOSTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		00E356EE1AD99517003FC87E /* wealthOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = wealthOSTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		00E356F11AD99517003FC87E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		00E356F21AD99517003FC87E /* WealthOSTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WealthOSTests.m; sourceTree = "<group>"; };
-		0D39E9E589DAB0CE4C225A63 /* libPods-WealthOS-tvOSTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-WealthOS-tvOSTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		13B07F961A680F5B00A75B9A /* WealthOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WealthOS.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = WealthOS/AppDelegate.h; sourceTree = "<group>"; };
-		13B07FB01A68108700A75B9A /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AppDelegate.m; path = WealthOS/AppDelegate.m; sourceTree = "<group>"; };
+		00E356F21AD99517003FC87E /* wealthOSTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = wealthOSTests.m; sourceTree = "<group>"; };
+		0F671A285396FA42829644C4 /* Pods-wealthOS-tvOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-wealthOS-tvOS.release.xcconfig"; path = "Target Support Files/Pods-wealthOS-tvOS/Pods-wealthOS-tvOS.release.xcconfig"; sourceTree = "<group>"; };
+		13B07F961A680F5B00A75B9A /* wealthOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = wealthOS.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = wealthOS/AppDelegate.h; sourceTree = "<group>"; };
+		13B07FB01A68108700A75B9A /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AppDelegate.m; path = wealthOS/AppDelegate.m; sourceTree = "<group>"; };
 		13B07FB21A68108700A75B9A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
-		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = WealthOS/Images.xcassets; sourceTree = "<group>"; };
-		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = WealthOS/Info.plist; sourceTree = "<group>"; };
-		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = WealthOS/main.m; sourceTree = "<group>"; };
-		2D02E47B1E0B4A5D006451C7 /* WealthOS-tvOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "WealthOS-tvOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
-		2D02E4901E0B4A5D006451C7 /* WealthOS-tvOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "WealthOS-tvOSTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
-		7932F674AE3ED04D1884F393 /* Pods-WealthOS-tvOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WealthOS-tvOS.debug.xcconfig"; path = "Target Support Files/Pods-WealthOS-tvOS/Pods-WealthOS-tvOS.debug.xcconfig"; sourceTree = "<group>"; };
-		7B0BF8AF87E7A1086CF2887C /* libPods-WealthOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-WealthOS.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		A4860D61A3CD75F53174D69E /* Pods-WealthOS-tvOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WealthOS-tvOS.release.xcconfig"; path = "Target Support Files/Pods-WealthOS-tvOS/Pods-WealthOS-tvOS.release.xcconfig"; sourceTree = "<group>"; };
-		A736894FD1BDD2033CBE1452 /* libPods-WealthOS-tvOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-WealthOS-tvOS.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		AB842B76C092463E02C45AC8 /* libPods-WealthOSTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-WealthOSTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		AEE0EF22DA399574C1E44966 /* Pods-WealthOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WealthOS.release.xcconfig"; path = "Target Support Files/Pods-WealthOS/Pods-WealthOS.release.xcconfig"; sourceTree = "<group>"; };
-		C420F116FDD25021B8290180 /* Pods-WealthOS-tvOSTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WealthOS-tvOSTests.debug.xcconfig"; path = "Target Support Files/Pods-WealthOS-tvOSTests/Pods-WealthOS-tvOSTests.debug.xcconfig"; sourceTree = "<group>"; };
-		C4E65F5E06042B953B111F20 /* Pods-WealthOS-tvOSTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WealthOS-tvOSTests.release.xcconfig"; path = "Target Support Files/Pods-WealthOS-tvOSTests/Pods-WealthOS-tvOSTests.release.xcconfig"; sourceTree = "<group>"; };
-		E56C534A3C7B060C6DC9F97D /* Pods-WealthOSTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WealthOSTests.debug.xcconfig"; path = "Target Support Files/Pods-WealthOSTests/Pods-WealthOSTests.debug.xcconfig"; sourceTree = "<group>"; };
+		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = wealthOS/Images.xcassets; sourceTree = "<group>"; };
+		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = wealthOS/Info.plist; sourceTree = "<group>"; };
+		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = wealthOS/main.m; sourceTree = "<group>"; };
+		18E409412780723460DD84B4 /* Pods-wealthOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-wealthOS.release.xcconfig"; path = "Target Support Files/Pods-wealthOS/Pods-wealthOS.release.xcconfig"; sourceTree = "<group>"; };
+		2B1DB426B58D482D61BEBE9D /* Pods-wealthOS-tvOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-wealthOS-tvOS.debug.xcconfig"; path = "Target Support Files/Pods-wealthOS-tvOS/Pods-wealthOS-tvOS.debug.xcconfig"; sourceTree = "<group>"; };
+		2D02E47B1E0B4A5D006451C7 /* wealthOS-tvOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "wealthOS-tvOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		2D02E4901E0B4A5D006451C7 /* wealthOS-tvOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "wealthOS-tvOSTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		5D8C8F22564CEE7AD866B02F /* libPods-wealthOS-tvOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-wealthOS-tvOS.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		651DACC56BD03117D8AE2571 /* libPods-wealthOSTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-wealthOSTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		653F7D18B49E687CD2CB1BB9 /* Pods-wealthOSTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-wealthOSTests.release.xcconfig"; path = "Target Support Files/Pods-wealthOSTests/Pods-wealthOSTests.release.xcconfig"; sourceTree = "<group>"; };
+		79D118E77F77A1247D29A55B /* Pods-wealthOS-tvOSTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-wealthOS-tvOSTests.debug.xcconfig"; path = "Target Support Files/Pods-wealthOS-tvOSTests/Pods-wealthOS-tvOSTests.debug.xcconfig"; sourceTree = "<group>"; };
+		957F94E988176CA4D9E63E98 /* libPods-wealthOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-wealthOS.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		A682F039ED82ACBE542ED7BC /* Pods-wealthOS-tvOSTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-wealthOS-tvOSTests.release.xcconfig"; path = "Target Support Files/Pods-wealthOS-tvOSTests/Pods-wealthOS-tvOSTests.release.xcconfig"; sourceTree = "<group>"; };
+		A6E507B667B7020950455BC1 /* Pods-wealthOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-wealthOS.debug.xcconfig"; path = "Target Support Files/Pods-wealthOS/Pods-wealthOS.debug.xcconfig"; sourceTree = "<group>"; };
+		C97C651C2A41D70B341B7341 /* libPods-wealthOS-tvOSTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-wealthOS-tvOSTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		ED2971642150620600B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = Platforms/AppleTVOS.platform/Developer/SDKs/AppleTVOS12.0.sdk/System/Library/Frameworks/JavaScriptCore.framework; sourceTree = DEVELOPER_DIR; };
-		F97A8AB4F03875EF0687E2E7 /* Pods-WealthOSTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WealthOSTests.release.xcconfig"; path = "Target Support Files/Pods-WealthOSTests/Pods-WealthOSTests.release.xcconfig"; sourceTree = "<group>"; };
-		FB8D09BDF13CB74467A3A7BF /* Pods-WealthOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WealthOS.debug.xcconfig"; path = "Target Support Files/Pods-WealthOS/Pods-WealthOS.debug.xcconfig"; sourceTree = "<group>"; };
+		F4EC7796C223FC39F2BBCFF8 /* Pods-wealthOSTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-wealthOSTests.debug.xcconfig"; path = "Target Support Files/Pods-wealthOSTests/Pods-wealthOSTests.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -74,7 +74,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				5CB96C3094289277FF2A8AA5 /* libPods-WealthOSTests.a in Frameworks */,
+				D75BEF8B9896FDE81D736D62 /* libPods-wealthOSTests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -82,7 +82,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				78FCCA5300B1B1C4937233C7 /* libPods-WealthOS.a in Frameworks */,
+				1CB1415E3A4B9BDD7062D007 /* libPods-wealthOS.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -90,7 +90,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				7B1AA26A2D567CBFCAF212C7 /* libPods-WealthOS-tvOS.a in Frameworks */,
+				8C154B5609DD073041ECEA31 /* libPods-wealthOS-tvOS.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -98,20 +98,20 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9433A23FFB2471E98ABF0F2F /* libPods-WealthOS-tvOSTests.a in Frameworks */,
+				ABD2788B50FFD3BBC6AE8EFB /* libPods-wealthOS-tvOSTests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		00E356EF1AD99517003FC87E /* WealthOSTests */ = {
+		00E356EF1AD99517003FC87E /* wealthOSTests */ = {
 			isa = PBXGroup;
 			children = (
-				00E356F21AD99517003FC87E /* WealthOSTests.m */,
+				00E356F21AD99517003FC87E /* wealthOSTests.m */,
 				00E356F01AD99517003FC87E /* Supporting Files */,
 			);
-			path = WealthOSTests;
+			path = wealthOSTests;
 			sourceTree = "<group>";
 		};
 		00E356F01AD99517003FC87E /* Supporting Files */ = {
@@ -122,7 +122,7 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
-		13B07FAE1A68108700A75B9A /* WealthOS */ = {
+		13B07FAE1A68108700A75B9A /* wealthOS */ = {
 			isa = PBXGroup;
 			children = (
 				008F07F21AC5B25A0029DE68 /* main.jsbundle */,
@@ -133,7 +133,7 @@
 				13B07FB11A68108700A75B9A /* LaunchScreen.xib */,
 				13B07FB71A68108700A75B9A /* main.m */,
 			);
-			name = WealthOS;
+			name = wealthOS;
 			sourceTree = "<group>";
 		};
 		2D16E6871FA4F8E400B85C8A /* Frameworks */ = {
@@ -141,28 +141,12 @@
 			children = (
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
 				ED2971642150620600B7C4FE /* JavaScriptCore.framework */,
-				7B0BF8AF87E7A1086CF2887C /* libPods-WealthOS.a */,
-				A736894FD1BDD2033CBE1452 /* libPods-WealthOS-tvOS.a */,
-				0D39E9E589DAB0CE4C225A63 /* libPods-WealthOS-tvOSTests.a */,
-				AB842B76C092463E02C45AC8 /* libPods-WealthOSTests.a */,
+				957F94E988176CA4D9E63E98 /* libPods-wealthOS.a */,
+				5D8C8F22564CEE7AD866B02F /* libPods-wealthOS-tvOS.a */,
+				C97C651C2A41D70B341B7341 /* libPods-wealthOS-tvOSTests.a */,
+				651DACC56BD03117D8AE2571 /* libPods-wealthOSTests.a */,
 			);
 			name = Frameworks;
-			sourceTree = "<group>";
-		};
-		3DFA3110E1D2CAE4DD1F9280 /* Pods */ = {
-			isa = PBXGroup;
-			children = (
-				FB8D09BDF13CB74467A3A7BF /* Pods-WealthOS.debug.xcconfig */,
-				AEE0EF22DA399574C1E44966 /* Pods-WealthOS.release.xcconfig */,
-				7932F674AE3ED04D1884F393 /* Pods-WealthOS-tvOS.debug.xcconfig */,
-				A4860D61A3CD75F53174D69E /* Pods-WealthOS-tvOS.release.xcconfig */,
-				C420F116FDD25021B8290180 /* Pods-WealthOS-tvOSTests.debug.xcconfig */,
-				C4E65F5E06042B953B111F20 /* Pods-WealthOS-tvOSTests.release.xcconfig */,
-				E56C534A3C7B060C6DC9F97D /* Pods-WealthOSTests.debug.xcconfig */,
-				F97A8AB4F03875EF0687E2E7 /* Pods-WealthOSTests.release.xcconfig */,
-			);
-			name = Pods;
-			path = Pods;
 			sourceTree = "<group>";
 		};
 		832341AE1AAA6A7D00B99B32 /* Libraries */ = {
@@ -175,12 +159,12 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
-				13B07FAE1A68108700A75B9A /* WealthOS */,
+				13B07FAE1A68108700A75B9A /* wealthOS */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
-				00E356EF1AD99517003FC87E /* WealthOSTests */,
+				00E356EF1AD99517003FC87E /* wealthOSTests */,
 				83CBBA001A601CBA00E9B192 /* Products */,
 				2D16E6871FA4F8E400B85C8A /* Frameworks */,
-				3DFA3110E1D2CAE4DD1F9280 /* Pods */,
+				C8ECCA5D265456650363040B /* Pods */,
 			);
 			indentWidth = 2;
 			sourceTree = "<group>";
@@ -190,22 +174,38 @@
 		83CBBA001A601CBA00E9B192 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				13B07F961A680F5B00A75B9A /* WealthOS.app */,
-				00E356EE1AD99517003FC87E /* WealthOSTests.xctest */,
-				2D02E47B1E0B4A5D006451C7 /* WealthOS-tvOS.app */,
-				2D02E4901E0B4A5D006451C7 /* WealthOS-tvOSTests.xctest */,
+				13B07F961A680F5B00A75B9A /* wealthOS.app */,
+				00E356EE1AD99517003FC87E /* wealthOSTests.xctest */,
+				2D02E47B1E0B4A5D006451C7 /* wealthOS-tvOS.app */,
+				2D02E4901E0B4A5D006451C7 /* wealthOS-tvOSTests.xctest */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		C8ECCA5D265456650363040B /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				A6E507B667B7020950455BC1 /* Pods-wealthOS.debug.xcconfig */,
+				18E409412780723460DD84B4 /* Pods-wealthOS.release.xcconfig */,
+				2B1DB426B58D482D61BEBE9D /* Pods-wealthOS-tvOS.debug.xcconfig */,
+				0F671A285396FA42829644C4 /* Pods-wealthOS-tvOS.release.xcconfig */,
+				79D118E77F77A1247D29A55B /* Pods-wealthOS-tvOSTests.debug.xcconfig */,
+				A682F039ED82ACBE542ED7BC /* Pods-wealthOS-tvOSTests.release.xcconfig */,
+				F4EC7796C223FC39F2BBCFF8 /* Pods-wealthOSTests.debug.xcconfig */,
+				653F7D18B49E687CD2CB1BB9 /* Pods-wealthOSTests.release.xcconfig */,
+			);
+			name = Pods;
+			path = Pods;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		00E356ED1AD99517003FC87E /* WealthOSTests */ = {
+		00E356ED1AD99517003FC87E /* wealthOSTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 00E357021AD99517003FC87E /* Build configuration list for PBXNativeTarget "WealthOSTests" */;
+			buildConfigurationList = 00E357021AD99517003FC87E /* Build configuration list for PBXNativeTarget "wealthOSTests" */;
 			buildPhases = (
-				6DE96FB4C35B20BA894FBF01 /* [CP] Check Pods Manifest.lock */,
+				814C8309F35BE7C52570994D /* [CP] Check Pods Manifest.lock */,
 				00E356EA1AD99517003FC87E /* Sources */,
 				00E356EB1AD99517003FC87E /* Frameworks */,
 				00E356EC1AD99517003FC87E /* Resources */,
@@ -215,16 +215,16 @@
 			dependencies = (
 				00E356F51AD99517003FC87E /* PBXTargetDependency */,
 			);
-			name = WealthOSTests;
-			productName = WealthOSTests;
-			productReference = 00E356EE1AD99517003FC87E /* WealthOSTests.xctest */;
+			name = wealthOSTests;
+			productName = wealthOSTests;
+			productReference = 00E356EE1AD99517003FC87E /* wealthOSTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
-		13B07F861A680F5B00A75B9A /* WealthOS */ = {
+		13B07F861A680F5B00A75B9A /* wealthOS */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "WealthOS" */;
+			buildConfigurationList = 13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "wealthOS" */;
 			buildPhases = (
-				4316E19F106CC35CD2250B71 /* [CP] Check Pods Manifest.lock */,
+				E8D6AF050A97E6977711072E /* [CP] Check Pods Manifest.lock */,
 				FD10A7F022414F080027D42C /* Start Packager */,
 				13B07F871A680F5B00A75B9A /* Sources */,
 				13B07F8C1A680F5B00A75B9A /* Frameworks */,
@@ -235,16 +235,16 @@
 			);
 			dependencies = (
 			);
-			name = WealthOS;
-			productName = WealthOS;
-			productReference = 13B07F961A680F5B00A75B9A /* WealthOS.app */;
+			name = wealthOS;
+			productName = wealthOS;
+			productReference = 13B07F961A680F5B00A75B9A /* wealthOS.app */;
 			productType = "com.apple.product-type.application";
 		};
-		2D02E47A1E0B4A5D006451C7 /* WealthOS-tvOS */ = {
+		2D02E47A1E0B4A5D006451C7 /* wealthOS-tvOS */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 2D02E4BA1E0B4A5E006451C7 /* Build configuration list for PBXNativeTarget "WealthOS-tvOS" */;
+			buildConfigurationList = 2D02E4BA1E0B4A5E006451C7 /* Build configuration list for PBXNativeTarget "wealthOS-tvOS" */;
 			buildPhases = (
-				3073BED0FBF86648ACF392B9 /* [CP] Check Pods Manifest.lock */,
+				6739BEFDD24B361AFE430F51 /* [CP] Check Pods Manifest.lock */,
 				FD10A7F122414F3F0027D42C /* Start Packager */,
 				2D02E4771E0B4A5D006451C7 /* Sources */,
 				2D02E4781E0B4A5D006451C7 /* Frameworks */,
@@ -255,16 +255,16 @@
 			);
 			dependencies = (
 			);
-			name = "WealthOS-tvOS";
-			productName = "WealthOS-tvOS";
-			productReference = 2D02E47B1E0B4A5D006451C7 /* WealthOS-tvOS.app */;
+			name = "wealthOS-tvOS";
+			productName = "wealthOS-tvOS";
+			productReference = 2D02E47B1E0B4A5D006451C7 /* wealthOS-tvOS.app */;
 			productType = "com.apple.product-type.application";
 		};
-		2D02E48F1E0B4A5D006451C7 /* WealthOS-tvOSTests */ = {
+		2D02E48F1E0B4A5D006451C7 /* wealthOS-tvOSTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 2D02E4BB1E0B4A5E006451C7 /* Build configuration list for PBXNativeTarget "WealthOS-tvOSTests" */;
+			buildConfigurationList = 2D02E4BB1E0B4A5E006451C7 /* Build configuration list for PBXNativeTarget "wealthOS-tvOSTests" */;
 			buildPhases = (
-				305C570E0CFB6DE75FACE366 /* [CP] Check Pods Manifest.lock */,
+				5AC4F44AAEE605AEE169321E /* [CP] Check Pods Manifest.lock */,
 				2D02E48C1E0B4A5D006451C7 /* Sources */,
 				2D02E48D1E0B4A5D006451C7 /* Frameworks */,
 				2D02E48E1E0B4A5D006451C7 /* Resources */,
@@ -274,9 +274,9 @@
 			dependencies = (
 				2D02E4921E0B4A5D006451C7 /* PBXTargetDependency */,
 			);
-			name = "WealthOS-tvOSTests";
-			productName = "WealthOS-tvOSTests";
-			productReference = 2D02E4901E0B4A5D006451C7 /* WealthOS-tvOSTests.xctest */;
+			name = "wealthOS-tvOSTests";
+			productName = "wealthOS-tvOSTests";
+			productReference = 2D02E4901E0B4A5D006451C7 /* wealthOS-tvOSTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 /* End PBXNativeTarget section */
@@ -303,7 +303,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "WealthOS" */;
+			buildConfigurationList = 83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "wealthOS" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -316,10 +316,10 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				13B07F861A680F5B00A75B9A /* WealthOS */,
-				00E356ED1AD99517003FC87E /* WealthOSTests */,
-				2D02E47A1E0B4A5D006451C7 /* WealthOS-tvOS */,
-				2D02E48F1E0B4A5D006451C7 /* WealthOS-tvOSTests */,
+				13B07F861A680F5B00A75B9A /* wealthOS */,
+				00E356ED1AD99517003FC87E /* wealthOSTests */,
+				2D02E47A1E0B4A5D006451C7 /* wealthOS-tvOS */,
+				2D02E48F1E0B4A5D006451C7 /* wealthOS-tvOSTests */,
 			);
 		};
 /* End PBXProject section */
@@ -387,7 +387,7 @@
 			shellPath = /bin/sh;
 			shellScript = "export NODE_BINARY=node\n../node_modules/react-native/scripts/react-native-xcode.sh";
 		};
-		305C570E0CFB6DE75FACE366 /* [CP] Check Pods Manifest.lock */ = {
+		5AC4F44AAEE605AEE169321E /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -402,14 +402,14 @@
 			outputFileListPaths = (
 			);
 			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-WealthOS-tvOSTests-checkManifestLockResult.txt",
+				"$(DERIVED_FILE_DIR)/Pods-wealthOS-tvOSTests-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		3073BED0FBF86648ACF392B9 /* [CP] Check Pods Manifest.lock */ = {
+		6739BEFDD24B361AFE430F51 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -424,14 +424,14 @@
 			outputFileListPaths = (
 			);
 			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-WealthOS-tvOS-checkManifestLockResult.txt",
+				"$(DERIVED_FILE_DIR)/Pods-wealthOS-tvOS-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		4316E19F106CC35CD2250B71 /* [CP] Check Pods Manifest.lock */ = {
+		814C8309F35BE7C52570994D /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -446,14 +446,14 @@
 			outputFileListPaths = (
 			);
 			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-WealthOS-checkManifestLockResult.txt",
+				"$(DERIVED_FILE_DIR)/Pods-wealthOSTests-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		6DE96FB4C35B20BA894FBF01 /* [CP] Check Pods Manifest.lock */ = {
+		E8D6AF050A97E6977711072E /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -468,7 +468,7 @@
 			outputFileListPaths = (
 			);
 			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-WealthOSTests-checkManifestLockResult.txt",
+				"$(DERIVED_FILE_DIR)/Pods-wealthOS-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -520,7 +520,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				00E356F31AD99517003FC87E /* WealthOSTests.m in Sources */,
+				00E356F31AD99517003FC87E /* wealthOSTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -546,7 +546,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2DCD954D1E0B4F2C00145EB5 /* WealthOSTests.m in Sources */,
+				2DCD954D1E0B4F2C00145EB5 /* wealthOSTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -555,12 +555,12 @@
 /* Begin PBXTargetDependency section */
 		00E356F51AD99517003FC87E /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 13B07F861A680F5B00A75B9A /* WealthOS */;
+			target = 13B07F861A680F5B00A75B9A /* wealthOS */;
 			targetProxy = 00E356F41AD99517003FC87E /* PBXContainerItemProxy */;
 		};
 		2D02E4921E0B4A5D006451C7 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 2D02E47A1E0B4A5D006451C7 /* WealthOS-tvOS */;
+			target = 2D02E47A1E0B4A5D006451C7 /* wealthOS-tvOS */;
 			targetProxy = 2D02E4911E0B4A5D006451C7 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -572,7 +572,7 @@
 				13B07FB21A68108700A75B9A /* Base */,
 			);
 			name = LaunchScreen.xib;
-			path = WealthOS;
+			path = wealthOS;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
@@ -580,14 +580,14 @@
 /* Begin XCBuildConfiguration section */
 		00E356F61AD99517003FC87E /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = E56C534A3C7B060C6DC9F97D /* Pods-WealthOSTests.debug.xcconfig */;
+			baseConfigurationReference = F4EC7796C223FC39F2BBCFF8 /* Pods-wealthOSTests.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
 				);
-				INFOPLIST_FILE = WealthOSTests/Info.plist;
+				INFOPLIST_FILE = wealthOSTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				OTHER_LDFLAGS = (
@@ -597,17 +597,17 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/WealthOS.app/WealthOS";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/wealthOS.app/wealthOS";
 			};
 			name = Debug;
 		};
 		00E356F71AD99517003FC87E /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = F97A8AB4F03875EF0687E2E7 /* Pods-WealthOSTests.release.xcconfig */;
+			baseConfigurationReference = 653F7D18B49E687CD2CB1BB9 /* Pods-wealthOSTests.release.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				COPY_PHASE_STRIP = NO;
-				INFOPLIST_FILE = WealthOSTests/Info.plist;
+				INFOPLIST_FILE = wealthOSTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				OTHER_LDFLAGS = (
@@ -617,18 +617,18 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/WealthOS.app/WealthOS";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/wealthOS.app/wealthOS";
 			};
 			name = Release;
 		};
 		13B07F941A680F5B00A75B9A /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = FB8D09BDF13CB74467A3A7BF /* Pods-WealthOS.debug.xcconfig */;
+			baseConfigurationReference = A6E507B667B7020950455BC1 /* Pods-wealthOS.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = NO;
-				INFOPLIST_FILE = WealthOS/Info.plist;
+				INFOPLIST_FILE = wealthOS/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = (
 					"$(inherited)",
@@ -636,18 +636,18 @@
 					"-lc++",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
-				PRODUCT_NAME = WealthOS;
+				PRODUCT_NAME = wealthOS;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Debug;
 		};
 		13B07F951A680F5B00A75B9A /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = AEE0EF22DA399574C1E44966 /* Pods-WealthOS.release.xcconfig */;
+			baseConfigurationReference = 18E409412780723460DD84B4 /* Pods-wealthOS.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CURRENT_PROJECT_VERSION = 1;
-				INFOPLIST_FILE = WealthOS/Info.plist;
+				INFOPLIST_FILE = wealthOS/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = (
 					"$(inherited)",
@@ -655,14 +655,14 @@
 					"-lc++",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
-				PRODUCT_NAME = WealthOS;
+				PRODUCT_NAME = wealthOS;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Release;
 		};
 		2D02E4971E0B4A5E006451C7 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 7932F674AE3ED04D1884F393 /* Pods-WealthOS-tvOS.debug.xcconfig */;
+			baseConfigurationReference = 2B1DB426B58D482D61BEBE9D /* Pods-wealthOS-tvOS.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = "App Icon & Top Shelf Image";
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
@@ -673,14 +673,14 @@
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_TESTABILITY = YES;
 				GCC_NO_COMMON_BLOCKS = YES;
-				INFOPLIST_FILE = "WealthOS-tvOS/Info.plist";
+				INFOPLIST_FILE = "wealthOS-tvOS/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "com.facebook.REACT.WealthOS-tvOS";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.facebook.REACT.wealthOS-tvOS";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = appletvos;
 				TARGETED_DEVICE_FAMILY = 3;
@@ -690,7 +690,7 @@
 		};
 		2D02E4981E0B4A5E006451C7 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = A4860D61A3CD75F53174D69E /* Pods-WealthOS-tvOS.release.xcconfig */;
+			baseConfigurationReference = 0F671A285396FA42829644C4 /* Pods-wealthOS-tvOS.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = "App Icon & Top Shelf Image";
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
@@ -701,14 +701,14 @@
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				GCC_NO_COMMON_BLOCKS = YES;
-				INFOPLIST_FILE = "WealthOS-tvOS/Info.plist";
+				INFOPLIST_FILE = "wealthOS-tvOS/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "com.facebook.REACT.WealthOS-tvOS";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.facebook.REACT.wealthOS-tvOS";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = appletvos;
 				TARGETED_DEVICE_FAMILY = 3;
@@ -718,7 +718,7 @@
 		};
 		2D02E4991E0B4A5E006451C7 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = C420F116FDD25021B8290180 /* Pods-WealthOS-tvOSTests.debug.xcconfig */;
+			baseConfigurationReference = 79D118E77F77A1247D29A55B /* Pods-wealthOS-tvOSTests.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CLANG_ANALYZER_NONNULL = YES;
@@ -728,24 +728,24 @@
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_TESTABILITY = YES;
 				GCC_NO_COMMON_BLOCKS = YES;
-				INFOPLIST_FILE = "WealthOS-tvOSTests/Info.plist";
+				INFOPLIST_FILE = "wealthOS-tvOSTests/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "com.facebook.REACT.WealthOS-tvOSTests";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.facebook.REACT.wealthOS-tvOSTests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = appletvos;
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/WealthOS-tvOS.app/WealthOS-tvOS";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/wealthOS-tvOS.app/wealthOS-tvOS";
 				TVOS_DEPLOYMENT_TARGET = 10.1;
 			};
 			name = Debug;
 		};
 		2D02E49A1E0B4A5E006451C7 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = C4E65F5E06042B953B111F20 /* Pods-WealthOS-tvOSTests.release.xcconfig */;
+			baseConfigurationReference = A682F039ED82ACBE542ED7BC /* Pods-wealthOS-tvOSTests.release.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CLANG_ANALYZER_NONNULL = YES;
@@ -755,17 +755,17 @@
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				GCC_NO_COMMON_BLOCKS = YES;
-				INFOPLIST_FILE = "WealthOS-tvOSTests/Info.plist";
+				INFOPLIST_FILE = "wealthOS-tvOSTests/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "com.facebook.REACT.WealthOS-tvOSTests";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.facebook.REACT.wealthOS-tvOSTests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = appletvos;
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/WealthOS-tvOS.app/WealthOS-tvOS";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/wealthOS-tvOS.app/wealthOS-tvOS";
 				TVOS_DEPLOYMENT_TARGET = 10.1;
 			};
 			name = Release;
@@ -872,7 +872,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		00E357021AD99517003FC87E /* Build configuration list for PBXNativeTarget "WealthOSTests" */ = {
+		00E357021AD99517003FC87E /* Build configuration list for PBXNativeTarget "wealthOSTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				00E356F61AD99517003FC87E /* Debug */,
@@ -881,7 +881,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "WealthOS" */ = {
+		13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "wealthOS" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				13B07F941A680F5B00A75B9A /* Debug */,
@@ -890,7 +890,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		2D02E4BA1E0B4A5E006451C7 /* Build configuration list for PBXNativeTarget "WealthOS-tvOS" */ = {
+		2D02E4BA1E0B4A5E006451C7 /* Build configuration list for PBXNativeTarget "wealthOS-tvOS" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				2D02E4971E0B4A5E006451C7 /* Debug */,
@@ -899,7 +899,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		2D02E4BB1E0B4A5E006451C7 /* Build configuration list for PBXNativeTarget "WealthOS-tvOSTests" */ = {
+		2D02E4BB1E0B4A5E006451C7 /* Build configuration list for PBXNativeTarget "wealthOS-tvOSTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				2D02E4991E0B4A5E006451C7 /* Debug */,
@@ -908,7 +908,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "WealthOS" */ = {
+		83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "wealthOS" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				83CBBA201A601CBA00E9B192 /* Debug */,
