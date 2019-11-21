@@ -31,7 +31,7 @@
     "jsonwebtoken": "^8.5.1",
     "localtunnel": "^2.0.0",
     "moment": "^2.24.0",
-    "mongoose": "^5.6.6",
+    "mongoose": "^5.7.12",
     "morgan": "^1.9.1",
     "ngrok": "^3.2.5",
     "plaid": "^4.2.0"
