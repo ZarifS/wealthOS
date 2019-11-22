@@ -1,12 +1,5 @@
-import React from 'react';
-import {
-  SafeAreaView,
-  StyleSheet,
-  ScrollView,
-  View,
-  Text,
-  StatusBar,
-} from 'react-native';
+import React from 'react'
+import { SafeAreaView, StyleSheet, ScrollView, View, Text, StatusBar } from 'react-native'
 
 import {
   Header,
@@ -14,16 +7,14 @@ import {
   Colors,
   DebugInstructions,
   ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
+} from 'react-native/Libraries/NewAppScreen'
 
 const App = () => {
   return (
     <>
       <StatusBar barStyle="dark-content" />
       <SafeAreaView>
-        <ScrollView
-          contentInsetAdjustmentBehavior="automatic"
-          style={styles.scrollView}>
+        <ScrollView contentInsetAdjustmentBehavior="automatic" style={styles.scrollView}>
           <Header />
           {global.HermesInternal == null ? null : (
             <View style={styles.engine}>
@@ -34,8 +25,8 @@ const App = () => {
             <View style={styles.sectionContainer}>
               <Text style={styles.sectionTitle}>Step One Test.</Text>
               <Text style={styles.sectionDescription}>
-                Edit <Text style={styles.highlight}>App.js</Text> to change this
-                screen and then come back to see your edits.
+                Edit <Text style={styles.highlight}>App.js</Text> to change this screen and then
+                come back to see your edits.
               </Text>
             </View>
             <View style={styles.sectionContainer}>
@@ -61,37 +52,16 @@ const App = () => {
         </ScrollView>
       </SafeAreaView>
     </>
-  );
-};
+  )
+}
 
 const styles = StyleSheet.create({
-  scrollView: {
-    backgroundColor: Colors.lighter,
+  body: {
+    backgroundColor: Colors.white,
   },
   engine: {
     position: 'absolute',
     right: 0,
-  },
-  body: {
-    backgroundColor: Colors.white,
-  },
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
-  },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
-    color: Colors.black,
-  },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
-    color: Colors.dark,
-  },
-  highlight: {
-    fontWeight: '700',
   },
   footer: {
     color: Colors.dark,
@@ -101,6 +71,27 @@ const styles = StyleSheet.create({
     paddingRight: 12,
     textAlign: 'right',
   },
-});
+  highlight: {
+    fontWeight: '700',
+  },
+  scrollView: {
+    backgroundColor: Colors.lighter,
+  },
+  sectionContainer: {
+    marginTop: 32,
+    paddingHorizontal: 24,
+  },
+  sectionDescription: {
+    color: Colors.dark,
+    fontSize: 18,
+    fontWeight: '400',
+    marginTop: 8,
+  },
+  sectionTitle: {
+    color: Colors.black,
+    fontSize: 24,
+    fontWeight: '600',
+  },
+})
 
-export default App;
+export default App
