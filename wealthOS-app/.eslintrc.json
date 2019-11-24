@@ -28,6 +28,8 @@
       }
     },
     "rules": {
-      "react-native/no-raw-text": 0 // Avoid false positive, wait for fix
+      "react-native/no-raw-text": ["off"], // Avoid false positive, wait for fix
+      "react-native/no-color-literals": ["off"],
+      "react-native/sort-styles": ["warn"]
     }
 }
