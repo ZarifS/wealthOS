@@ -1,12 +1,12 @@
-import React from 'react'
-import { SafeAreaView, StyleSheet, ScrollView, View, Text, StatusBar } from 'react-native'
+import React from 'react';
+import { SafeAreaView, StyleSheet, ScrollView, View, Text, StatusBar } from 'react-native';
 import {
   Header,
   LearnMoreLinks,
   Colors,
   DebugInstructions,
   ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen'
+} from 'react-native/Libraries/NewAppScreen';
 
 export default class ExampleScreen extends React.Component {
   render() {
@@ -52,7 +52,7 @@ export default class ExampleScreen extends React.Component {
           </ScrollView>
         </SafeAreaView>
       </>
-    )
+    );
   }
 }
 
@@ -93,4 +93,4 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: '600',
   },
-})
+});

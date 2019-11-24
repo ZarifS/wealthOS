@@ -1,6 +1,6 @@
-import React from 'react'
-import { Text, View, StyleSheet } from 'react-native'
-import { Colors, ApplicationStyles } from '../theme'
+import React from 'react';
+import { Text, View, StyleSheet } from 'react-native';
+import { Colors, ApplicationStyles } from '../theme';
 
 export default class SplashScreen extends React.Component {
   render() {
@@ -11,7 +11,7 @@ export default class SplashScreen extends React.Component {
           <Text>LOGO</Text>
         </View>
       </View>
-    )
+    );
   }
 }
 
@@ -31,4 +31,4 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     width: 70,
   },
-})
+});
