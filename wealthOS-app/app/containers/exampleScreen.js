@@ -1,96 +1,108 @@
 import React from 'react';
-import { SafeAreaView, StyleSheet, ScrollView, View, Text, StatusBar } from 'react-native';
-import {
-  Header,
-  LearnMoreLinks,
-  Colors,
-  DebugInstructions,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
+import { Platform, Text, View, Button, ActivityIndicator, Image, StyleSheet } from 'react-native';
+import { connect } from 'react-redux';
+import { actions as ExampleActions } from '../redux/actions/example';
+import { Fonts, ApplicationStyles, Images } from '../theme';
 
-export default class ExampleScreen extends React.Component {
+/**
+ * This is an example of a container component.
+ *
+ * This screen displays a little help message and informations about a fake user.
+ * Feel free to remove it.
+ */
+
+const instructions = Platform.select({
+  ios: 'Press Cmd+R to reload,\nCmd+D or shake for dev menu.',
+  android: 'Double tap R on your keyboard to reload,\nShake or press menu button for dev menu.',
+});
+
+class ExampleScreen extends React.Component {
+  componentDidMount() {
+    this._fetchUser();
+  }
+
   render() {
     return (
-      <>
-        <StatusBar barStyle="dark-content" />
-        <SafeAreaView>
-          <ScrollView contentInsetAdjustmentBehavior="automatic" style={styles.scrollView}>
-            <Header />
-            {global.HermesInternal == null ? null : (
-              <View style={styles.engine}>
-                <Text style={styles.footer}>Engine: Hermes</Text>
+      <View style={Style.container}>
+        {this.props.userIsLoading ? (
+          <ActivityIndicator size="large" color="#0000ff" />
+        ) : (
+          <View>
+            <View style={Style.logoContainer}>
+              <Image style={Style.logo} source={Images.logo} resizeMode={'contain'} />
+            </View>
+            <Text style={Style.text}>To get started, edit App.js</Text>
+            <Text style={Style.instructions}>{instructions}</Text>
+            {this.props.userErrorMessage ? (
+              <Text style={Style.error}>{this.props.userErrorMessage}</Text>
+            ) : (
+              <View>
+                <Text style={Style.result}>
+                  {"I'm a fake user, my name is "}
+                  {this.props.user.firstName}, {this.props.user.lastName}
+                </Text>
               </View>
             )}
-            <View style={styles.body}>
-              <View style={styles.sectionContainer}>
-                <Text style={styles.sectionTitle}>Step One Test.</Text>
-                <Text style={styles.sectionDescription}>
-                  Edit <Text style={styles.highlight}>App.js</Text> to change this screen and then
-                  come back to see your edits.
-                </Text>
-              </View>
-              <View style={styles.sectionContainer}>
-                <Text style={styles.sectionTitle}>See Your Changes</Text>
-                <Text style={styles.sectionDescription}>
-                  <ReloadInstructions />
-                </Text>
-              </View>
-              <View style={styles.sectionContainer}>
-                <Text style={styles.sectionTitle}>Debug</Text>
-                <Text style={styles.sectionDescription}>
-                  <DebugInstructions />
-                </Text>
-              </View>
-              <View style={styles.sectionContainer}>
-                <Text style={styles.sectionTitle}>Learn More</Text>
-                <Text style={styles.sectionDescription}>
-                  Read the docs to discover what to do next:
-                </Text>
-              </View>
-              <LearnMoreLinks />
-            </View>
-          </ScrollView>
-        </SafeAreaView>
-      </>
+            <Button onPress={() => this._fetchUser()} title="Refresh" />
+          </View>
+        )}
+      </View>
     );
+  }
+
+  _fetchUser() {
+    this.props.fetchUser();
   }
 }
 
-const styles = StyleSheet.create({
-  body: {
-    backgroundColor: Colors.white,
+const Style = StyleSheet.create({
+  container: {
+    ...ApplicationStyles.screen.container,
+    flex: 1,
+    justifyContent: 'center',
+    margin: 30,
   },
-  engine: {
-    position: 'absolute',
-    right: 0,
+  error: {
+    ...Fonts.style.normal,
+    color: 'red',
+    marginBottom: 5,
+    textAlign: 'center',
   },
-  footer: {
-    color: Colors.dark,
-    fontSize: 12,
-    fontWeight: '600',
-    padding: 4,
-    paddingRight: 12,
-    textAlign: 'right',
+  instructions: {
+    ...Fonts.style.normal,
+    fontStyle: 'italic',
+    marginBottom: 5,
+    textAlign: 'center',
   },
-  highlight: {
-    fontWeight: '700',
+  logo: {
+    height: '100%',
+    width: '100%',
   },
-  scrollView: {
-    backgroundColor: Colors.lighter,
+  logoContainer: {
+    height: 300,
+    marginBottom: 25,
+    width: '100%',
   },
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
+  result: {
+    ...Fonts.style.normal,
+    marginBottom: 5,
+    textAlign: 'center',
   },
-  sectionDescription: {
-    color: Colors.dark,
-    fontSize: 18,
-    fontWeight: '400',
-    marginTop: 8,
-  },
-  sectionTitle: {
-    color: Colors.black,
-    fontSize: 24,
-    fontWeight: '600',
+  text: {
+    ...Fonts.style.normal,
+    marginBottom: 5,
+    textAlign: 'center',
   },
 });
+
+const mapStateToProps = (state) => ({
+  user: state.example.user,
+  userIsLoading: state.example.userIsLoading,
+  userErrorMessage: state.example.userErrorMessage,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  fetchUser: () => dispatch(ExampleActions.fetchUser()),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(ExampleScreen);
