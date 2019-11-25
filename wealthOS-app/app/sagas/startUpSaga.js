@@ -1,6 +1,4 @@
-import { put } from 'redux-saga/effects';
-import { actions as ExampleActions } from '../redux/actions/example';
-import NavigationService from '../services/navigationService';
+import NavigationService from '../services/navigation';
 
 /**
  * The startup saga is the place to define behavior to execute when the application starts.
@@ -8,8 +6,7 @@ import NavigationService from '../services/navigationService';
 export function* startup() {
   // Dispatch a redux action using `put()`
   // @see https://redux-saga.js.org/docs/basics/DispatchingActions.html
-  yield put(ExampleActions.fetchUser());
-
+  // yield put(ExampleActions.fetchUser('jon.snow@gmail.com', 'testing'));
   // Add more operations you need to do at startup here
   // ...
 

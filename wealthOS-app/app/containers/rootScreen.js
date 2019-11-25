@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import NavigationService from '../services/navigationService';
+import NavigationService from '../services/navigation';
 import AppNavigator from '../navigators/appNavigator';
 import { View, StyleSheet } from 'react-native';
 import { connect } from 'react-redux';
@@ -9,6 +9,7 @@ import { ApplicationStyles } from '../theme';
 class RootScreen extends Component {
   componentDidMount() {
     // Run the startup saga when the application is starting
+    console.log('App has started! Running startup actions..');
     this.props.startup();
   }
 
@@ -32,10 +33,8 @@ const styles = StyleSheet.create({
   },
 });
 
-const mapStateToProps = (state) => ({});
-
 const mapDispatchToProps = (dispatch) => ({
   startup: () => dispatch(StartupActions.startUp()),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(RootScreen);
+export default connect(null, mapDispatchToProps)(RootScreen);
