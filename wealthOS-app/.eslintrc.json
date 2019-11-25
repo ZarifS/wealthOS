@@ -22,6 +22,7 @@
       "plugin:react-native/all",
       "plugin:prettier/recommended"
     ],
+    "parser": "babel-eslint",
     "settings": {
       "react": {
         "version": "detect"

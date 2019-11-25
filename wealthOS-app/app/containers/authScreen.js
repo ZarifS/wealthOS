@@ -1,28 +1,62 @@
 import React from 'react';
-import {
-  Text,
-  View,
-  Button,
-  ActivityIndicator,
-  Image,
-  StyleSheet,
-  SafeAreaView,
-} from 'react-native';
+import { StyleSheet } from 'react-native';
+import { Icon, Layout } from 'react-native-ui-kitten';
+import Input from '../components/input';
 import { connect } from 'react-redux';
 
 /**
- * This is an example of a container component.
- *
- * This screen displays a little help message and informations about a fake user.
- * Feel free to remove it.
+ * This screen allows a user to authenticate themselves, After login
+ * a token is stored in the state.
  */
 
 class AuthScreen extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      email: '',
+      password: '',
+      secureTextEntry: true,
+    };
+  }
+
+  renderSecureIcon = (style) => {
+    const iconName = this.state.secureTextEntry ? 'eye-off' : 'eye';
+    return <Icon {...style} name={iconName} />;
+  };
+
+  renderPersonIcon = (style) => {
+    return <Icon {...style} name="person-outline" />;
+  };
+
+  onChangeText = (name, value) => {
+    this.setState({ [name]: value });
+  };
+
+  onSecureIconPress = () => {
+    const secureTextEntry = !this.state.secureTextEntry;
+    this.setState({ secureTextEntry });
+  };
+
   render() {
     return (
-      <SafeAreaView style={Style.container}>
-        <Text>Hello</Text>
-      </SafeAreaView>
+      <Layout style={Style.container}>
+        <Input
+          value={this.state.email}
+          placeholder="Email"
+          name="email"
+          iconName={'person-outline'}
+          onChange={this.onChangeText}
+        />
+        <Input
+          value={this.state.password}
+          placeholder="Password"
+          name="password"
+          renderIconFunction={this.renderSecureIcon}
+          secureTextEntry={this.state.secureTextEntry}
+          onIconPress={this.onSecureIconPress}
+          onChange={this.onChangeText}
+        />
+      </Layout>
     );
   }
 }
