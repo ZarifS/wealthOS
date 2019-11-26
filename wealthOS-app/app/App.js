@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/lib/integration/react';
+import { mapping, dark } from '@eva-design/eva';
+import { EvaIconsPack } from '@ui-kitten/eva-icons';
+import { ApplicationProvider, IconRegistry } from 'react-native-ui-kitten';
 import createStore from './redux';
 import RootScreen from './containers/rootScreen';
 import SplashScreen from './containers/splashScreen';
@@ -22,7 +25,10 @@ export default class App extends Component {
          * @see https://github.com/rt2zz/redux-persist/blob/master/docs/PersistGate.md
          */}
         <PersistGate loading={<SplashScreen />} persistor={persistor}>
-          <RootScreen />
+          <IconRegistry icons={EvaIconsPack} />
+          <ApplicationProvider mapping={mapping} theme={dark}>
+            <RootScreen />
+          </ApplicationProvider>
         </PersistGate>
       </Provider>
     );

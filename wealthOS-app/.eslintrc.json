@@ -22,6 +22,7 @@
       "plugin:react-native/all",
       "plugin:prettier/recommended"
     ],
+    "parser": "babel-eslint",
     "settings": {
       "react": {
         "version": "detect"
@@ -31,6 +32,6 @@
       "react-native/no-raw-text": ["off"], // Avoid false positive, wait for fix
       "react-native/no-color-literals": ["off"],
       "react-native/sort-styles": ["warn"],
-      "react/prop-types": ["warn"]
+      "react/prop-types": ["off"]
     }
 }

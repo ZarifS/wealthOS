@@ -4,7 +4,9 @@
  * @see https://redux.js.org/basics/reducers
  */
 
-import { types } from '../actions/example';
+import { types } from '../actions/auth';
+
+// TO-DO: Change "fetch" to login/authenticate
 
 export const fetchUserLoading = (state) => ({
   ...state,
@@ -12,9 +14,9 @@ export const fetchUserLoading = (state) => ({
   userErrorMessage: null,
 });
 
-export const fetchUserSuccess = (state, { user }) => ({
+export const fetchUserSuccess = (state, { token }) => ({
   ...state,
-  user: user,
+  token: token,
   userIsLoading: false,
   userErrorMessage: null,
 });
@@ -22,6 +24,7 @@ export const fetchUserSuccess = (state, { user }) => ({
 export const fetchUserFailure = (state, { errorMessage }) => ({
   ...state,
   user: {},
+  token: null,
   userIsLoading: false,
   userErrorMessage: errorMessage,
 });
@@ -31,6 +34,7 @@ export const fetchUserFailure = (state, { errorMessage }) => ({
  */
 const INITIAL_STATE = {
   user: {},
+  token: null,
   userIsLoading: false,
   userErrorMessage: null,
 };
@@ -46,14 +50,14 @@ const reducer = (state = INITIAL_STATE, { type, payload }) => {
     case types.FETCH_USER_SUCCESS:
       return {
         ...state,
-        user: payload.user,
+        token: payload.token,
         userIsLoading: false,
         userErrorMessage: null,
       };
     case types.FETCH_USER_FAILURE:
       return {
         ...state,
-        user: {},
+        token: null,
         userIsLoading: false,
         userErrorMessage: payload.error,
       };

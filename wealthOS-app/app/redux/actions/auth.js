@@ -5,10 +5,11 @@ export const FETCH_USER_SUCCESS = 'FETCH_USER_SUCCESS';
 export const FETCH_USER_FAILURE = 'FETCH_USER_FAILURE';
 
 // Action Creators
-export const fetchUser = () => {
+// TO-DO: Change "fetch" to login/auth
+export const fetchUser = (email, password) => {
   return {
     type: FETCH_USER,
-    payload: {},
+    payload: { email, password },
   };
 };
 
@@ -16,8 +17,8 @@ export const fetchUserLoading = () => {
   return { type: FETCH_USER_LOADING, payload: {} };
 };
 
-export const fetchUserSuccess = (user) => {
-  return { type: FETCH_USER_SUCCESS, payload: { user } };
+export const fetchUserSuccess = (token) => {
+  return { type: FETCH_USER_SUCCESS, payload: { token } };
 };
 
 export const fetchUserFailure = (error) => {
