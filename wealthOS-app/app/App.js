@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/lib/integration/react';
-import { mapping, light as lightTheme } from '@eva-design/eva';
+import { mapping, dark } from '@eva-design/eva';
 import { EvaIconsPack } from '@ui-kitten/eva-icons';
 import { ApplicationProvider, IconRegistry } from 'react-native-ui-kitten';
 import createStore from './redux';
@@ -26,7 +26,7 @@ export default class App extends Component {
          */}
         <PersistGate loading={<SplashScreen />} persistor={persistor}>
           <IconRegistry icons={EvaIconsPack} />
-          <ApplicationProvider mapping={mapping} theme={lightTheme}>
+          <ApplicationProvider mapping={mapping} theme={dark}>
             <RootScreen />
           </ApplicationProvider>
         </PersistGate>

@@ -1,8 +1,9 @@
 import React from 'react';
 import { StyleSheet } from 'react-native';
-import { Icon, Layout } from 'react-native-ui-kitten';
-import Input from '../components/input';
 import { connect } from 'react-redux';
+import { Icon, Layout, Button, Modal, Spinner } from 'react-native-ui-kitten';
+import { actions as AuthActions } from '../redux/actions/auth';
+import Input from '../components/input';
 
 /**
  * This screen allows a user to authenticate themselves, After login
@@ -18,6 +19,11 @@ class AuthScreen extends React.Component {
       secureTextEntry: true,
     };
   }
+
+  // setModalVisible = () => {
+  //   const modalVisible = !this.state.modalVisible;
+  //   this.setState({ modalVisible });
+  // };
 
   renderSecureIcon = (style) => {
     const iconName = this.state.secureTextEntry ? 'eye-off' : 'eye';
@@ -35,6 +41,14 @@ class AuthScreen extends React.Component {
   onSecureIconPress = () => {
     const secureTextEntry = !this.state.secureTextEntry;
     this.setState({ secureTextEntry });
+  };
+
+  renderModalElement = () => {
+    return <Spinner size="giant" />;
+  };
+
+  onSubmit = () => {
+    this.props.dispatch(AuthActions.fetchUser(this.state.email, this.state.password));
   };
 
   render() {
@@ -56,6 +70,17 @@ class AuthScreen extends React.Component {
           onIconPress={this.onSecureIconPress}
           onChange={this.onChangeText}
         />
+        <Button onPress={this.onSubmit} style={Style.continueButton} size="medium">
+          Continue
+        </Button>
+        <Modal
+          allowBackdrop={true}
+          // eslint-disable-next-line react-native/no-inline-styles
+          backdropStyle={{ backgroundColor: 'black', opacity: 0.5 }}
+          visible={this.props.userIsLoading}
+        >
+          {<Spinner size="giant" />}
+        </Modal>
       </Layout>
     );
   }
@@ -63,14 +88,18 @@ class AuthScreen extends React.Component {
 
 const Style = StyleSheet.create({
   container: {
+    alignContent: 'center',
+    display: 'flex',
     flex: 1,
     justifyContent: 'center',
-    margin: 30,
+    padding: 20,
+  },
+  continueButton: {
+    marginTop: 10,
   },
 });
 
 const mapStateToProps = (state) => ({
-  token: state.auth.token,
   userIsLoading: state.auth.userIsLoading,
   userErrorMessage: state.auth.userErrorMessage,
 });
