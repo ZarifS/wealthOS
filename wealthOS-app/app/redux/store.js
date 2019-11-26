@@ -1,4 +1,5 @@
-import { applyMiddleware, compose, createStore } from 'redux';
+import { applyMiddleware, createStore } from 'redux';
+import { composeWithDevTools } from 'redux-devtools-extension';
 import createSagaMiddleware from 'redux-saga';
 import { persistReducer, persistStore } from 'redux-persist';
 
@@ -31,11 +32,10 @@ export default (rootReducer, rootSaga) => {
   middleware.push(sagaMiddleware);
 
   enhancers.push(applyMiddleware(...middleware));
-
   // Redux persist
   const persistedReducer = persistReducer(persistConfig, rootReducer);
 
-  const store = createStore(persistedReducer, compose(...enhancers));
+  const store = createStore(persistedReducer, composeWithDevTools(...enhancers));
   const persistor = persistStore(store);
 
   // Kick off the root saga

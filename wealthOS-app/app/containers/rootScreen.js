@@ -31,7 +31,6 @@ class RootScreen extends Component {
 const styles = StyleSheet.create({
   container: {
     ...ApplicationStyles.screen.container,
-    paddingTop: 40,
   },
 });
 
