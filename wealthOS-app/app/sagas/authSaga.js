@@ -1,6 +1,7 @@
 import { put, call } from 'redux-saga/effects';
 import { actions } from '../redux/actions/auth';
-import api from '../services/api';
+import APIService from '../services/api';
+import NavigationService from '../services/navigation';
 
 /**
  * A saga can contain multiple functions.
@@ -13,7 +14,7 @@ export function* fetchUser({ payload }) {
   // @see https://redux-saga.js.org/docs/basics/DispatchingActions.html
   yield put(actions.fetchUserLoading());
   try {
-    const response = yield call(api.fetchUser, payload.email, payload.password);
+    const response = yield call(APIService.fetchUser, payload.email, payload.password);
     console.log(response.token);
     yield put(actions.fetchUserSuccess(response.token));
   } catch (error) {
@@ -22,4 +23,8 @@ export function* fetchUser({ payload }) {
     console.log(message);
     yield put(actions.fetchUserFailure(message));
   }
+}
+
+export function* fetchUserSuccess() {
+  NavigationService.navigate('HomeScreen');
 }
