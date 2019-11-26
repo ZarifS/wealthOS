@@ -64,13 +64,13 @@ export const addWebhookToUser = (req, res) => {
         return addWebhook(accessToken, webhookURL);
       })
       .then(() => {
-        res.status(200).json({
+        return res.status(200).json({
           message: 'Updated Webhook Successfully'
         });
       })
       .catch(err => {
         console.log(err);
-        res.status(400).json({ message: err.message });
+        return res.status(400).json({ message: err.message });
       });
   }
 };
@@ -79,7 +79,7 @@ export const fireWebhook = async (req, res) => {
   const { itemID, type } = req.body;
   const { accessToken } = req.user.links.get(itemID);
   fireTransactionWebhook(accessToken, type);
-  res.status(200).json({
+  return res.status(200).json({
     message: 'Fired Webhook Successfully'
   });
 };

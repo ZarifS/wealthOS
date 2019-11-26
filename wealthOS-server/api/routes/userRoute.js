@@ -15,7 +15,7 @@ router.get('/', (req, res) => {
   user.password = undefined;
   user.__v = undefined;
   // Return user object
-  res.status(200).json({
+  return res.status(200).json({
     user
   });
 });

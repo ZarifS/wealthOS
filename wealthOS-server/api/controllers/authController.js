@@ -21,13 +21,13 @@ export const registerUser = (req, res) => {
   newUser
     .save()
     .then(user => {
-      res.status(201).json({
+      return res.status(201).json({
         message: 'User created.',
         userId: user.id
       });
     })
     .catch(err => {
-      res.status(400).json({ message: err.message });
+      return res.status(400).json({ message: err.message });
     });
 };
 
@@ -38,12 +38,12 @@ export const logInUser = (req, res) => {
     .then(user => {
       // No user found
       if (!user) {
-        return res.status(404).json([{ message: 'No account found.' }]);
+        throw new Error('User not found.');
       }
 
       // Incorrect Password
       if (!user.checkPassword(password)) {
-        return res.status(404).json([{ message: 'Credentials do not match.' }]);
+        throw new Error('Credentials do not match.');
       }
 
       // Verified User
@@ -54,14 +54,14 @@ export const logInUser = (req, res) => {
       // Create JSON Webtoken
       return createToken(payload);
     })
-    .then(token =>
-      res.status(200).json({
+    .then(token => {
+      return res.status(200).json({
         message: 'Auth successful.',
         token
-      })
-    )
+      });
+    })
     .catch(err => {
       console.log(err);
-      res.status(400).json([{ message: err.message }]);
+      return res.status(400).json({ message: err.message });
     });
 };
