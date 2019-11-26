@@ -25,8 +25,7 @@ export default async (req, res, next) => {
 
   // Send back error messages
   if (errors.length > 0) {
-    res.status(401);
-    return res.json(errors);
+    return res.status(401).json(errors);
   }
 
   // Continue if there is no errors

@@ -75,14 +75,14 @@ export const linkPlaidToUser = (req, res) => {
       linkItemToUser(doc, itemID);
     })
     // Return API Response
-    .then(() =>
-      res.status(200).json({
+    .then(() => {
+      return res.status(200).json({
         message: 'Added Link Successfully'
-      })
-    )
+      });
+    })
     .catch(err => {
       console.log(err);
-      res.status(400).json([{ message: err.message }]);
+      return res.status(400).json([{ message: err.message }]);
     });
 };
 
@@ -98,12 +98,14 @@ export const updateAccounts = (req, res) => {
       return user.save();
     })
     .then(user => {
-      res.status(200).json({
+      return res.status(200).json({
         message: 'Updated User Accounts.',
         accounts: user.accounts
       });
     })
-    .catch(err => res.status(400).json([{ message: err.message }]));
+    .catch(err => {
+      return res.status(400).json([{ message: err.message }]);
+    });
 };
 
 // Pulls historical data for a institution to gather user transactions
