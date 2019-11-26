@@ -8,58 +8,56 @@ import { types } from '../actions/auth';
 
 // TO-DO: Change "fetch" to login/authenticate
 
-export const fetchUserLoading = (state) => ({
+export const authUserLoading = (state) => ({
   ...state,
-  userIsLoading: true,
+  authIsLoading: true,
   userErrorMessage: null,
 });
 
-export const fetchUserSuccess = (state, { token }) => ({
+export const authUserSuccess = (state, { token }) => ({
   ...state,
   token: token,
-  userIsLoading: false,
-  userErrorMessage: null,
+  authIsLoading: false,
+  authErrorMessage: null,
 });
 
-export const fetchUserFailure = (state, { errorMessage }) => ({
+export const authUserFailure = (state, { errorMessage }) => ({
   ...state,
-  user: {},
   token: null,
-  userIsLoading: false,
-  userErrorMessage: errorMessage,
+  authIsLoading: false,
+  authErrorMessage: errorMessage,
 });
 
 /**
  * The initial values for the redux state.
  */
 const INITIAL_STATE = {
-  user: {},
   token: null,
-  userIsLoading: false,
-  userErrorMessage: null,
+  authIsLoading: false,
+  authErrorMessage: null,
 };
 
 const reducer = (state = INITIAL_STATE, { type, payload }) => {
   switch (type) {
-    case types.FETCH_USER_LOADING:
+    case types.AUTH_USER_LOADING:
       return {
         ...state,
-        userIsLoading: true,
-        userErrorMessage: null,
+        authIsLoading: true,
+        authErrorMessage: null,
       };
-    case types.FETCH_USER_SUCCESS:
+    case types.AUTH_USER_SUCCESS:
       return {
         ...state,
         token: payload.token,
-        userIsLoading: false,
-        userErrorMessage: null,
+        authIsLoading: false,
+        authErrorMessage: null,
       };
-    case types.FETCH_USER_FAILURE:
+    case types.AUTH_USER_FAILURE:
       return {
         ...state,
         token: null,
-        userIsLoading: false,
-        userErrorMessage: payload.error,
+        authIsLoading: false,
+        authErrorMessage: payload.error,
       };
     default:
       return state;

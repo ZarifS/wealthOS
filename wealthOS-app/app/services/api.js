@@ -11,12 +11,12 @@ const api = axios.create({
   },
 });
 
-const fetchUser = async (email, password) => {
+const authUser = async (email, password) => {
   console.log('Calling /auth/login with:', email, password);
   const result = await api.post('/auth/login', { email, password });
   return result.data;
 };
 
 export default {
-  fetchUser,
+  authUser,
 };

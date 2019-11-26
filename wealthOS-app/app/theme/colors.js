@@ -6,10 +6,19 @@
  */
 
 export default {
+  // Dark Color Scheme
   transparent: 'rgba(0,0,0,0)',
-  // Example colors:
-  text: '#212529',
-  primary: '#007bff',
-  success: '#28a745',
+  // Main app background color
+  background: '#1e2329',
+  // Text that are directly ontop of background
+  onBackground: '#fcfcfc',
+  // surface - content, cards ontop of background
+  surface: '#393e46',
+  // Text that are directly ontop of a surface
+  onSurface: '#eeeeee',
+  // The two accent colors
+  primary: '#4ecca3',
+  secondary: '#e3b04b',
+  // Error colors
   error: '#dc3545',
 };

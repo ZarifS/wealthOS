@@ -1,40 +1,40 @@
 // Types
-export const FETCH_USER = 'FETCH_USER';
-export const FETCH_USER_LOADING = 'FETCH_USER_LOADING';
-export const FETCH_USER_SUCCESS = 'FETCH_USER_SUCCESS';
-export const FETCH_USER_FAILURE = 'FETCH_USER_FAILURE';
+export const AUTH_USER = 'AUTH_USER';
+export const AUTH_USER_LOADING = 'AUTH_USER_LOADING';
+export const AUTH_USER_SUCCESS = 'AUTH_USER_SUCCESS';
+export const AUTH_USER_FAILURE = 'AUTH_USER_FAILURE';
 
 // Action Creators
-// TO-DO: Change "fetch" to login/auth
-export const fetchUser = (email, password) => {
+// TO-DO: Change "auth" to login/auth
+export const authUser = (email, password) => {
   return {
-    type: FETCH_USER,
+    type: AUTH_USER,
     payload: { email, password },
   };
 };
 
-export const fetchUserLoading = () => {
-  return { type: FETCH_USER_LOADING, payload: {} };
+export const authUserLoading = () => {
+  return { type: AUTH_USER_LOADING, payload: {} };
 };
 
-export const fetchUserSuccess = (token) => {
-  return { type: FETCH_USER_SUCCESS, payload: { token } };
+export const authUserSuccess = (token) => {
+  return { type: AUTH_USER_SUCCESS, payload: { token } };
 };
 
-export const fetchUserFailure = (error) => {
-  return { type: FETCH_USER_FAILURE, payload: { error } };
+export const authUserFailure = (error) => {
+  return { type: AUTH_USER_FAILURE, payload: { error } };
 };
 
 export const types = {
-  FETCH_USER,
-  FETCH_USER_LOADING,
-  FETCH_USER_SUCCESS,
-  FETCH_USER_FAILURE,
+  AUTH_USER,
+  AUTH_USER_LOADING,
+  AUTH_USER_SUCCESS,
+  AUTH_USER_FAILURE,
 };
 
 export const actions = {
-  fetchUser,
-  fetchUserLoading,
-  fetchUserSuccess,
-  fetchUserFailure,
+  authUser,
+  authUserLoading,
+  authUserSuccess,
+  authUserFailure,
 };
