@@ -12,11 +12,14 @@ export function* fetchUser({ payload }) {
   // Dispatch a redux action using `put()`
   // @see https://redux-saga.js.org/docs/basics/DispatchingActions.html
   yield put(actions.fetchUserLoading());
-
-  const response = yield call(api.fetchUser, payload.email, payload.password);
-  if (response) {
+  try {
+    const response = yield call(api.fetchUser, payload.email, payload.password);
+    console.log(response.token);
     yield put(actions.fetchUserSuccess(response.token));
-  } else {
-    yield put(actions.fetchUserFailure('There was an error while fetching user informations.'));
+  } catch (error) {
+    const message =
+      error.response.data.message || 'There was an error while fetching user informations.';
+    console.log(message);
+    yield put(actions.fetchUserFailure(message));
   }
 }
