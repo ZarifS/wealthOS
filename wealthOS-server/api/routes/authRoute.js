@@ -13,7 +13,7 @@ router.post('/login', logInUser);
 
 // Verify a Token - no body, header bearer with token
 router.get('/verifyToken', ensureAuthenticated, (req, res) => {
-  res.json({ message: 'Token Verified.' });
+  return res.json({ message: 'Token Verified.' });
 });
 
 export default router;
