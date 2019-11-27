@@ -48,7 +48,7 @@ class AuthScreen extends React.Component {
   };
 
   onSubmit = () => {
-    this.props.dispatch(AuthActions.fetchUser(this.state.email, this.state.password));
+    this.props.dispatch(AuthActions.authUser(this.state.email, this.state.password));
   };
 
   render() {
@@ -77,7 +77,7 @@ class AuthScreen extends React.Component {
           allowBackdrop={true}
           // eslint-disable-next-line react-native/no-inline-styles
           backdropStyle={{ backgroundColor: 'black', opacity: 0.5 }}
-          visible={this.props.userIsLoading}
+          visible={this.props.authIsLoading}
         >
           {<Spinner size="giant" />}
         </Modal>
@@ -100,8 +100,8 @@ const Style = StyleSheet.create({
 });
 
 const mapStateToProps = (state) => ({
-  userIsLoading: state.auth.userIsLoading,
-  userErrorMessage: state.auth.userErrorMessage,
+  authIsLoading: state.auth.authIsLoading,
+  authErrorMessage: state.auth.authErrorMessage,
 });
 
 export default connect(mapStateToProps)(AuthScreen);
