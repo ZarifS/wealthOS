@@ -28,3 +28,6 @@ Zarif Shahriar, 8177206
 ### Deliverable 3 - Technology Landspace
 ### Deliverable 4 - Features
 ### Deliverable 5 - Version 1.0 of Application
+
+## WIKI 
+More information on the project archeticture can be found on the Wiki.
