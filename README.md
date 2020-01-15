@@ -21,3 +21,10 @@ Create a unified user experience to give a total overview on a users financial h
 
 ## Students
 Zarif Shahriar, 8177206
+
+## Project Deliverables
+### Deliverable 1 - Project Definition
+### Deliverable 2 - Project Mockups
+### Deliverable 3 - Technology Landspace
+### Deliverable 4 - Features
+### Deliverable 5 - Version 1.0 of Application
