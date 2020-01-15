@@ -16,6 +16,10 @@ Create a unified user experience to give a total overview on a users financial h
 ## Course Goals 
 For the purpose of this course I believe 1.1 will be able to be implemented fully. I do not think 1.2 will be able to be completed within just the 4 months but I can have some of the backend work done since it is usually the front end which takes the most time.
 
+Currently some of the backend work has been done like logging in with a JWT, getting user account info through REST and getting some transactions data. Also some basic CRUD. This has set me up to work on creating a MVP of the client side application which will be built using ReactNative which is perfect for this course since it is basically javascript HTML.
+
+I have also created some UX mockups using AdobeXD which I will translate into HTML/CSS for Deliverable 1 and then work on building out throughout the term. I don't think I'll be able to build out the full app since the scale is very big but at least some core functionality for the purpose of this course.
+
 ## Students
 Zarif Shahriar, 8177206
 
