@@ -13,11 +13,8 @@ Create a unified user experience to give a total overview on a users financial h
 * Allows them to create a budget, split into daily intervals that updates real-time based on bank transactions
 * App will allow the user to see their spending habits using categories and get insights into their spendings
 
-## Phase 2 - Scope
-### 2.1 Investment Holdings
-* Allow users to get detailed information on their investments
-* Use algorithms to grant them insights into their holdings
-* Help them plan for investments
+## Course Goals 
+For the purpose of this course I believe 1.1 will be able to be implemented fully. I do not think 1.2 will be able to be completed within just the 4 months but I can have some of the backend work done since it is usually the front end which takes the most time.
 
 ## Students
 Zarif Shahriar, 8177206
