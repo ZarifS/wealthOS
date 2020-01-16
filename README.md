@@ -22,6 +22,7 @@ I have also created some UX mockups using AdobeXD which I will translate into HT
 
 ## Students
 Zarif Shahriar, 8177206
+Pasoon Azimi, 8215497
 
 ## Project Deliverables
 ### Deliverable 1 - Project Definition
