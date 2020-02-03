@@ -82,6 +82,10 @@ input {
     font-size: 18px;
 }
 
+img {
+    margin: 5px;
+}
+
 p.balances-value {
     font-size: 30px;
     margin: 0px;
