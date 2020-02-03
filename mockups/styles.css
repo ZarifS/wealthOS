@@ -122,48 +122,72 @@ h1.title{
 
 /*DASHBOARD STYLES*/
 
-div.dashboard-container{
+div.dashboard-container {
     display: flex;
     flex-direction: column;
     width: 50%;
 
 }
 
-div.chequing{
+div.chequing {
     display: flex;
     flex-direction: row;
     width: 100%;
     height: 82px;
     margin: 1px;
-    padding: 5px;
+    padding: 10px 20px;
     background-color: #707070;
 }
 
-div.savings{
+div.savings {
     display: flex;
     flex-direction: row;
     width: 100%;
     height: 82px;
     margin: 1px;
-    padding: 5px;
+    padding: 10px 20px;
     background-color: #4ECCA3;
 }
 
-div.credit-card{
+div.credit-card {
     display: flex;
     flex-direction: row;
     width: 100%;
     height: 82px;
     margin: 1px;
-    padding: 5px;
+    padding: 10px 20px;
     background-color: #EDCA6C;
 }
 
-p.value{
-    font-size: 24px;
-    flex-grow: 1;
+p.balances-value {
+    font-size: 30px;
+    margin: 0px;
     font-weight: 200;
     text-align: right;
+}
+
+p.budgets-value {
+    font-size: 24px;
+    margin: 0px;
+    font-weight: 200;
+    text-align: right;
+}
+
+p.percent-value{
+    font-size: 18px;
+    margin: 0px;
+    font-weight: 200;
+    text-align: right;
+}
+
+div.budget-card {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    height: 69px;
+    margin: 1px;
+    padding: 10px 20px;
+    background-color: #707070;
 }
 
 /*TRANSACTION STYLES*/
