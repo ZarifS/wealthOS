@@ -89,6 +89,7 @@ button.primary {
     margin: 5px;
     border-radius: 30px;
     border: none;
+    cursor: pointer; 
 }
 
 button.secondary {
@@ -100,7 +101,36 @@ button.secondary {
     color: white;
     font-size: 14px;
     margin: 5px;
+    cursor: pointer; 
 }
+
+/* TOP NAV STYLES */
+.topnav {
+    background-color: #707070;
+    overflow: hidden;
+  }
+  
+  /* Style the links inside the navigation bar */
+  .topnav a {
+    float: left;
+    color: #f2f2f2;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+    font-size: 17px;
+  }
+  
+  /* Change the color of links on hover */
+  .topnav a:hover {
+    background-color: #ddd;
+    color: black;
+  }
+  
+  /* Add a color to the active/current link */
+  .topnav a.active {
+    background-color: #4ECCA3;
+    color: white;
+  }
 
 /*LOGIN STYLES*/
 
@@ -137,6 +167,7 @@ div.chequing {
     margin: 1px;
     padding: 10px 20px;
     background-color: #707070;
+    cursor: pointer; 
 }
 
 div.savings {
@@ -147,6 +178,7 @@ div.savings {
     margin: 1px;
     padding: 10px 20px;
     background-color: #4ECCA3;
+    cursor: pointer; 
 }
 
 div.credit-card {
@@ -157,6 +189,7 @@ div.credit-card {
     margin: 1px;
     padding: 10px 20px;
     background-color: #EDCA6C;
+    cursor: pointer; 
 }
 
 p.balances-value {
@@ -166,7 +199,7 @@ p.balances-value {
     text-align: right;
 }
 
-p.budgets-value {
+p.value {
     font-size: 24px;
     margin: 0px;
     font-weight: 200;
@@ -188,6 +221,18 @@ div.budget-card {
     margin: 1px;
     padding: 10px 20px;
     background-color: #707070;
+    cursor: pointer; 
+}
+
+div.transaction-card {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    height: 48px;
+    margin: 1px;
+    padding: 10px 20px;
+    background-color: #707070;
+    cursor: pointer; 
 }
 
 /*TRANSACTION STYLES*/
