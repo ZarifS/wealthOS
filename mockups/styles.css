@@ -1,19 +1,34 @@
+
+/*GLOBAL REUSABLE STYLES*/
+
 div.container-column {
     display: flex;
     flex-direction: column;
+    align-items: center;
+    justify-content: center;
 }
 
 div.container-row {
     display: flex;
     flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+
+div.column {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+}
+
+div.row {
+    display: flex;
+    flex-direction: row;
+    flex-grow: 1;
 }
 
 body {
     background-color: #1E2329;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
     font-family: "Helvetica Neue";
     color: white; 
 }
@@ -30,23 +45,27 @@ h2 {
 
 h3 {
     font-size: 30px;
+    font-weight: 400;
+}
+
+p.regular {
+    font-size: 17px;
     font-weight: bold;
+    margin: 0px;
+}
+
+p.medium {
+    font-size: 14px;
+    margin: 0px;
+}
+
+p.small {
+    font-size: 12px;
+    margin: 0px;
 }
 
 span {
     color: #4ECCA3;
-}
-
-span.psw{
-    color: white;
-    margin: 5px;
-}
-
-form.login {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
 }
 
 input {
@@ -82,3 +101,71 @@ button.secondary {
     font-size: 14px;
     margin: 5px;
 }
+
+/*LOGIN STYLES*/
+
+span.psw{
+    color: white;
+    margin: 5px;
+}
+
+form.login {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+h1.title{
+    text-align: center;
+}
+
+/*DASHBOARD STYLES*/
+
+div.dashboard-container{
+    display: flex;
+    flex-direction: column;
+    width: 50%;
+
+}
+
+div.chequing{
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    height: 82px;
+    margin: 1px;
+    padding: 5px;
+    background-color: #707070;
+}
+
+div.savings{
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    height: 82px;
+    margin: 1px;
+    padding: 5px;
+    background-color: #4ECCA3;
+}
+
+div.credit-card{
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    height: 82px;
+    margin: 1px;
+    padding: 5px;
+    background-color: #EDCA6C;
+}
+
+p.value{
+    font-size: 24px;
+    flex-grow: 1;
+    font-weight: 200;
+    text-align: right;
+}
+
+/*TRANSACTION STYLES*/
+
+/*ACCOUNTS STYLES*/
