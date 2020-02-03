@@ -46,12 +46,13 @@ h2 {
 h3 {
     font-size: 30px;
     font-weight: 400;
+    margin: 20px 0 5px 0
 }
 
 p.regular {
     font-size: 17px;
     font-weight: bold;
-    margin: 0px;
+    margin: 0px 5px 0 0;
 }
 
 p.medium {
@@ -104,13 +105,20 @@ button.secondary {
     cursor: pointer; 
 }
 
+div.content-container {
+    display: flex;
+    flex-direction: column;
+    width: 50%;
+    overflow:hidden;
+
+}
+
 /* TOP NAV STYLES */
 .topnav {
     background-color: #707070;
     overflow: hidden;
   }
   
-  /* Style the links inside the navigation bar */
   .topnav a {
     float: left;
     color: #f2f2f2;
@@ -120,13 +128,11 @@ button.secondary {
     font-size: 17px;
   }
   
-  /* Change the color of links on hover */
   .topnav a:hover {
     background-color: #ddd;
     color: black;
   }
   
-  /* Add a color to the active/current link */
   .topnav a.active {
     background-color: #4ECCA3;
     color: white;
@@ -149,20 +155,12 @@ form.login {
 h1.title{
     text-align: center;
 }
-
 /*DASHBOARD STYLES*/
-
-div.dashboard-container {
-    display: flex;
-    flex-direction: column;
-    width: 50%;
-
-}
 
 div.chequing {
     display: flex;
     flex-direction: row;
-    width: 100%;
+    width: calc(100%-40px);
     height: 82px;
     margin: 1px;
     padding: 10px 20px;
@@ -173,7 +171,7 @@ div.chequing {
 div.savings {
     display: flex;
     flex-direction: row;
-    width: 100%;
+    width: calc(100%-40px);
     height: 82px;
     margin: 1px;
     padding: 10px 20px;
@@ -184,7 +182,7 @@ div.savings {
 div.credit-card {
     display: flex;
     flex-direction: row;
-    width: 100%;
+    width: calc(100%-40px);
     height: 82px;
     margin: 1px;
     padding: 10px 20px;
@@ -216,7 +214,7 @@ p.percent-value{
 div.budget-card {
     display: flex;
     flex-direction: row;
-    width: 100%;
+    width: calc(100%-40px);
     height: 69px;
     margin: 1px;
     padding: 10px 20px;
@@ -227,7 +225,7 @@ div.budget-card {
 div.transaction-card {
     display: flex;
     flex-direction: row;
-    width: 100%;
+    width: calc(100%-40px);
     height: 48px;
     margin: 1px;
     padding: 10px 20px;
@@ -238,3 +236,33 @@ div.transaction-card {
 /*TRANSACTION STYLES*/
 
 /*ACCOUNTS STYLES*/
+
+div.account-card {
+    display: flex;
+    flex-direction: row;
+    width: calc(100%-40px);
+    height: 111px;
+    margin: 1px;
+    padding: 10px 20px;
+    background-color: #707070;
+    cursor: pointer; 
+}
+
+div.networth-card {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    width: 50%;
+    height: 44px;
+    margin: 10px;
+    padding: 10px 20px;
+    background-color: #707070;
+}
+
+div.networth-container {
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+}
