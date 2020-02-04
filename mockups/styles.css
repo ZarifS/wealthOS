@@ -330,3 +330,23 @@ div.networth-container {
     justify-content: center;
     align-items: center;
 }
+
+/*CATEGORIES STYLES*/ 
+
+div.categories-container {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+div.category-card {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 150px;
+    height: 45px;
+    padding: 5px;
+    margin: 10px;
+    background-color: #707070;
+}
