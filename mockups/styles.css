@@ -71,7 +71,7 @@ span {
 }
 
 input {
-    width: 255px;
+    width: 235px;
     height: 48px;
     margin: 5px;
     padding: 0px 20px;
@@ -184,6 +184,19 @@ form.login {
 
 h1.title{
     text-align: center;
+}
+
+div.icon-container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 0 40px 40px 0;
+    background-color: #707070;
+    width: 40px;
+    height: 48px;
+    margin-top: 5px;
+    margin-left: -25px;
+    z-index: 99;
 }
 /*DASHBOARD STYLES*/
 
