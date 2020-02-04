@@ -259,10 +259,35 @@ div.transaction-card {
 
 p.date {
     font-size: 18px;
-    margin: 0px;
+    margin: 20px 0 0 0;
     font-weight: 200;
     text-align: left;
 }
+
+div.categories-card {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    background-color: #4ECCA3;
+    width: 250px;
+    height: 50px;
+    padding: 5px;
+    margin: 10px;
+}
+
+div.trends-card {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    background-color: #EDCA6C;
+    width: 250px;
+    height: 50px;
+    padding: 5px;
+    margin: 10px;
+}
+
 
 /*ACCOUNTS STYLES*/
 
