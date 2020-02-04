@@ -4,6 +4,7 @@ import { PersistGate } from 'redux-persist/lib/integration/react';
 import { mapping, dark } from '@eva-design/eva';
 import { EvaIconsPack } from '@ui-kitten/eva-icons';
 import { ApplicationProvider, IconRegistry } from 'react-native-ui-kitten';
+import { StatusBar } from 'react-native';
 import createStore from './redux';
 import RootScreen from './containers/rootScreen';
 import SplashScreen from './containers/splashScreen';
@@ -12,6 +13,7 @@ const { store, persistor } = createStore();
 
 export default class App extends Component {
   render() {
+    StatusBar.setBarStyle('light-content', true);
     return (
       /**
        * @see https://github.com/reduxjs/react-redux/blob/master/docs/api/Provider.md

@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
+import { TouchableOpacity } from 'react-native';
 import { connect } from 'react-redux';
 import { Colors, Fonts } from '../theme';
 
@@ -8,12 +9,18 @@ class HomeScreen extends Component {
     // Get user data.
   }
 
+  onPressAccount = () => {
+    alert('hello!');
+  };
+
   render() {
     return (
       <Container>
-        <Card>
-          <StyledText>Account Info</StyledText>
-        </Card>
+        <TouchableOpacity onPress={this.onPressAccount}>
+          <Card>
+            <StyledText>Account Info</StyledText>
+          </Card>
+        </TouchableOpacity>
         <Card>
           <StyledText>Link an Account</StyledText>
         </Card>
