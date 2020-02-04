@@ -349,4 +349,23 @@ div.category-card {
     padding: 5px;
     margin: 10px;
     background-color: #707070;
+    cursor: pointer;
 }
+
+p.date-carousel {
+    font-size: 24px;
+    margin: 0 10px;
+    font-weight: 200;
+}
+
+span.arrow {
+    color: white;
+    margin: 5px;
+}
+
+img.pie-chart {
+    height: 330px;
+    width: 420px;
+    margin: 30px 0 0 0;
+}
+
