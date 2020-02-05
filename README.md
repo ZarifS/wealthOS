@@ -33,3 +33,16 @@ Pasoon Azimi, 8215497
 
 ## WIKI 
 More information on the project archeticture can be found on the Wiki.
+
+## UI Design System
+
+### Color Palette
+![Image of Color Palette](./mockups/ui-design-images/color-ui.png)
+### Fonts and Type Scale
+![Image of Font and Type Scale](./mockups/ui-design-images/font-ui.png)
+### Icons
+![Image of Icons](./mockups/ui-design-images/icons-ui.png)
+### Buttons and Form Elements
+![Image of Icons](./mockups/ui-design-images/buttons-forms-ui.png)
+### UI Components
+![Image of Components](./mockups/ui-design-images/components-ui.png)
