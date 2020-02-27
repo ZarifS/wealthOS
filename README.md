@@ -191,9 +191,9 @@ Each database follows the mongoose model principles.
       }
     }
 
-### API Documentation
+## API Documentation
 
-- The api documentation can be found here: [https://zarifs.github.io/wealth-x/](https://zarifs.github.io/wealth-x/)
+- The api documentation can be found here: [https://zarifs.github.io/wealthOS/](https://zarifs.github.io/wealthOS/)
 - Utilizes Insomnia to test and run API requests and Insomnia-Documenter to generate static HTML to display documentation
 
 
