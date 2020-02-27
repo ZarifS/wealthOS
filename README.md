@@ -34,6 +34,38 @@ Pasoon Azimi, 8215497
 ## WIKI 
 More information on the project archeticture can be found on the Wiki.
 
+## Installation and Deployment Instructions (Getting Started)
+
+Clone the repo into your workspace,
+
+Install watchman and react-native,
+`brew install watchman`
+
+`sudo npm install -g react-native-cli`
+
+If you are on Windows download and install Android studio,
+
+If you are on Mac download and install Xcode, and install the command line tools,
+`xcode-select --install`
+
+Go into xcode preferences -> Locations and make sure xcode version is shown beside command line tools,
+
+Cd into wealth-OS-server,
+`npm install`
+`npm start`
+
+Cd into wealth-OS-app,
+`npm install`
+`npm start`
+
+Cd into ios,
+`pod update`
+`pod install`
+
+Cd into wealth-OS-app,
+`react-native run-ios` or `react-native run-android`
+
+
 ## UI Design System
 
 ### Color Palette
