@@ -18,8 +18,9 @@ export function* authUser({ payload }) {
     console.log(response.token);
     yield put(actions.authUserSuccess(response.token));
   } catch (error) {
-    const message =
-      error.response.data.message || 'There was an error while authing user informations.';
+    let message = '';
+    if (error.response !== undefined) message = error.response.data.message;
+    else message = 'There was an error while authing user informations.';
     console.log(message);
     yield put(actions.authUserFailure(message));
   }
