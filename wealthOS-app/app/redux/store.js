@@ -30,8 +30,8 @@ export default (rootReducer, rootSaga) => {
   // Connect the sagas to the redux store
   const sagaMiddleware = createSagaMiddleware();
   middleware.push(sagaMiddleware);
-
   enhancers.push(applyMiddleware(...middleware));
+
   // Redux persist
   const persistedReducer = persistReducer(persistConfig, rootReducer);
 

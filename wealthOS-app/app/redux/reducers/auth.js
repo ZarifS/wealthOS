@@ -6,27 +6,26 @@
 
 import { types } from '../actions/auth';
 
-// TO-DO: Change "fetch" to login/authenticate
+// Not sure why these are here..
+// export const authUserLoading = (state) => ({
+//   ...state,
+//   authIsLoading: true,
+//   userErrorMessage: null,
+// });
 
-export const authUserLoading = (state) => ({
-  ...state,
-  authIsLoading: true,
-  userErrorMessage: null,
-});
+// export const authUserSuccess = (state, { token }) => ({
+//   ...state,
+//   token: token,
+//   authIsLoading: false,
+//   authErrorMessage: null,
+// });
 
-export const authUserSuccess = (state, { token }) => ({
-  ...state,
-  token: token,
-  authIsLoading: false,
-  authErrorMessage: null,
-});
-
-export const authUserFailure = (state, { errorMessage }) => ({
-  ...state,
-  token: null,
-  authIsLoading: false,
-  authErrorMessage: errorMessage,
-});
+// export const authUserFailure = (state, { errorMessage }) => ({
+//   ...state,
+//   token: null,
+//   authIsLoading: false,
+//   authErrorMessage: errorMessage,
+// });
 
 /**
  * The initial values for the redux state.
