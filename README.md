@@ -34,16 +34,6 @@ Pasoon Azimi, 8215497
 ## WIKI 
 More information on the project archeticture can be found on the Wiki.
 
-# Technical Overview (Client)
-
-- The application is built on React Native
-- Uses Redux and Redux Saga to manage async actions
-- Uses react-navigation for navigating between pages
-- Uses styled-components for styling
-- Uses ESLINT for linting and code-style management
-- Uses axios to connect/send to http requests
-- Built using a boilerplate for react-native: [https://github.com/thecodingmachine/react-native-boilerplate](https://github.com/thecodingmachine/react-native-boilerplate)
-
 ## Installation and Deployment Instructions (Getting Started)
 
 - Install watchman and react-native
@@ -85,9 +75,19 @@ More information on the project archeticture can be found on the Wiki.
 - To run lint run `npm lint` and to fix linting problems run `npm run lint-fix`
 - To run prettier (run before linting) run `npm run prettier-fix` to write to files.
 
-# Project Components
+# Technical Overview (Client)
 
-## Overview
+- The application is built on React Native
+- Uses Redux and Redux Saga to manage async actions
+- Uses react-navigation for navigating between pages
+- Uses styled-components for styling
+- Uses ESLINT for linting and code-style management
+- Uses axios to connect/send to http requests
+- Built using a boilerplate for react-native: [https://github.com/thecodingmachine/react-native-boilerplate](https://github.com/thecodingmachine/react-native-boilerplate)
+
+## Project Components
+
+### Overview
 ```
     wealthOS-app/
     	__tests__/
@@ -115,25 +115,25 @@ More information on the project archeticture can be found on the Wiki.
     	package.json
     	..other config files.
 ```
-## android/
+### android/
 
 - holds all the code for the android codebase
 - has the gradle file which sometimes needs to be changed
 - will need to open this folder with android studio to make android specific changes, otherwise do not edit.
 
-## ios/
+### ios/
 
 - holds all the code for the ios codebase
 - includes the xcode files which need to be changed when adding new dependencies, otherwise do not edit.
 - includes the `Pods/` directory which handles linking most of the time
 
-## app/
+### app/
 
 - This is the directory for the source code of the application.
 - All ios and Android code is generated from this folder.
 - This folder contains all javascript code.
 
-## app.js
+### app.js
 
 - This is the file that sets up the application, the redux store, redux-persist and react-navigation.
 ```
@@ -156,11 +156,11 @@ More information on the project archeticture can be found on the Wiki.
       }
     }
 ```
-## assets
+### assets
 
 - This directory contains all the assets files (i.e. images, audio files or videos...) used by the application.
 
-## components
+### components
 
 - This directory contains all the dumb components
 - These include all components which can be reused throughout the app and which do not have any access to the store.
@@ -190,7 +190,7 @@ More information on the project archeticture can be found on the Wiki.
       }
     }
 ```
-## containers
+### containers
 
 - This contains the screens of the application
 - A screen can connect to the redux store
@@ -242,7 +242,7 @@ More information on the project archeticture can be found on the Wiki.
 ```
 - What this screen does is initialize the navigation so all other screens can be navigated to using the navigation service
 
-## navigators
+### navigators
 
 - This folder holds the appNavigator.js which sets up the navigation scheme for `react-navigation`
 - The application uses a stack navigation
@@ -290,7 +290,7 @@ More information on the project archeticture can be found on the Wiki.
             />
     ...
 ```
-## redux
+### redux
 
 - This folder is broken down into `actions/` and `reducers/`  an `index.js` file to combine our reducers and configure our final store, and a `store.js` file to create our store.
 
@@ -456,7 +456,7 @@ More information on the project archeticture can be found on the Wiki.
 ```
 - This function is then referenced in the `App.js` file to pass the store into the `<Provider store={store}>` component and pass in the persistor in the `<PersistGate loading={<SplashScreen />} persistor={persistor}>` component.
 
-## sagas
+### sagas
 
 - This directory contains the sagas of the application. Sagas will for example connect to an API to fetch data, perform actions, etc.
 - Sagas are a redux extension which basically allows the application to do async calls using dispatch in a clean and predictable manner
@@ -513,7 +513,7 @@ More information on the project archeticture can be found on the Wiki.
 ```
 - For example when the type defined in `redux/actions/startUp` called `START_UP` is sent to the root, the function will call the startup saga function
 
-## services
+### services
 
 - This directory contains application services, for example services to connect the application to APIs
 - Having the services directory helps define all API calls and connections to a the API service and allows other places in the app to use it easily without having to import any other packages
@@ -559,7 +559,7 @@ More information on the project archeticture can be found on the Wiki.
 ```
 - Here the call function call the `authUser` api function available from the service with email and password, the service does the api call and then returns the response/error to the saga.
 
-## theme
+### theme
 
 - This folder holds the styling and theming components for the app
 - An example is the `colors.js` file which includes the color scheme for the app
@@ -692,7 +692,7 @@ Each database follows the mongoose model principles.
 
 ## ItemLink Model
 
-## Overview
+### Overview
 
 - This model is used primarily for webhooks sent from Plaids API
 - When a webhook is sent it includes the following information
