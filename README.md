@@ -18,11 +18,10 @@
   * [Debugging App](#debugging-app)
   * [VSCode and ESLint/Prettier Setup](#vscode-and-eslint-prettier-setup)
 - [Technical Overview (Client)](#technical-overview--client-)
-  * [Project Components](#project-components)
-    + [Overview](#overview)
-    + [android/](#android-)
-    + [ios/](#ios-)
-    + [app/](#app-)
+  * [Overview](#overview)
+  * [android/](#android-)
+  * [ios/](#ios-)
+  * [app/](#app-)
     + [app.js](#appjs)
     + [assets](#assets)
     + [components](#components)
@@ -140,9 +139,7 @@ More information on the project archeticture can be found on the Wiki.
 - Uses axios to connect/send to http requests
 - Built using a boilerplate for react-native: [https://github.com/thecodingmachine/react-native-boilerplate](https://github.com/thecodingmachine/react-native-boilerplate)
 
-## Project Components
-
-### Overview
+## Overview
 ```
     wealthOS-app/
     	__tests__/
@@ -170,19 +167,19 @@ More information on the project archeticture can be found on the Wiki.
     	package.json
     	..other config files.
 ```
-### android/
+## android/
 
 - holds all the code for the android codebase
 - has the gradle file which sometimes needs to be changed
 - will need to open this folder with android studio to make android specific changes, otherwise do not edit.
 
-### ios/
+## ios/
 
 - holds all the code for the ios codebase
 - includes the xcode files which need to be changed when adding new dependencies, otherwise do not edit.
 - includes the `Pods/` directory which handles linking most of the time
 
-### app/
+## app/
 
 - This is the directory for the source code of the application.
 - All ios and Android code is generated from this folder.
