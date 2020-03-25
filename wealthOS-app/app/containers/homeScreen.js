@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
-import { TouchableOpacity } from 'react-native';
 import { connect } from 'react-redux';
 import { Colors, Fonts } from '../theme';
 
@@ -16,20 +15,7 @@ class HomeScreen extends Component {
   render() {
     return (
       <Container>
-        <TouchableOpacity onPress={this.onPressAccount}>
-          <Card>
-            <StyledText>Account Info</StyledText>
-          </Card>
-        </TouchableOpacity>
-        <Card>
-          <StyledText>Link an Account</StyledText>
-        </Card>
-        <Card>
-          <StyledText>Transactions</StyledText>
-        </Card>
-        <Card>
-          <StyledText>Balances</StyledText>
-        </Card>
+        <StyledText>Hello to Dashboard Page</StyledText>
       </Container>
     );
   }
@@ -64,5 +50,5 @@ const Card = styled.View`
 
 const StyledText = styled.Text`
   color: ${Colors.onSurface};
-  font-size: ${Fonts.h3};
+  font-size: ${Fonts.regular};
 `;
