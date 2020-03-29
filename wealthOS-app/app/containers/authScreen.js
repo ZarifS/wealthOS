@@ -64,7 +64,7 @@ class AuthScreen extends React.Component {
         <Button primary title="Continue" onPress={this.onSubmit} />
         <Divider />
         <Button title="Sign Up" />
-        {this.state.authIsLoading && (
+        {this.props.authIsLoading && (
           <IndicatorContainer>
             <ActivityIndicator size="large" color={Colors.primary} />
           </IndicatorContainer>
