@@ -17,6 +17,13 @@ const authUser = async (email, password) => {
   return result.data;
 };
 
+const fetchUser = async (token) => {
+  console.log('Calling /user with:', token);
+  const result = await api.get('/user', { headers: { Authorization: 'Bearer ' + token } });
+  return result.data;
+};
+
 export default {
   authUser,
+  fetchUser,
 };

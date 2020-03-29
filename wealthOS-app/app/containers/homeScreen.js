@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
-import { TouchableOpacity } from 'react-native';
 import { connect } from 'react-redux';
+import Button from '../components/button';
 import { Colors, Fonts } from '../theme';
 
 class HomeScreen extends Component {
@@ -9,28 +9,19 @@ class HomeScreen extends Component {
     // Get user data.
   }
 
-  onPressAccount = () => {
-    alert('hello!');
-  };
+  getData() {
+    alert('Getting data...');
+  }
 
   render() {
     return (
-      <Container>
-        <TouchableOpacity onPress={this.onPressAccount}>
-          <Card>
-            <StyledText>Account Info</StyledText>
-          </Card>
-        </TouchableOpacity>
-        <Card>
-          <StyledText>Link an Account</StyledText>
-        </Card>
-        <Card>
-          <StyledText>Transactions</StyledText>
-        </Card>
-        <Card>
-          <StyledText>Balances</StyledText>
-        </Card>
-      </Container>
+      <Screen>
+        <Container>
+          <Header>Balances</Header>
+          <StyledText>Net Worth:</StyledText>
+          <Button title="Get Data" primary onPress={this.getData} />
+        </Container>
+      </Screen>
     );
   }
 }
@@ -41,28 +32,25 @@ const mapStateToProps = (state) => ({
 
 export default connect(mapStateToProps)(HomeScreen);
 
-const Container = styled.View`
-  align-items: center;
-  align-content: center;
+const Screen = styled.SafeAreaView`
+  background-color: ${Colors.background};
   display: flex;
   flex: 1;
-  justify-content: center;
-  flex-direction: column;
-  background-color: ${Colors.background};
 `;
 
-const Card = styled.View`
-  background-color: ${Colors.surface};
-  width: 350;
-  height: 100;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-top: 5;
-  margin-bottom: 5;
+const Container = styled.View`
+  padding-left: 20px;
+  padding-right: 20px;
+  padding-top: 10px;
+`;
+
+const Header = styled.Text`
+  color: ${Colors.onSurface};
+  font-size: ${Fonts.large};
+  font-weight: bold;
 `;
 
 const StyledText = styled.Text`
   color: ${Colors.onSurface};
-  font-size: ${Fonts.h3};
+  font-size: ${Fonts.regular};
 `;

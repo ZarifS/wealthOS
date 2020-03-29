@@ -1,21 +1,28 @@
 import React, { Component } from 'react';
-import { Icon, Input as KittenInput } from 'react-native-ui-kitten';
+import styled from 'styled-components';
+import { Colors, Fonts } from '../theme';
 
 export default class Input extends Component {
-  renderIcon = (style) => {
-    return <Icon {...style} name={this.props.iconName} />;
-  };
-
   render() {
     return (
-      <KittenInput
+      <StyledInput
         value={this.props.value}
         placeholder={this.props.placeholder}
-        icon={this.props.renderIconFunction ? this.props.renderIconFunction : this.renderIcon}
-        onChangeText={(val) => this.props.onChange(this.props.name, val)}
-        onIconPress={this.props.onIconPress}
+        onChangeText={(val) => this.props.onChangeText(this.props.name, val)}
         secureTextEntry={this.props.secureTextEntry}
+        placeholderTextColor={Colors.onSurface}
       />
     );
   }
 }
+
+const StyledInput = styled.TextInput`
+  background-color: ${Colors.surface};
+  color: ${Colors.onSurface};
+  padding-left: 20px;
+  width: 295px;
+  height: 48px;
+  margin: 5px;
+  border-radius: 30px;
+  font-size: ${Fonts.medium};
+`;
