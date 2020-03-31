@@ -32,7 +32,7 @@ class HomeScreen extends Component {
     const balanceCards = this.props.accounts.map((account) => {
       return (
         <BalanceCard
-          key={account.id}
+          key={account.accountID}
           name={account.name}
           balance={account.balance}
           mask={account.mask}
