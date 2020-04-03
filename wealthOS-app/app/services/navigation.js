@@ -1,4 +1,4 @@
-import { NavigationActions, StackActions } from 'react-navigation';
+import { NavigationActions, StackActions, SwitchActions } from 'react-navigation';
 
 /**
  * The navigation is implemented as a service so that it can be used outside of components, for example in sagas.
@@ -33,6 +33,17 @@ function navigate(routeName, params) {
 /**
  * Call this function when you want to navigate to a specific route AND reset the navigation history.
  *
+ * The jumpTo action can be used to jump to an existing route in the switch navigator.
+ *
+ * @param routeName The name of the route to navigate to. Routes are defined in RootScreen using createStackNavigator() or createTabNavigator()
+ */
+function jumpTo(routeName) {
+  navigator.dispatch(SwitchActions.jumpTo({ routeName }));
+}
+
+/**
+ * Call this function when you want to navigate to a specific route AND reset the navigation history.
+ *
  * That means the user cannot go back. This is useful for example to redirect from a splashscreen to
  * the main screen: the user should not be able to go back to the splashscreen.
  *
@@ -57,5 +68,6 @@ function navigateAndReset(routeName, params) {
 export default {
   navigate,
   navigateAndReset,
+  jumpTo,
   setTopLevelNavigator,
 };

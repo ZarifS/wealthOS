@@ -18,9 +18,10 @@ export function* startup() {
 
   const token = yield select(getAuthToken);
   if (token) {
+    console.log('User is logged in, navigating to Dashboard.');
     // User is already logged in. - Also do some check to see if token is valid etc.
-    NavigationService.navigateAndReset('HomeScreen');
+    NavigationService.navigate('HomeScreen');
   }
   // User isn't logged in yet, ask for authentication
-  else NavigationService.navigateAndReset('AuthScreen');
+  else NavigationService.navigate('AuthScreen');
 }
