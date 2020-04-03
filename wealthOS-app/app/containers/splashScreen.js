@@ -1,34 +1,32 @@
 import React from 'react';
-import { Text, View, StyleSheet } from 'react-native';
-import { Colors, ApplicationStyles } from '../theme';
+import styled from 'styled-components';
+import { Colors } from '../theme';
 
 export default class SplashScreen extends React.Component {
   render() {
     return (
-      <View style={styles.container}>
-        <View style={styles.logo}>
-          {/* You will probably want to insert your logo here */}
-          <Text>LOGO</Text>
-        </View>
-      </View>
+      <Container>
+        <Logo>
+          wealth<Accent>OS</Accent>
+        </Logo>
+      </Container>
     );
   }
 }
 
-const styles = StyleSheet.create({
-  container: {
-    ...ApplicationStyles.screen.container,
-    alignItems: 'center',
-    backgroundColor: Colors.primary,
-    display: 'flex',
-    justifyContent: 'center',
-  },
-  logo: {
-    alignItems: 'center',
-    backgroundColor: 'white',
-    display: 'flex',
-    height: 70,
-    justifyContent: 'center',
-    width: 70,
-  },
-});
+const Container = styled.View`
+  display: flex;
+  flex: 1;
+  align-items: center;
+  background-color: ${Colors.background};
+  justify-content: center;
+`;
+
+const Logo = styled.Text`
+  color: ${Colors.onBackground};
+  font-size: 34px;
+`;
+
+const Accent = styled.Text`
+  color: ${Colors.primary};
+`;
