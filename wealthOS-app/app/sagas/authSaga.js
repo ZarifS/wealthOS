@@ -21,5 +21,5 @@ export function* authUser({ payload }) {
 }
 
 export function* authUserSuccess() {
-  NavigationService.navigate('HomeScreen');
+  NavigationService.navigate('Main');
 }

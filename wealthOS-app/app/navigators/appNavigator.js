@@ -12,22 +12,6 @@ import HomeScreen from '../containers/homeScreen';
  * @see https://reactnavigation.org/docs/en/hello-react-navigation.html#creating-a-stack-navigator
  */
 
-const SplashStack = createStackNavigator({
-  // Create the application routes here (the key is the route name, the value is the target screen)
-  // See https://reactnavigation.org/docs/en/stack-navigator.html#routeconfigs
-  SplashScreen: {
-    screen: SplashScreen,
-    navigationOptions: { headerShown: false },
-  },
-  AuthScreen: {
-    screen: AuthScreen,
-    navigationOptions: { headerShown: false },
-  },
-  initialRouteName: 'SplashScreen',
-  headerMode: 'float',
-  // See https://reactnavigation.org/docs/
-});
-
 const HomeStack = createStackNavigator(
   {
     HomeScreen: {
@@ -54,7 +38,6 @@ const HomeStack = createStackNavigator(
 
 const TabNavigator = createBottomTabNavigator(
   {
-    Splash: { screen: SplashStack, navigationOptions: { tabBarVisible: false } },
     Home: HomeStack,
   },
   {
@@ -72,4 +55,20 @@ const TabNavigator = createBottomTabNavigator(
   }
 );
 
-export default createAppContainer(TabNavigator);
+const MainStackNavigator = createStackNavigator({
+  // Create the application routes here (the key is the route name, the value is the target screen)
+  // See https://reactnavigation.org/docs/en/stack-navigator.html#routeconfigs
+  SplashScreen: {
+    screen: SplashScreen,
+    navigationOptions: { headerShown: false },
+  },
+  AuthScreen: {
+    screen: AuthScreen,
+    navigationOptions: { headerShown: false },
+  },
+  Main: { screen: TabNavigator, navigationOptions: { headerShown: false } },
+  initialRouteName: 'SplashScreen',
+  // See https://reactnavigation.org/docs/
+});
+
+export default createAppContainer(MainStackNavigator);
