@@ -20,7 +20,7 @@ export function* startup() {
   if (token) {
     console.log('User is logged in, navigating to Dashboard.');
     // User is already logged in. - Also do some check to see if token is valid etc.
-    NavigationService.navigate('HomeScreen');
+    NavigationService.navigate('Main');
   }
   // User isn't logged in yet, ask for authentication
   else NavigationService.navigate('AuthScreen');
