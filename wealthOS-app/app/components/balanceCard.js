@@ -9,7 +9,7 @@ export default class BalanceCard extends Component {
         <Container>
           <AccountInfo>
             <Name>{this.props.name}</Name>
-            <Mask>**** ** {this.props.mask}</Mask>
+            <Mask>**** **** {this.props.mask}</Mask>
             <Date>Last Updated: {this.props.lastUpdated}</Date>
           </AccountInfo>
           <Balance>${this.props.balance}</Balance>
@@ -22,7 +22,7 @@ export default class BalanceCard extends Component {
 const Card = styled.View`
   width: 100%;
   height: 100px;
-  background-color: ${(props) => (props.color ? props.color : ${Colors.surface})};
+  background-color: ${(props) => (props.color ? props.color : `${Colors.surface}`)};
   display: flex;
   padding: 10px;
   justify-content: center;

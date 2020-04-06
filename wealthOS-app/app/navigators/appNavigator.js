@@ -1,16 +1,162 @@
+import React from 'react';
 import { createAppContainer } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
+import { createBottomTabNavigator } from 'react-navigation-tabs';
+import Icon from 'react-native-vector-icons/FontAwesome5';
 import { Colors } from '../theme';
 import AuthScreen from '../containers/authScreen';
 import SplashScreen from '../containers/splashScreen';
 import HomeScreen from '../containers/homeScreen';
+import ProfileScreen from '../containers/profileScreen';
+import AccountsScreen from '../containers/accountsScreen';
+import BudgetsScreen from '../containers/budgetsScreen';
+import TransactionsScreen from '../containers/transactionsScreen';
 
 /**
  * The root screen contains the application's navigation.
  *
  * @see https://reactnavigation.org/docs/en/hello-react-navigation.html#creating-a-stack-navigator
  */
-const StackNavigator = createStackNavigator(
+
+/**
+ * Config options for stacks such as header
+ */
+const StackConfig = {
+  headerMode: 'float',
+  defaultNavigationOptions: {
+    headerStyle: {
+      backgroundColor: `${Colors.surface}`,
+      borderBottomColor: `transparent`,
+      shadowColor: 'black',
+      shadowOpacity: 0.1,
+      shadowOffset: { width: 0, height: 5 },
+      shadowRadius: 4,
+    },
+    headerTitleStyle: {
+      color: `${Colors.onBackground}`,
+      fontSize: 16,
+    },
+  },
+};
+
+const DashboardStack = createStackNavigator(
+  {
+    DashboardScreen: {
+      screen: HomeScreen,
+      navigationOptions: { title: 'Dashboard' },
+    },
+  },
+  StackConfig
+);
+
+const ProfileStack = createStackNavigator(
+  {
+    ProfileScreen: {
+      screen: ProfileScreen,
+      navigationOptions: { title: 'Profile' },
+    },
+  },
+  StackConfig
+);
+
+const AccountsStack = createStackNavigator(
+  {
+    AccountsScreen: {
+      screen: AccountsScreen,
+      navigationOptions: { title: 'Accounts' },
+    },
+  },
+  StackConfig
+);
+
+const TransactionsStack = createStackNavigator(
+  {
+    TransactionsScreen: {
+      screen: TransactionsScreen,
+      navigationOptions: { title: 'Transactions' },
+    },
+  },
+  StackConfig
+);
+
+const BudgetsStack = createStackNavigator(
+  {
+    BudgetsScreen: {
+      screen: BudgetsScreen,
+      navigationOptions: { title: 'Budgets' },
+    },
+  },
+  StackConfig
+);
+
+const TabNavigator = createBottomTabNavigator(
+  {
+    Transactions: {
+      screen: TransactionsStack,
+      navigationOptions: {
+        // eslint-disable-next-line react/display-name
+        tabBarIcon: ({ focused, tintColor: color }) => <Icon name="sync" size={22} color={color} />,
+      },
+    },
+    Accounts: {
+      screen: AccountsStack,
+      navigationOptions: {
+        // eslint-disable-next-line react/display-name
+        tabBarIcon: ({ focused, tintColor: color }) => (
+          <Icon name="wallet" size={22} color={color} />
+        ),
+      },
+    },
+    Dashboard: {
+      screen: DashboardStack,
+      navigationOptions: {
+        // eslint-disable-next-line react/display-name
+        tabBarIcon: ({ focused, tintColor: color }) => (
+          <Icon name="compass" size={22} color={color} solid />
+        ),
+      },
+    },
+    Budgets: {
+      screen: BudgetsStack,
+      navigationOptions: {
+        // eslint-disable-next-line react/display-name
+        tabBarIcon: ({ focused, tintColor: color }) => (
+          <Icon name="piggy-bank" size={22} color={color} solid />
+        ),
+      },
+    },
+    Profile: {
+      screen: ProfileStack,
+      navigationOptions: {
+        // eslint-disable-next-line react/display-name
+        tabBarIcon: ({ focused, tintColor: color }) => (
+          <Icon name="user" size={22} color={color} solid />
+        ),
+      },
+    },
+  },
+  {
+    initialRouteName: 'Dashboard',
+    tabBarOptions: {
+      activeTintColor: `${Colors.primary}`,
+      labelStyle: {
+        fontSize: 10,
+        textAlign: 'center',
+      },
+      style: {
+        backgroundColor: `${Colors.surface}`,
+        borderTopColor: `transparent`,
+        height: 60,
+        shadowColor: 'black',
+        shadowOpacity: 0.1,
+        shadowOffset: { width: 0, height: -5 },
+        shadowRadius: 4,
+      },
+    },
+  }
+);
+
+const MainStackNavigator = createStackNavigator(
   {
     // Create the application routes here (the key is the route name, the value is the target screen)
     // See https://reactnavigation.org/docs/en/stack-navigator.html#routeconfigs
@@ -22,27 +168,10 @@ const StackNavigator = createStackNavigator(
       screen: AuthScreen,
       navigationOptions: { headerShown: false },
     },
-    HomeScreen: {
-      screen: HomeScreen,
-      navigationOptions: { title: 'Dashboard' },
-    },
+    Main: { screen: TabNavigator, navigationOptions: { headerShown: false } },
+    // See https://reactnavigation.org/docs/
   },
-  {
-    // By default the application will show the splash screen
-    initialRouteName: 'SplashScreen',
-    // See https://reactnavigation.org/docs/en/stack-navigator.html#stacknavigatorconfig
-    headerMode: 'float',
-    defaultNavigationOptions: {
-      headerStyle: {
-        backgroundColor: `${Colors.surface}`,
-      },
-      headerTitleStyle: {
-        color: `${Colors.onSurface}`,
-        fontWeight: 'bold',
-        textTransform: 'uppercase',
-      },
-    },
-  }
+  { initialRouteName: 'SplashScreen' }
 );
 
-export default createAppContainer(StackNavigator);
+export default createAppContainer(MainStackNavigator);

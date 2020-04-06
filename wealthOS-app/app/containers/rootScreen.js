@@ -9,7 +9,7 @@ class RootScreen extends Component {
   componentDidMount() {
     // Run the startup saga when the application is starting
     console.log('App has started! Running startup actions..');
-    this.props.startup();
+    this.props.dispatch(StartupActions.startUp());
   }
 
   render() {
@@ -32,8 +32,4 @@ const styles = StyleSheet.create({
   },
 });
 
-const mapDispatchToProps = (dispatch) => ({
-  startup: () => dispatch(StartupActions.startUp()),
-});
-
-export default connect(null, mapDispatchToProps)(RootScreen);
+export default connect()(RootScreen);

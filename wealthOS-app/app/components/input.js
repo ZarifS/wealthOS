@@ -8,7 +8,9 @@ export default class Input extends Component {
       <StyledInput
         value={this.props.value}
         placeholder={this.props.placeholder}
-        onChangeText={(val) => this.props.onChangeText(this.props.name, val)}
+        onChangeText={(val) => {
+          this.props.onChangeText(this.props.name, val);
+        }}
         secureTextEntry={this.props.secureTextEntry}
         placeholderTextColor={Colors.onSurface}
       />

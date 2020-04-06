@@ -21,7 +21,7 @@ const persistConfig = {
   /**
    * Blacklist state that we do not need/want to persist
    */
-  // blacklist: ['auth'],
+  blacklist: ['user'],
 };
 
 export default (rootReducer, rootSaga) => {
@@ -42,6 +42,14 @@ export default (rootReducer, rootSaga) => {
 
   // Kick off the root saga
   sagaMiddleware.run(rootSaga);
+
+  if (module.hot) {
+    module.hot.accept(rootReducer, () => {
+      // This fetch the new state of the above reducers.
+      const nextRootReducer = rootReducer.default;
+      store.replaceReducer(persistReducer(persistConfig, nextRootReducer));
+    });
+  }
 
   return { store, persistor };
 };

@@ -2,13 +2,11 @@ import React from 'react';
 import styled from 'styled-components';
 import { Colors } from '../theme';
 
-export default class SplashScreen extends React.Component {
+export default class AccountsScreen extends React.Component {
   render() {
     return (
       <Container>
-        <Logo>
-          wealth<Accent>OS</Accent>
-        </Logo>
+        <Logo>Accounts Screen</Logo>
       </Container>
     );
   }
@@ -25,8 +23,4 @@ const Container = styled.View`
 const Logo = styled.Text`
   color: ${Colors.onBackground};
   font-size: 34px;
-`;
-
-const Accent = styled.Text`
-  color: ${Colors.primary};
 `;

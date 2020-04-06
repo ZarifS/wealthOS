@@ -9,8 +9,14 @@ import Button from '../components/button';
 import { Colors, Fonts } from '../theme';
 
 class HomeScreen extends Component {
+  constructor(props) {
+    super(props);
+    console.log(this.props);
+  }
+
   componentDidMount() {
     // Fetch user data
+    console.log('Data was Refreshed.');
     this.props.dispatch(UserActions.fetchUser(this.props.token));
   }
 
@@ -32,7 +38,7 @@ class HomeScreen extends Component {
     const balanceCards = this.props.accounts.map((account) => {
       return (
         <BalanceCard
-          key={account.id}
+          key={account.accountID}
           name={account.name}
           balance={account.balance}
           mask={account.mask}
@@ -41,7 +47,7 @@ class HomeScreen extends Component {
       );
     });
     const content = (
-      <Container>
+      <Container contentContainerStyle={{ paddingBottom: 60 }}>
         <Header>Balances</Header>
         <Balances>{balanceCards}</Balances>
         <ButtonsContainer>
@@ -58,7 +64,7 @@ const mapStateToProps = (state) => ({
   token: state.auth.token,
   userIsLoading: state.user.fetchUserIsLoading,
   user: state.user.user,
-  accounts: state.user.user.accounts.CIBC,
+  accounts: state.user.accounts,
 });
 
 export default connect(mapStateToProps)(HomeScreen);
@@ -67,6 +73,7 @@ const Screen = styled.SafeAreaView`
   background-color: ${Colors.background};
   display: flex;
   flex: 1;
+  padding-top: 10px;
 `;
 
 const StyledText = styled.Text`
