@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { connect } from 'react-redux';
 import { ActivityIndicator } from 'react-native';
+import NavigationService from '../services/navigation';
 import { actions as AuthActions } from '../redux/actions/auth';
 import Input from '../components/input';
 import Button from '../components/button';
@@ -32,7 +33,7 @@ class AuthScreen extends React.Component {
   };
 
   onSignUp = () => {
-    alert('Feature not implemented!');
+    alert('Here');
   };
 
   render() {
@@ -63,7 +64,7 @@ class AuthScreen extends React.Component {
         <Divider />
         <Button primary title="Continue" onPress={this.onSubmit} />
         <Divider />
-        <Button title="Sign Up" />
+        <Button title="Sign Up" onPress={this.onSignUp} />
         {this.props.authIsLoading && (
           <IndicatorContainer>
             <ActivityIndicator size="large" color={Colors.primary} />

@@ -33,7 +33,7 @@ const StackConfig = {
       shadowRadius: 4,
     },
     headerTitleStyle: {
-      color: `${Colors.onSurface}`,
+      color: `${Colors.onBackground}`,
       fontSize: 16,
     },
   },
@@ -95,9 +95,7 @@ const TabNavigator = createBottomTabNavigator(
       screen: TransactionsStack,
       navigationOptions: {
         // eslint-disable-next-line react/display-name
-        tabBarIcon: ({ focused, tintColor: color }) => (
-          <Icon name="comment" size={30} color={color} solid />
-        ),
+        tabBarIcon: ({ focused, tintColor: color }) => <Icon name="sync" size={22} color={color} />,
       },
     },
     Accounts: {
@@ -105,7 +103,7 @@ const TabNavigator = createBottomTabNavigator(
       navigationOptions: {
         // eslint-disable-next-line react/display-name
         tabBarIcon: ({ focused, tintColor: color }) => (
-          <Icon name="comment" size={30} color={color} />
+          <Icon name="wallet" size={22} color={color} />
         ),
       },
     },
@@ -114,12 +112,28 @@ const TabNavigator = createBottomTabNavigator(
       navigationOptions: {
         // eslint-disable-next-line react/display-name
         tabBarIcon: ({ focused, tintColor: color }) => (
-          <Icon name="comment" size={30} color={color} solid />
+          <Icon name="compass" size={22} color={color} solid />
         ),
       },
     },
-    Budgets: BudgetsStack,
-    Profile: ProfileStack,
+    Budgets: {
+      screen: BudgetsStack,
+      navigationOptions: {
+        // eslint-disable-next-line react/display-name
+        tabBarIcon: ({ focused, tintColor: color }) => (
+          <Icon name="piggy-bank" size={22} color={color} solid />
+        ),
+      },
+    },
+    Profile: {
+      screen: ProfileStack,
+      navigationOptions: {
+        // eslint-disable-next-line react/display-name
+        tabBarIcon: ({ focused, tintColor: color }) => (
+          <Icon name="user" size={22} color={color} solid />
+        ),
+      },
+    },
   },
   {
     initialRouteName: 'Dashboard',
