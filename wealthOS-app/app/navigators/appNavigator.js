@@ -1,6 +1,8 @@
+import React from 'react';
 import { createAppContainer } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
 import { createBottomTabNavigator } from 'react-navigation-tabs';
+import Icon from 'react-native-vector-icons/FontAwesome5';
 import { Colors } from '../theme';
 import AuthScreen from '../containers/authScreen';
 import SplashScreen from '../containers/splashScreen';
@@ -89,9 +91,33 @@ const BudgetsStack = createStackNavigator(
 
 const TabNavigator = createBottomTabNavigator(
   {
-    Transactions: TransactionsStack,
-    Accounts: AccountsStack,
-    Dashboard: DashboardStack,
+    Transactions: {
+      screen: TransactionsStack,
+      navigationOptions: {
+        // eslint-disable-next-line react/display-name
+        tabBarIcon: ({ focused, tintColor: color }) => (
+          <Icon name="comment" size={30} color={color} solid />
+        ),
+      },
+    },
+    Accounts: {
+      screen: AccountsStack,
+      navigationOptions: {
+        // eslint-disable-next-line react/display-name
+        tabBarIcon: ({ focused, tintColor: color }) => (
+          <Icon name="comment" size={30} color={color} />
+        ),
+      },
+    },
+    Dashboard: {
+      screen: DashboardStack,
+      navigationOptions: {
+        // eslint-disable-next-line react/display-name
+        tabBarIcon: ({ focused, tintColor: color }) => (
+          <Icon name="comment" size={30} color={color} solid />
+        ),
+      },
+    },
     Budgets: BudgetsStack,
     Profile: ProfileStack,
   },
@@ -106,7 +132,7 @@ const TabNavigator = createBottomTabNavigator(
       style: {
         backgroundColor: `${Colors.surface}`,
         borderTopColor: `transparent`,
-        height: 50,
+        height: 60,
         shadowColor: 'black',
         shadowOpacity: 0.1,
         shadowOffset: { width: 0, height: -5 },
