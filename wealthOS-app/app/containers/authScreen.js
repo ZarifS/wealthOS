@@ -33,6 +33,7 @@ class AuthScreen extends React.Component {
   };
 
   onSignUp = () => {
+    NavigationService.navigate('RegisterScreen');
     alert('Here');
   };
 
