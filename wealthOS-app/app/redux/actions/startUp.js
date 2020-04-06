@@ -1,8 +1,8 @@
 // Action Types
-const START_UP = 'START_UP';
+export const START_UP = 'START_UP';
 
 // Creators
-const startUp = () => {
+export const startUp = () => {
   return {
     type: START_UP,
     payload: {},

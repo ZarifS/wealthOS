@@ -21,7 +21,7 @@ const persistConfig = {
   /**
    * Blacklist state that we do not need/want to persist
    */
-  blacklist: ['user'],
+  blacklist: ['auth', 'user'],
 };
 
 export default (rootReducer, rootSaga) => {
