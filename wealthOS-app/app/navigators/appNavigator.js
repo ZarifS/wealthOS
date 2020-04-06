@@ -171,7 +171,7 @@ const MainStackNavigator = createStackNavigator(
     Main: { screen: TabNavigator, navigationOptions: { headerShown: false } },
     // See https://reactnavigation.org/docs/
   },
-  { initialRouteName: 'Main' }
+  { initialRouteName: 'SplashScreen' }
 );
 
 export default createAppContainer(MainStackNavigator);

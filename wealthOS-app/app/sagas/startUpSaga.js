@@ -15,7 +15,6 @@ export function* startup() {
 
   // Add more operations you need to do at startup here
   // ...
-
   const token = yield select(getAuthToken);
   if (token) {
     console.log('User is logged in, navigating to Dashboard.');
