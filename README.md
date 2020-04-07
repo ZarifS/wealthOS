@@ -111,9 +111,11 @@ More information on the project archeticture can be found on the Wiki.
 
 ## Running the App
 
-- Make sure you have a simulator installed from XCode
+- Make sure you have a simulator installed from XCode - you need a Mac.
 - Let Metro Bundler run to build the project
 - If bundler is stuck just swipe up to leave the app and then return to it, it should begin rebuilding. Sometimes just clicking reload also does it.
+- Once the app starts on the iPhone simulator and the local server is running for the backend you can login to the app using the credentials: email: jon.snow@gmail.com, password: testing.
+- You will see the app login, fetch the users data from the database and showcase their current balances and bank accounts as stored in the server. This demonstrates the apps connection to the express server and database and basic app functionality.
 
 ## Debugging App
 
