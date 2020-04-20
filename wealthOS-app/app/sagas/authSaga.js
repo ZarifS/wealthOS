@@ -20,6 +20,8 @@ export function* authUser({ payload }) {
   }
 }
 
+// Add register user
+
 export function* authUserSuccess() {
   NavigationService.navigate('Main');
 }

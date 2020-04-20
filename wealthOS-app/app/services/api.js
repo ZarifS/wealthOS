@@ -23,7 +23,14 @@ const fetchUser = async (token) => {
   return result.data;
 };
 
+const registerUser = async (firstName, lastName, email, password, password2) => {
+  console.log('Posting to /auth with user credentials');
+  const result = await api.post('/auth', { firstName, lastName, email, password, password2 });
+  return result.response;
+};
+
 export default {
   authUser,
   fetchUser,
+  registerUser,
 };
