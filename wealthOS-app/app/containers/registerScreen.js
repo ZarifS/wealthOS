@@ -1,31 +1,70 @@
 import React from 'react';
 import styled from 'styled-components';
+import { connect } from 'react-redux';
+import { ActivityIndicator } from 'react-native';
 import AnimatedMultistep from 'react-native-animated-multistep';
+import { actions as AuthActions } from '../redux/actions/auth';
 import { Colors, Fonts } from '../theme';
 import Input from '../components/input';
 import Button from '../components/button';
 
-export default class RegisterScreen extends React.Component {
+class RegisterScreen extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      showWizard: true,
+    };
+  }
+
+  componentDidMount() {
+    this.props.dispatch(AuthActions.registrationBegin());
+  }
+
   /* define the method to be called when the wizard is finished */
   finish = (finalState) => {
     console.log(finalState);
+    const { firstName, lastName, email, password } = finalState;
+    this.props.dispatch(AuthActions.registerUser(firstName, lastName, email, password, password));
+    this.setState({ showWizard: false });
   };
 
   render() {
     return (
       <Screen>
-        <AnimatedMultistep
-          steps={allSteps}
-          comeInOnNext="fadeInLeft"
-          OutOnNext="fadeOutRight"
-          comeInOnBack="fadeInRight"
-          OutOnBack="fadeOut"
-          onFinish={this.finish}
-        />
+        {this.props.showRegistration && (
+          <AnimatedMultistep
+            steps={allSteps}
+            comeInOnNext="fadeInLeft"
+            OutOnNext="fadeOutRight"
+            comeInOnBack="fadeInRight"
+            OutOnBack="fadeOut"
+            onFinish={this.finish}
+          />
+        )}
+        {this.props.registrationErrorMessage && (
+          <StyledText>{this.props.registrationErrorMessage}</StyledText>
+        )}
+        {this.props.registrationSuccess && (
+          <StyledText>You've been successfully registered! Please go back to log in!</StyledText>
+        )}
+        {this.props.registrationIsLoading && (
+          <IndicatorContainer>
+            <ActivityIndicator size="large" color={Colors.primary} />
+          </IndicatorContainer>
+        )}
       </Screen>
     );
   }
 }
+
+const mapStateToProps = (state) => ({
+  registrationIsLoading: state.auth.registrationIsLoading,
+  registrationErrorMessage: state.auth.registrationErrorMessage,
+  showRegistration: state.auth.showRegistration,
+  registrationSuccess: state.auth.registrationSuccess,
+});
+
+export default connect(mapStateToProps)(RegisterScreen);
 
 class NameForm extends React.Component {
   constructor(props) {
@@ -86,11 +125,13 @@ class PasswordForm extends React.Component {
         <StyledSubtext>Your password will need to be at least 8 characters long.</StyledSubtext>
         <Input
           placeholder="Password"
+          secureTextEntry={true}
           value={this.state.password}
           onChangeText={(name, val) => this.setState({ password: val })}
         />
         <Input
           placeholder="Confirm Password"
+          secureTextEntry={true}
           value={this.state.confirmedPassword}
           onChangeText={(name, val) => this.setState({ confirmedPassword: val })}
         />
@@ -178,20 +219,15 @@ class PrivacyForm extends React.Component {
 }
 
 class SubmitForm extends React.Component {
-  submit = () => {
-    const { next, getState } = this.props;
-    const { fistName, lastName, email, password } = getState();
-    console.log(getState());
-  };
-
   render() {
     return (
       <InputContainer>
+        {this.props.registerIsLoading}
         <StyledText>All set! Lets make your account!</StyledText>
         <StyledSubtext>Please go back if you need to change any details.</StyledSubtext>
         <ButtonContainer>
           <Button title="Back" small onPress={this.props.back} />
-          <Button title="Finish" small primary onPress={this.submit} />
+          <Button title="Finish" small primary onPress={this.props.next} />
         </ButtonContainer>
       </InputContainer>
     );
@@ -354,6 +390,17 @@ const InputContainer = styled.View`
   align-items: center;
   align-content: center;
   height: 80%;
+`;
+
+const IndicatorContainer = styled.View`
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.8);
+  align-items: center;
+  justify-content: center;
 `;
 
 const ButtonContainer = styled.View`
