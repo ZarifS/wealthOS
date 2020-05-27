@@ -11,39 +11,32 @@ const LinksSchema = new mongoose.Schema({
 const TransactionsSchema = new mongoose.Schema({
   _id: {
     type: String,
-    required: true,
-    unique: true
+    unique: true,
+    sparse: true
   },
   name: {
-    type: String,
-    required: true
+    type: String
   },
   category: {
-    type: Array,
-    required: true
+    type: Array
   },
   amount: {
-    type: Number,
-    required: true
+    type: Number
   },
   accountID: {
-    type: String,
-    required: true
+    type: String
   },
   date: {
-    type: Date,
-    required: true
+    type: Date
   },
   pending: {
-    type: Boolean,
-    required: true
+    type: Boolean
   },
   pendingID: {
     type: String
   },
   currency: {
-    type: String,
-    required: true
+    type: String
   },
   aggregated: {
     type: Boolean,

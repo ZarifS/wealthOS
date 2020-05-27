@@ -14,7 +14,7 @@ const INITIAL_STATE = {
   authIsLoading: false,
   authErrorMessage: null,
   registrationIsLoading: false,
-  registrationErrorMessage: null,
+  registrationErrorMessage: [],
   showRegistration: true,
   registrationSucess: false,
 };
@@ -45,29 +45,29 @@ const reducer = (state = INITIAL_STATE, { type, payload }) => {
       return {
         ...state,
         registrationIsLoading: false,
-        registrationErrorMessage: null,
+        registrationErrorMessage: [],
         showRegistration: true,
         registrationSucess: false,
       };
     case types.REGISTER_USER_LOADING:
       return {
         ...state,
-        registerIsLoading: true,
-        registerErrorMessage: null,
+        registrationIsLoading: true,
+        registrationErrorMessage: [],
         showRegistration: false,
       };
     case types.REGISTER_USER_SUCCESS:
       return {
         ...state,
-        registerIsLoading: false,
-        registerErrorMessage: null,
+        registrationIsLoading: false,
+        registrationErrorMessage: [],
         registrationSucess: true,
       };
     case types.REGISTER_USER_FAILURE:
       return {
         ...state,
-        registerIsLoading: false,
-        registerErrorMessage: payload.error,
+        registrationIsLoading: false,
+        registrationErrorMessage: payload.error,
       };
     default:
       return state;

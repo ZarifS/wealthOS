@@ -20,5 +20,5 @@ export default {
   primary: '#4ecca3',
   secondary: '#e3b04b',
   // Error colors
-  error: '#dc3545',
+  error: '#e55763',
 };

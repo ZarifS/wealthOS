@@ -22,7 +22,7 @@ export function* authUser({ payload }) {
 export function* registerUser({ payload }) {
   yield put(actions.registerUserLoading());
   try {
-    const response = yield call(
+    yield call(
       APIService.registerUser,
       payload.firstName,
       payload.lastName,
@@ -30,15 +30,15 @@ export function* registerUser({ payload }) {
       payload.password,
       payload.password2
     );
-    if (response.status === 200) {
-      yield put(actions.registerUserSuccess());
-    }
+    yield put(actions.registerUserSuccess());
   } catch (error) {
+    // A list containing error messages.
+    const errors = [];
     console.log(error.response);
-    let message = '';
-    if (error.response !== undefined) message = error.response.data.message;
-    else message = 'There was an error while registering your account. Please try again later.';
-    yield put(actions.registerUserFailure(message));
+    if (error.response) {
+      error.response.data.map((error) => errors.push(error.message));
+    }
+    yield put(actions.registerUserFailure(errors));
   }
 }
 
