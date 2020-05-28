@@ -29,8 +29,15 @@ const registerUser = async (firstName, lastName, email, password, password2) => 
   return result.response;
 };
 
+const checkEmailExists = async (email) => {
+  console.log('Calling /auth/emailExists with:', email);
+  const result = await api.post('/auth/emailExists', { email });
+  return result.data.emailExists;
+};
+
 export default {
   authUser,
   fetchUser,
   registerUser,
+  checkEmailExists,
 };

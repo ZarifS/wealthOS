@@ -58,3 +58,18 @@ export const logInUser = async (req, res) => {
     return res.status(400).json({ message: error.message });
   }
 };
+
+// Check if a email is already registered (for UX side)
+export const checkEmail = async (req, res) => {
+  try {
+    let { email } = req.body;
+    email = email.toLowerCase();
+    const userExists = await UserModel.exists({ email });
+    return res.status(200).json({
+      emailExists: userExists
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(400).json({ message: error.message });
+  }
+};

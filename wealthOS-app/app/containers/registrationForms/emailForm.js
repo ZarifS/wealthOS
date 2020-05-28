@@ -16,22 +16,38 @@ export default class EmailForm extends Component {
     };
   }
 
-  nextStep = () => {
+  nextStep = async () => {
     const { next, saveState } = this.props;
     saveState({ email: this.state.email });
     const email = this.state.email.toLowerCase();
     const confirmedEmail = this.state.confirmedEmail.toLowerCase();
+    let errorFlag = true;
     // Check if emails are the same
-    if (!EmailValidator.validate(email)) {
-      this.setState({ error: 'Please enter a valid email.' });
-    }
-    // Check if email is valid
-    else if (email !== confirmedEmail) {
-      this.setState({ error: 'Emails do not match.' });
-    }
-    // Check db for if the email - maybe later
-    else {
-      next();
+    try {
+      if (!EmailValidator.validate(email)) {
+        this.setState({ error: 'Please enter a valid email.' });
+        errorFlag = false;
+      }
+      // Check if email is valid
+      else if (email !== confirmedEmail) {
+        this.setState({ error: 'Emails do not match.' });
+        errorFlag = false;
+      }
+      // Check db if emails are confirmed/valid
+      if (errorFlag) {
+        const emailExists = await APIService.checkEmailExists(email);
+        console.log(emailExists);
+        if (emailExists) {
+          this.setState({ error: 'This email is already registered.' });
+          errorFlag = false;
+        } else {
+          next();
+        }
+      }
+    } catch (err) {
+      this.setState({
+        error: "We're having a issue trying to sign you up. Please try again later.",
+      });
     }
   };
 

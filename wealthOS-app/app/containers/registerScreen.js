@@ -5,12 +5,11 @@ import { ActivityIndicator } from 'react-native';
 import AnimatedMultistep from 'react-native-animated-multistep';
 import { actions as AuthActions } from '../redux/actions/auth';
 import { Colors, Fonts } from '../theme';
-import Input from '../components/input';
-import Button from '../components/button';
 import NameForm from './registrationForms/nameForm';
 import EmailForm from './registrationForms/emailForm';
 import PasswordForm from './registrationForms/passwordForm';
 import SubmitForm from './registrationForms/submitForm';
+import ErrorScreen from './registrationForms/errorScreen';
 import { TermsForm, PrivacyForm } from './registrationForms/tocForm';
 
 class RegisterScreen extends Component {
@@ -45,7 +44,7 @@ class RegisterScreen extends Component {
     ));
     return (
       <Screen>
-        {/* {this.props.showRegistration && (
+        {this.props.showRegistration && (
           <AnimatedMultistep
             steps={allSteps}
             comeInOnNext="fadeInLeft"
@@ -54,21 +53,9 @@ class RegisterScreen extends Component {
             OutOnBack="fadeOut"
             onFinish={this.finish}
           />
-        )} */}
+        )}
         {this.props.registrationErrorMessage.length > 0 && (
-          <ErrorScreen>
-            <ErrorContainer>
-              <StyledText>
-                There was a issue with your registration. Please take a look at the errors below.
-              </StyledText>
-              {errorMessages}
-              <ButtonContainer>
-                <Button title="Cancel" small onPress={this.props.back} />
-                <Button title="Try Again" small primary onPress={this.props.next} />
-              </ButtonContainer>
-              <StyledText>If you need more help please contact us.</StyledText>
-            </ErrorContainer>
-          </ErrorScreen>
+          <ErrorScreen errorMessages={errorMessages}></ErrorScreen>
         )}
         {/* {this.props.registrationSuccess && (
           <StyledText>You've been successfully registered! Please go back to log in!</StyledText>
@@ -85,7 +72,8 @@ class RegisterScreen extends Component {
 
 const mapStateToProps = (state) => ({
   registrationIsLoading: state.auth.registrationIsLoading,
-  registrationErrorMessage: ['Email is already registered.'],
+  // registrationErrorMessage: ['Email is already registered.'],
+  registrationErrorMessage: state.auth.registrationErrorMessage,
   showRegistration: state.auth.showRegistration,
   registrationSuccess: state.auth.registrationSuccess,
 });
@@ -93,9 +81,9 @@ const mapStateToProps = (state) => ({
 export default connect(mapStateToProps)(RegisterScreen);
 
 const allSteps = [
-  { name: 'step 1', component: NameForm },
+  // { name: 'step 1', component: NameForm },
   { name: 'step 2', component: EmailForm },
-  { name: 'step 3', component: PasswordForm },
+  // { name: 'step 3', component: PasswordForm },
   { name: 'step 6', component: SubmitForm },
 ];
 
@@ -103,26 +91,6 @@ const Screen = styled.SafeAreaView`
   background-color: ${Colors.background};
   display: flex;
   flex: 1;
-`;
-
-const ErrorScreen = styled.View`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  align-content: center;
-  height: 100%;
-`;
-
-const ErrorContainer = styled.View`
-  width: 320px;
-`;
-
-const ButtonContainer = styled.View`
-  display: flex;
-  flex-direction: row;
-  margin-top: 20px;
-  margin-bottom: 50px;
-  justify-content: space-around;
 `;
 
 const IndicatorContainer = styled.View`
@@ -142,7 +110,7 @@ const ErrorChip = styled.View`
 `;
 
 const StyledErrorText = styled.Text`
-  font-size: 14px;
+  font-size: ${Fonts.medium};
   color: ${Colors.error};
   text-align: center;
 `;
