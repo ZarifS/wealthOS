@@ -10,7 +10,9 @@ export default class SuccessScreen extends Component {
     return (
       <StyledSuccessScreen>
         <SuccessContainer>
-          <StyledText>You've been successfully registered! Please sign in to continue.</StyledText>
+          <StyledText>
+            {"You've been successfully registered! Please sign in to continue."}
+          </StyledText>
           <Divider></Divider>
           <ButtonContainer>
             <Button

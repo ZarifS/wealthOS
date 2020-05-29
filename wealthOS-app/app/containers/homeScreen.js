@@ -47,6 +47,7 @@ class HomeScreen extends Component {
       );
     });
     const content = (
+      // eslint-disable-next-line react-native/no-inline-styles
       <Container contentContainerStyle={{ paddingBottom: 60 }}>
         <Header>Balances</Header>
         <Balances>{balanceCards}</Balances>

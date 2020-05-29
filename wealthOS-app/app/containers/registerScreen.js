@@ -103,10 +103,3 @@ const StyledErrorText = styled.Text`
   text-align: center;
   padding: 10px;
 `;
-
-const StyledText = styled.Text`
-  font-size: ${Fonts.regular};
-  color: ${Colors.onBackground};
-  margin-bottom: 10px;
-  text-align: center;
-`;
