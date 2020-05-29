@@ -91,6 +91,9 @@ const StyledErrorText = styled.Text`
   font-size: ${Fonts.medium};
   color: ${Colors.error};
   margin-top: 10px;
+  padding-left: 40px;
+  padding-right: 40px;
+  text-align: center;
 `;
 
 const InputContainer = styled.View`

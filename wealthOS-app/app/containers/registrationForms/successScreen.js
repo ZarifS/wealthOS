@@ -5,26 +5,28 @@ import NavigationService from '../../services/navigation';
 import Divider from '../../components/divider';
 import Button from '../../components/button';
 
-export default class ErrorScreen extends Component {
+export default class SuccessScreen extends Component {
   render() {
     return (
-      <StyledErrorScreen>
-        <ErrorContainer>
-          <StyledText>
-            Sorry it looks like there were some issues with your registration. Please try again.
-          </StyledText>
-          {this.props.errorMessages}
+      <StyledSuccessScreen>
+        <SuccessContainer>
+          <StyledText>You've been successfully registered! Please sign in to continue.</StyledText>
           <Divider></Divider>
           <ButtonContainer>
-            <Button title="Okay" small onPress={() => NavigationService.navigate('AuthScreen')} />
+            <Button
+              title="Okay"
+              small
+              primary
+              onPress={() => NavigationService.navigate('AuthScreen')}
+            />
           </ButtonContainer>
-        </ErrorContainer>
-      </StyledErrorScreen>
+        </SuccessContainer>
+      </StyledSuccessScreen>
     );
   }
 }
 
-const StyledErrorScreen = styled.View`
+const StyledSuccessScreen = styled.View`
   display: flex;
   justify-content: center;
   align-items: center;
@@ -32,7 +34,7 @@ const StyledErrorScreen = styled.View`
   height: 100%;
 `;
 
-const ErrorContainer = styled.View`
+const SuccessContainer = styled.View`
   width: 320px;
   display: flex;
   justify-content: center;

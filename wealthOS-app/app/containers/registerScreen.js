@@ -10,7 +10,8 @@ import EmailForm from './registrationForms/emailForm';
 import PasswordForm from './registrationForms/passwordForm';
 import SubmitForm from './registrationForms/submitForm';
 import ErrorScreen from './registrationForms/errorScreen';
-import { TermsForm, PrivacyForm } from './registrationForms/tocForm';
+import SuccessScreen from './registrationForms/successScreen';
+import { TermsForm } from './registrationForms/tocForm';
 
 class RegisterScreen extends Component {
   constructor(props) {
@@ -27,20 +28,14 @@ class RegisterScreen extends Component {
   /* define the method to be called when the wizard is finished */
   finish = (finalState) => {
     // console.log(finalState);
-    // const { firstName, lastName, email, password } = finalState;
-    const firstName = 'Zarif';
-    const lastName = 'Shahriar';
-    const email = 'Zarif.Shahriar@gmail.com';
-    const password = 'password';
+    const { firstName, lastName, email, password } = finalState;
     this.props.dispatch(AuthActions.registerUser(firstName, lastName, email, password, password));
     this.setState({ showWizard: false });
   };
 
   render() {
     const errorMessages = this.props.registrationErrorMessage.map((error) => (
-      <ErrorChip key="1">
-        <StyledErrorText>{error}</StyledErrorText>
-      </ErrorChip>
+      <StyledErrorText key="1">{error}</StyledErrorText>
     ));
     return (
       <Screen>
@@ -57,14 +52,12 @@ class RegisterScreen extends Component {
         {this.props.registrationErrorMessage.length > 0 && (
           <ErrorScreen errorMessages={errorMessages}></ErrorScreen>
         )}
-        {/* {this.props.registrationSuccess && (
-          <StyledText>You've been successfully registered! Please go back to log in!</StyledText>
-        )}
+        {this.props.registrationSuccess && <SuccessScreen></SuccessScreen>}
         {this.props.registrationIsLoading && (
           <IndicatorContainer>
             <ActivityIndicator size="large" color={Colors.primary} />
           </IndicatorContainer>
-        )} */}
+        )}
       </Screen>
     );
   }
@@ -72,7 +65,6 @@ class RegisterScreen extends Component {
 
 const mapStateToProps = (state) => ({
   registrationIsLoading: state.auth.registrationIsLoading,
-  // registrationErrorMessage: ['Email is already registered.'],
   registrationErrorMessage: state.auth.registrationErrorMessage,
   showRegistration: state.auth.showRegistration,
   registrationSuccess: state.auth.registrationSuccess,
@@ -81,10 +73,11 @@ const mapStateToProps = (state) => ({
 export default connect(mapStateToProps)(RegisterScreen);
 
 const allSteps = [
-  // { name: 'step 1', component: NameForm },
+  { name: 'step 1', component: NameForm },
   { name: 'step 2', component: EmailForm },
   { name: 'step 3', component: PasswordForm },
-  { name: 'step 6', component: SubmitForm },
+  { name: 'step 4', component: TermsForm },
+  { name: 'step 5', component: SubmitForm },
 ];
 
 const Screen = styled.SafeAreaView`
@@ -104,15 +97,11 @@ const IndicatorContainer = styled.View`
   justify-content: center;
 `;
 
-const ErrorChip = styled.View`
-  padding: 10px;
-  border-radius: 50px;
-`;
-
 const StyledErrorText = styled.Text`
   font-size: ${Fonts.medium};
   color: ${Colors.error};
   text-align: center;
+  padding: 10px;
 `;
 
 const StyledText = styled.Text`
