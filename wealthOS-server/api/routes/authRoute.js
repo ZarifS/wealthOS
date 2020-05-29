@@ -1,5 +1,5 @@
 import express from 'express';
-import { registerUser, logInUser } from '../controllers/authController';
+import { registerUser, logInUser, checkEmail } from '../controllers/authController';
 import validateRegistration from '../helpers/validate';
 import { ensureAuthenticated } from '../helpers/auth';
 
@@ -15,5 +15,7 @@ router.post('/login', logInUser);
 router.get('/verifyToken', ensureAuthenticated, (req, res) => {
   return res.json({ message: 'Token Verified.' });
 });
+
+router.post('/emailExists', checkEmail);
 
 export default router;

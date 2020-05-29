@@ -4,8 +4,6 @@ import APIService from '../services/api';
 import NavigationService from '../services/navigation';
 
 export function* authUser({ payload }) {
-  // Dispatch a redux action using `put()`
-  // @see https://redux-saga.js.org/docs/basics/DispatchingActions.html
   yield put(actions.authUserLoading());
   try {
     const response = yield call(APIService.authUser, payload.email, payload.password);
@@ -17,6 +15,30 @@ export function* authUser({ payload }) {
     else message = 'There was an error while authenticating user informations.';
     console.log(message);
     yield put(actions.authUserFailure(message));
+  }
+}
+
+// Add register user
+export function* registerUser({ payload }) {
+  yield put(actions.registerUserLoading());
+  try {
+    yield call(
+      APIService.registerUser,
+      payload.firstName,
+      payload.lastName,
+      payload.email,
+      payload.password,
+      payload.password2
+    );
+    yield put(actions.registerUserSuccess());
+  } catch (error) {
+    // A list containing error messages.
+    const errors = [];
+    console.log(error.response);
+    if (error.response) {
+      error.response.data.map((error) => errors.push(error.message));
+    }
+    yield put(actions.registerUserFailure(errors));
   }
 }
 

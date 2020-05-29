@@ -2,8 +2,9 @@ import UserModel from '../models/userModel';
 
 // Middleware to validate the registration credentials for a user
 export default async (req, res, next) => {
-  const { firstName, lastName, email, password, password2 } = req.body;
-
+  const { firstName, lastName, password, password2 } = req.body;
+  let { email } = req.body;
+  email = email.toLowerCase();
   const errors = [];
 
   // Basic user validation - change to 3rd party later
@@ -16,10 +17,12 @@ export default async (req, res, next) => {
   }
 
   // User Validation
+  console.log('Here');
   const user = await UserModel.exists({ email });
-
+  console.log(user);
   // User already exists
   if (user) {
+    console.log('User already exists');
     errors.push({ message: 'Email is already registered.' });
   }
 
