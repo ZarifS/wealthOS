@@ -83,7 +83,7 @@ export default connect(mapStateToProps)(RegisterScreen);
 const allSteps = [
   // { name: 'step 1', component: NameForm },
   { name: 'step 2', component: EmailForm },
-  // { name: 'step 3', component: PasswordForm },
+  { name: 'step 3', component: PasswordForm },
   { name: 'step 6', component: SubmitForm },
 ];
 

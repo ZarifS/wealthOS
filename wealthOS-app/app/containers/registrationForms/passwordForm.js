@@ -10,13 +10,23 @@ export default class PasswordForm extends Component {
     this.state = {
       password: '',
       confirmedPassword: '',
+      error: '',
     };
   }
 
   nextStep = () => {
     const { next, saveState } = this.props;
     saveState({ password: this.state.password });
-    next();
+    const password = this.state.password;
+    const confirmedPassword = this.state.confirmedPassword;
+    // Check password length
+    if (password.length < 8) {
+      this.setState({ error: 'Password must be at least 8 characters long.' });
+    }
+    // Check if email is valid
+    else if (password !== confirmedPassword) {
+      this.setState({ error: 'Passwords do not match.' });
+    } else next();
   };
 
   render() {
@@ -36,6 +46,7 @@ export default class PasswordForm extends Component {
           value={this.state.confirmedPassword}
           onChangeText={(name, val) => this.setState({ confirmedPassword: val })}
         />
+        {this.state.error !== '' && <StyledErrorText>{this.state.error}</StyledErrorText>}
         <ButtonContainer>
           <Button title="Back" small onPress={this.props.back} />
           <Button title="Next" small primary onPress={this.nextStep} />
@@ -62,6 +73,12 @@ const StyledSubtext = styled.Text`
   font-size: ${Fonts.small};
   color: ${Colors.onBackground};
   margin-bottom: 10px;
+`;
+
+const StyledErrorText = styled.Text`
+  font-size: ${Fonts.medium};
+  color: ${Colors.error};
+  margin-top: 10px;
 `;
 
 const InputContainer = styled.View`

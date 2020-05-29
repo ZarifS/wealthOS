@@ -36,7 +36,6 @@ export default class EmailForm extends Component {
       // Check db if emails are confirmed/valid
       if (errorFlag) {
         const emailExists = await APIService.checkEmailExists(email);
-        console.log(emailExists);
         if (emailExists) {
           this.setState({ error: 'This email is already registered.' });
           errorFlag = false;
