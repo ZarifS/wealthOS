@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 import { connect } from 'react-redux';
+import Modal from 'react-native-modal';
 import { ActivityIndicator } from 'react-native';
 import NAVIGATION from '../services/navigation';
 import { actions as UserActions } from '../redux/actions/user';
@@ -11,6 +12,9 @@ import { Colors, Fonts } from '../theme';
 class HomeScreen extends Component {
   constructor(props) {
     super(props);
+    this.state = {
+      accountModal: true,
+    };
     console.log(this.props);
   }
 
@@ -22,6 +26,11 @@ class HomeScreen extends Component {
 
   refreshData = () => {
     this.props.dispatch(UserActions.fetchUser(this.props.token));
+  };
+
+  toggleModal = () => {
+    //pop up modal
+    this.setState({ accountModal: !this.state.accountModal });
   };
 
   logBackIn() {
@@ -52,9 +61,24 @@ class HomeScreen extends Component {
         <Header>Balances</Header>
         <Balances>{balanceCards}</Balances>
         <ButtonsContainer>
+          <Button title="Add Account" onPress={this.toggleModal} />
           <Button title="Refresh Data" primary onPress={this.refreshData} />
           <Button title="Log Back In" secondary onPress={this.logBackIn} />
         </ButtonsContainer>
+        <Modal
+          isVisible={this.state.accountModal}
+          onBackdropPress={() => this.toggleModal()}
+          animationIn={'fadeIn'}
+          animationOut={'fadeOut'}
+        >
+          <AccountModal>
+            <StyledHeading>Add an Account</StyledHeading>
+            <ButtonsContainerModal>
+              <Button title="Manual" secondary small onPress={this.logBackIn} />
+              <Button title="Linked" primary small onPress={this.logBackIn} />
+            </ButtonsContainerModal>
+          </AccountModal>
+        </Modal>
       </Container>
     );
     return <Screen>{this.props.userIsLoading ? spinner : content}</Screen>;
@@ -75,6 +99,8 @@ const Screen = styled.SafeAreaView`
   display: flex;
   flex: 1;
   padding-top: 10px;
+  align-items: center;
+  justify-content: center;
 `;
 
 const StyledText = styled.Text`
@@ -114,6 +140,30 @@ const IndicatorContainer = styled.View`
   top: 0;
   bottom: 0;
   background-color: rgba(0, 0, 0, 0.8);
+  align-items: center;
+  justify-content: center;
+`;
+
+const AccountModal = styled.View`
+  display: flex;
+  background-color: ${Colors.surface};
+  height: 120px;
+  align-items: center;
+  border-radius: 4px;
+  justify-content: center;
+`;
+
+const StyledHeading = styled.Text`
+  color: ${Colors.onSurface};
+  font-size: ${Fonts.large};
+  width: 100%;
+  text-align: center;
+  padding-bottom: 15px;
+`;
+
+const ButtonsContainerModal = styled.View`
+  display: flex;
+  flex-direction: row;
   align-items: center;
   justify-content: center;
 `;
