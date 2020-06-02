@@ -59,6 +59,9 @@ class AuthScreen extends React.Component {
             onIconPress={this.onSecureIconPress}
             onChangeText={this.onChangeText}
           />
+          {this.props.authErrorMessage !== null && (
+            <StyledErrorText>{this.props.authErrorMessage}</StyledErrorText>
+          )}
           <StyledText>Forgot credentials?</StyledText>
         </InputContainer>
         <Divider />
@@ -81,6 +84,7 @@ const Screen = styled.SafeAreaView`
   display: flex;
   flex: 1;
 `;
+
 const Logo = styled.Text`
   color: ${Colors.onBackground};
   font-size: 34px;
@@ -110,6 +114,16 @@ const StyledText = styled.Text`
   font-size: ${Fonts.medium};
   text-align: center;
   margin-top: 15px;
+`;
+
+const StyledErrorText = styled.Text`
+  font-size: ${Fonts.medium};
+  color: ${Colors.error};
+  margin-top: 10px;
+  margin-bottom: 10px;
+  padding-left: 40px;
+  padding-right: 40px;
+  text-align: center;
 `;
 
 const mapStateToProps = (state) => ({
