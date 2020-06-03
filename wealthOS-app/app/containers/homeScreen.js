@@ -2,18 +2,19 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 import { connect } from 'react-redux';
 import Modal from 'react-native-modal';
-import { ActivityIndicator } from 'react-native';
+import { ActivityIndicator, StyleSheet } from 'react-native';
 import NAVIGATION from '../services/navigation';
 import { actions as UserActions } from '../redux/actions/user';
 import BalanceCard from '../components/balanceCard';
 import Button from '../components/button';
+import AccountModal from '../components/accountModal';
 import { Colors, Fonts } from '../theme';
 
 class HomeScreen extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      accountModal: true,
+      modalVisible: true,
     };
     console.log(this.props);
   }
@@ -29,8 +30,7 @@ class HomeScreen extends Component {
   };
 
   toggleModal = () => {
-    //pop up modal
-    this.setState({ accountModal: !this.state.accountModal });
+    this.setState({ accountModal: !this.state.modalVisible });
   };
 
   logBackIn() {
@@ -66,18 +66,11 @@ class HomeScreen extends Component {
           <Button title="Log Back In" secondary onPress={this.logBackIn} />
         </ButtonsContainer>
         <Modal
-          isVisible={this.state.accountModal}
+          isVisible={this.state.modalVisible}
           onBackdropPress={() => this.toggleModal()}
-          animationIn={'fadeIn'}
-          animationOut={'fadeOut'}
+          style={styles.view}
         >
-          <AccountModal>
-            <StyledHeading>Add an Account</StyledHeading>
-            <ButtonsContainerModal>
-              <Button title="Manual" secondary small onPress={this.logBackIn} />
-              <Button title="Linked" primary small onPress={this.logBackIn} />
-            </ButtonsContainerModal>
-          </AccountModal>
+          <AccountModal></AccountModal>
         </Modal>
       </Container>
     );
@@ -144,26 +137,9 @@ const IndicatorContainer = styled.View`
   justify-content: center;
 `;
 
-const AccountModal = styled.View`
-  display: flex;
-  background-color: ${Colors.surface};
-  height: 120px;
-  align-items: center;
-  border-radius: 4px;
-  justify-content: center;
-`;
-
-const StyledHeading = styled.Text`
-  color: ${Colors.onSurface};
-  font-size: ${Fonts.large};
-  width: 100%;
-  text-align: center;
-  padding-bottom: 15px;
-`;
-
-const ButtonsContainerModal = styled.View`
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
-`;
+const styles = StyleSheet.create({
+  view: {
+    justifyContent: 'flex-end',
+    margin: 0,
+  },
+});

@@ -4,14 +4,14 @@ import { Colors } from '../theme';
 
 export default class Divider extends Component {
   render() {
-    return <StyledDivider></StyledDivider>;
+    return <StyledDivider tight={this.props.tight}></StyledDivider>;
   }
 }
 
 const StyledDivider = styled.View`
-  background-color: ${Colors.surface};
+  background-color: ${(props) => (props.secondary ? `10px` : Colors.onBackground)};
   width: 24px;
   height: 4px;
-  margin-top: 40px;
-  margin-bottom: 40px;
+  margin-top: ${(props) => (props.tight ? `15px` : '40px')};
+  margin-bottom: ${(props) => (props.tight ? `15px` : '40px')};
 `;
