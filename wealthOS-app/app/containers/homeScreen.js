@@ -30,7 +30,7 @@ class HomeScreen extends Component {
   };
 
   toggleModal = () => {
-    this.setState({ accountModal: !this.state.modalVisible });
+    this.setState({ modalVisible: !this.state.modalVisible });
   };
 
   logBackIn() {
