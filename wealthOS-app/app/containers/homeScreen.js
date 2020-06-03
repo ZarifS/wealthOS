@@ -37,6 +37,15 @@ class HomeScreen extends Component {
     NAVIGATION.navigate('AuthScreen');
   }
 
+  linkAccount = () => {
+    // To-DO Add plaid link module
+    alert('Linking an Account');
+  };
+
+  manualAccount = () => {
+    alert('Creating Manual Account');
+  };
+
   render() {
     const spinner = (
       <IndicatorContainer>
@@ -70,7 +79,10 @@ class HomeScreen extends Component {
           onBackdropPress={() => this.toggleModal()}
           style={styles.view}
         >
-          <AccountModal></AccountModal>
+          <AccountModal
+            linkAccount={this.linkAccount}
+            manulAccount={this.manualAccount}
+          ></AccountModal>
         </Modal>
       </Container>
     );
