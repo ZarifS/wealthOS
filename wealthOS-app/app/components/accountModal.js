@@ -52,8 +52,8 @@ const StyledHeading = styled.Text`
   font-weight: bold;
   width: 100%;
   text-align: center;
-  padding-bottom: 10px;
-  padding-top: 15px;
+  padding-bottom: 15px;
+  padding-top: 20px;
 `;
 
 const AccountTypesContainer = styled.View`
