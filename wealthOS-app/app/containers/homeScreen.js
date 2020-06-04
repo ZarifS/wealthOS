@@ -2,12 +2,14 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 import { connect } from 'react-redux';
 import Modal from 'react-native-modal';
-import { ActivityIndicator, StyleSheet } from 'react-native';
+import { ActivityIndicator, StyleSheet, View } from 'react-native';
 import NAVIGATION from '../services/navigation';
+import API from '../services/api';
 import { actions as UserActions } from '../redux/actions/user';
 import BalanceCard from '../components/balanceCard';
 import Button from '../components/button';
 import AccountModal from '../components/accountModal';
+import LinkModule from '../components/linkModule';
 import { Colors, Fonts } from '../theme';
 
 class HomeScreen extends Component {
@@ -15,6 +17,7 @@ class HomeScreen extends Component {
     super(props);
     this.state = {
       modalVisible: true,
+      rednerLink: false,
     };
     console.log(this.props);
   }
@@ -37,9 +40,10 @@ class HomeScreen extends Component {
     NAVIGATION.navigate('AuthScreen');
   }
 
-  linkAccount = () => {
+  linkAccount = (data) => {
     // To-DO Add plaid link module
     alert('Linking an Account');
+    const { publicToken, institution } = data;
   };
 
   manualAccount = () => {
@@ -81,9 +85,10 @@ class HomeScreen extends Component {
         >
           <AccountModal
             linkAccount={this.linkAccount}
-            manulAccount={this.manualAccount}
+            manualAccount={this.manualAccount}
           ></AccountModal>
         </Modal>
+        {/* {this.state.renderLink && <LinkModule></LinkModule>} */}
       </Container>
     );
     return <Screen>{this.props.userIsLoading ? spinner : content}</Screen>;
@@ -104,8 +109,6 @@ const Screen = styled.SafeAreaView`
   display: flex;
   flex: 1;
   padding-top: 10px;
-  align-items: center;
-  justify-content: center;
 `;
 
 const StyledText = styled.Text`

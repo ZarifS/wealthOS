@@ -35,9 +35,19 @@ const checkEmailExists = async (email) => {
   return result.data.emailExists;
 };
 
+const linkUser = async (token, publicToken, institutionName) => {
+  console.log('Calling /user/link');
+  const result = await api.post('/user/link', {
+    headers: { Authorization: 'Bearer ' + token },
+    body: { publicToken, institutionName },
+  });
+  return result.response;
+};
+
 export default {
   authUser,
   fetchUser,
   registerUser,
   checkEmailExists,
+  linkUser,
 };

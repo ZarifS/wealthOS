@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 import Button from './button';
 import Divider from './divider';
+import LinkModule from './linkModule';
 import { Colors, Fonts } from '../theme';
 
 export default class AccountsModal extends Component {
@@ -12,13 +13,7 @@ export default class AccountsModal extends Component {
         <StyledText>Which type of account do you want to add?</StyledText>
         <AccountTypesContainer>
           <AccountType>
-            <Button
-              title="Linked"
-              primary
-              secondary
-              small
-              onPress={() => this.props.linkAccount()}
-            />
+            <LinkModule onSuccess={this.props.linkAccount}></LinkModule>
             <StyledAccountsText>
               Synched account(s) from a institution. Updated automatically. Great for spending and
               investment accounts. Limit of 5 institutions.
