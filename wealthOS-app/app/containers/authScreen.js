@@ -107,7 +107,11 @@ const IndicatorContainer = styled.View`
   justify-content: center;
 `;
 
-const InputContainer = styled.View``;
+const InputContainer = styled.View`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
 
 const StyledText = styled.Text`
   color: ${Colors.onBackground};
@@ -121,8 +125,8 @@ const StyledErrorText = styled.Text`
   color: ${Colors.error};
   margin-top: 10px;
   margin-bottom: 10px;
-  padding-left: 40px;
-  padding-right: 40px;
+  padding-left: 20px;
+  padding-right: 20px;
   text-align: center;
 `;
 

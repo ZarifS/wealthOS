@@ -4,6 +4,7 @@ import { WEB_TOKEN_SECRET } from './secrets';
 
 // Middleware to lock resource if not authenticated
 export const ensureAuthenticated = async (req, res, next) => {
+  console.log(req.headers.authorization);
   try {
     const token = req.headers.authorization.split(' ')[1];
     const decodedUser = jwt.verify(token, WEB_TOKEN_SECRET);

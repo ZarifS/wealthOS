@@ -44,7 +44,7 @@ router.post('/syncTransactions', async (req, res) => {
 // Get user transaction
 router.get('/testAPI/', testAPI);
 
-// Get user transaction
+// Get plaid categories
 router.get('/categories/', getCategories);
 
 export default router;

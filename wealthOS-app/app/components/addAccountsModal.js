@@ -5,7 +5,7 @@ import Divider from './divider';
 import LinkModule from './linkModule';
 import { Colors, Fonts } from '../theme';
 
-export default class AccountsModal extends Component {
+export default class AddAccountsModal extends Component {
   render() {
     return (
       <StyledAccountModal>

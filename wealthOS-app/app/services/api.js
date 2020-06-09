@@ -36,11 +36,21 @@ const checkEmailExists = async (email) => {
 };
 
 const linkUser = async (token, publicToken, institutionName) => {
-  console.log('Calling /user/link');
-  const result = await api.post('/user/link', {
-    headers: { Authorization: 'Bearer ' + token },
-    body: { publicToken, institutionName },
-  });
+  console.log(
+    'Calling /user/link with token:' +
+      token +
+      ', publicToken:' +
+      publicToken +
+      ', institutionName:' +
+      institutionName
+  );
+  const result = await api.post(
+    '/user/link',
+    { publicToken, institutionName },
+    {
+      headers: { Authorization: 'Bearer ' + token },
+    }
+  );
   return result.response;
 };
 
