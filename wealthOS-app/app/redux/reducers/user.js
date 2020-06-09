@@ -12,7 +12,7 @@ import { types } from '../actions/user';
 const INITIAL_STATE = {
   user: undefined,
   fetchUserIsLoading: false,
-  fetchUserErrorMessage: null,
+  userErrorMessage: null,
   accounts: [],
   transactions: [],
 };
@@ -25,7 +25,7 @@ const reducer = (state = INITIAL_STATE, { type, payload }) => {
       return {
         ...state,
         fetchUserIsLoading: true,
-        fetchUserErrorMessage: null,
+        userErrorMessage: null,
       };
     case types.FETCH_USER_SUCCESS:
       accounts = [];
@@ -46,7 +46,7 @@ const reducer = (state = INITIAL_STATE, { type, payload }) => {
         accounts: accounts,
         transactions: payload.user.transactions,
         fetchUserIsLoading: false,
-        fetchUserErrorMessage: null,
+        userErrorMessage: null,
       };
     case types.FETCH_USER_FAILURE:
       return {
@@ -55,7 +55,7 @@ const reducer = (state = INITIAL_STATE, { type, payload }) => {
         accounts: [],
         transactions: [],
         fetchUserIsLoading: false,
-        fetchUserErrorMessage: payload.error,
+        userErrorMessage: payload.error,
       };
     default:
       return state;

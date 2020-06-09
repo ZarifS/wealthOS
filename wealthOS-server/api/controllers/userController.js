@@ -57,6 +57,7 @@ const setUserAccounts = (user, accounts, institutionName) => {
 export const linkPlaidToUser = (req, res) => {
   // Grab public token from body
   const { publicToken, institutionName } = req.body;
+  console.log(publicToken);
   let itemID;
   const { user } = req;
   // Exchange Token
@@ -74,15 +75,37 @@ export const linkPlaidToUser = (req, res) => {
     .then(doc => {
       linkItemToUser(doc, itemID);
     })
-    // Return API Response
+    // Return API response
     .then(() => {
       return res.status(200).json({
-        message: 'Added Link Successfully'
+        message: 'Added Link Successfully and Updated Accounts.'
       });
     })
     .catch(err => {
       console.log(err);
       return res.status(400).json([{ message: err.message }]);
+    });
+};
+
+// Sync user account post link
+const syncAccount = async (user, itemID) => {
+  try {
+    const updatedUser = updatedUserAccounts(user, itemID);
+    user.save().then(doc => {});
+  } catch (error) {}
+};
+
+// Add bank accounts to user profile after link - TO-DO Change Update Accounts to work for every LinkedItem.
+export const updatedUserAccounts = (user, itemID) => {
+  const { accessToken, institutionName } = user.links.get(itemID);
+  // Pull accounts for the Item
+  getAccounts(accessToken)
+    .then(accounts => {
+      const doc = setUserAccounts(user, accounts, institutionName);
+      return doc.save();
+    })
+    .catch(err => {
+      throw err;
     });
 };
 
