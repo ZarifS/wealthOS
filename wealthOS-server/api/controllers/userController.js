@@ -3,16 +3,6 @@ import { exchangeToken, getAccounts, getTransactions } from './plaidController';
 import ItemModel from '../models/itemLinkModel';
 import UserModel from '../models/userModel';
 
-// Create a new item to store in Item db
-const linkItemToUser = (user, itemID) => {
-  const item = new ItemModel({
-    itemID,
-    users: [user.id]
-  });
-  // Save to DB
-  return item.save();
-};
-
 // Whenever accounts are modified, update.
 const calculateUserBalance = accounts => {
   let sum = 0;
@@ -53,53 +43,11 @@ const setUserAccounts = (user, accounts, institutionName) => {
   return user;
 };
 
-// Set up bank linking to user profile
-export const linkPlaidToUser = (req, res) => {
-  // Grab public token from body
-  const { publicToken, institutionName } = req.body;
-  console.log(publicToken);
-  let itemID;
-  const { user } = req;
-  // Exchange Token
-  exchangeToken(publicToken)
-    // Save into UserModel
-    .then(token => {
-      user.links.set(token.item_id, {
-        accessToken: token.access_token,
-        institutionName
-      });
-      itemID = token.item_id;
-      return user.save();
-    })
-    // Save itemId with associated user into ItemLinksModel
-    .then(doc => {
-      linkItemToUser(doc, itemID);
-    })
-    // Return API response
-    .then(() => {
-      return res.status(200).json({
-        message: 'Added Link Successfully and Updated Accounts.'
-      });
-    })
-    .catch(err => {
-      console.log(err);
-      return res.status(400).json([{ message: err.message }]);
-    });
-};
-
-// Sync user account post link
-const syncAccount = async (user, itemID) => {
-  try {
-    const updatedUser = updatedUserAccounts(user, itemID);
-    user.save().then(doc => {});
-  } catch (error) {}
-};
-
 // Add bank accounts to user profile after link - TO-DO Change Update Accounts to work for every LinkedItem.
 export const updatedUserAccounts = (user, itemID) => {
   const { accessToken, institutionName } = user.links.get(itemID);
   // Pull accounts for the Item
-  getAccounts(accessToken)
+  return getAccounts(accessToken)
     .then(accounts => {
       const doc = setUserAccounts(user, accounts, institutionName);
       return doc.save();
@@ -196,4 +144,79 @@ export const testAPI = async (req, res) => {
   const endDate = Date.now();
   await updateItemTransactions(startDate, endDate, req.body.itemID);
   return res.status(200).json({ message: 'This works.' });
+};
+
+// Sync user account post link - default of 6 months
+const syncAccount = async (
+  user,
+  itemID,
+  startDate = moment(Date.now())
+    .subtract(6, 'month')
+    .format('YYYY-MM-DD'),
+  endDate = moment(Date.now()).format('YYYY-MM-DD')
+) => {
+  // Add new accounts for the user
+  const { accessToken } = user.links.get(itemID);
+  return updatedUserAccounts(user, itemID)
+    .then(updatedUser => {
+      // Update transactions for the user and return the updated user account
+      return syncTransactions(updatedUser, startDate, endDate, accessToken);
+    })
+    .catch(err => {
+      throw err;
+    });
+};
+
+// Create a new item to store in Item db
+const linkItemToUser = (user, itemID) => {
+  // TO-DO Check if this item already exists (in the case of joint accounts) if it does then add the user to users list.
+  const item = new ItemModel({
+    itemID,
+    users: [user.id]
+  });
+  // Save to DB
+  return item.save();
+};
+
+// Set up bank linking to user profile
+export const linkPlaidToUser = (req, res) => {
+  // Grab public token from body
+  const { publicToken, institutionName } = req.body;
+  console.log(publicToken);
+  let itemID;
+  let synchedUser;
+  const { user } = req;
+  // Exchange Token
+  exchangeToken(publicToken)
+    // Save into UserModel
+    .then(token => {
+      user.links.set(token.item_id, {
+        accessToken: token.access_token,
+        institutionName
+      });
+      itemID = token.item_id;
+      return user.save();
+    })
+    // Sync the users new banking info to their account
+    .then(updatedUser => {
+      console.log(itemID);
+      return syncAccount(updatedUser, itemID);
+    })
+    // Save itemId with associated user into ItemLinksModel
+    .then(updatedUser => {
+      synchedUser = updatedUser;
+      return linkItemToUser(updatedUser, itemID);
+    })
+    .then(() => {
+      synchedUser.password = undefined;
+      synchedUser.__v = undefined;
+      return res.status(200).json({
+        message: 'Added Link Successfully and Updated Accounts.',
+        user: synchedUser
+      });
+    })
+    .catch(err => {
+      console.log(err);
+      return res.status(400).json([{ message: err.message }]);
+    });
 };
