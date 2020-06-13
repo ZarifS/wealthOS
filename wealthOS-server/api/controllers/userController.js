@@ -1,4 +1,5 @@
 import moment from 'moment';
+import mongoose from 'mongoose';
 import { exchangeToken, getAccounts, getTransactions } from './plaidController';
 import ItemModel from '../models/itemLinkModel';
 import UserModel from '../models/userModel';
@@ -168,8 +169,13 @@ const syncAccount = async (
 };
 
 // Create a new item to store in Item db
-const linkItemToUser = (user, itemID) => {
-  // TO-DO Check if this item already exists (in the case of joint accounts) if it does then add the user to users list.
+const linkItemToUser = async (user, itemID) => {
+  if (await ItemModel.exists({ itemID })) {
+    console.log('This item already exists, adding new user to the item.');
+    const item = await ItemModel.findOne({ itemID });
+    item.users.push(user.id);
+    return item.save();
+  }
   const item = new ItemModel({
     itemID,
     users: [user.id]
@@ -178,45 +184,41 @@ const linkItemToUser = (user, itemID) => {
   return item.save();
 };
 
-// Set up bank linking to user profile
-export const linkPlaidToUser = (req, res) => {
+export const linkPlaidToUser = async (req, res) => {
   // Grab public token from body
   const { publicToken, institutionName } = req.body;
-  console.log(publicToken);
-  let itemID;
-  let synchedUser;
-  const { user } = req;
-  // Exchange Token
-  exchangeToken(publicToken)
-    // Save into UserModel
-    .then(token => {
-      user.links.set(token.item_id, {
-        accessToken: token.access_token,
-        institutionName
-      });
-      itemID = token.item_id;
-      return user.save();
-    })
-    // Sync the users new banking info to their account
-    .then(updatedUser => {
-      console.log(itemID);
-      return syncAccount(updatedUser, itemID);
-    })
-    // Save itemId with associated user into ItemLinksModel
-    .then(updatedUser => {
-      synchedUser = updatedUser;
-      return linkItemToUser(updatedUser, itemID);
-    })
-    .then(() => {
-      synchedUser.password = undefined;
-      synchedUser.__v = undefined;
-      return res.status(200).json({
-        message: 'Added Link Successfully and Updated Accounts.',
-        user: synchedUser
-      });
-    })
-    .catch(err => {
-      console.log(err);
-      return res.status(400).json([{ message: err.message }]);
+  // Start the mongo session
+  const session = await mongoose.startSession();
+  try {
+    session.startTransaction();
+    // Get the user session
+    const user = await UserModel.findById(req.user.id).session(session);
+    // Link user to plaid with token
+    const token = await exchangeToken(publicToken);
+    user.links.set(token.item_id, {
+      accessToken: token.access_token,
+      institutionName
     });
+    await user.save();
+    // Synch users account with new institutions data
+    const synchedUser = await syncAccount(user, token.item_id);
+    synchedUser.password = undefined;
+    synchedUser.__v = undefined;
+    // Finally link the itemId to this user for future webhook updates
+    await linkItemToUser(user, token.item_id);
+    // Commit transaction and return the updated user info
+    await session.commitTransaction();
+    return res.status(200).json({
+      message: 'Added Link Successfully and Updated Accounts.',
+      user: synchedUser
+    });
+  } catch (err) {
+    // Catching a error so we roll back all changes
+    await session.abortTransaction();
+    console.log('Aborting due to error:', err);
+    return res.status(400).json([{ message: err.message }]);
+  } finally {
+    // Ending the session
+    session.endSession();
+  }
 };
