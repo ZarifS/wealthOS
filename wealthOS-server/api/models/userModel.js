@@ -11,7 +11,6 @@ const LinksSchema = new mongoose.Schema({
 const TransactionsSchema = new mongoose.Schema({
   _id: {
     type: String,
-    unique: true,
     sparse: true
   },
   name: {

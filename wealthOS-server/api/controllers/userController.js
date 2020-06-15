@@ -1,6 +1,6 @@
 import moment from 'moment';
 import mongoose from 'mongoose';
-import { exchangeToken, getAccounts, getTransactions } from './plaidController';
+import * as PLAID from './plaidController';
 import ItemModel from '../models/itemLinkModel';
 import UserModel from '../models/userModel';
 
@@ -32,7 +32,8 @@ const setUserAccounts = (user, accounts, institutionName) => {
       type,
       currency: balances.iso_currency_code,
       mask,
-      accountID: account_id
+      accountID: account_id,
+      lastUpdated: moment(Date.now()).format('YYYY-MM-DD, h:mm:ss a')
     };
     newAccounts.push(newAccount);
   });
@@ -45,26 +46,12 @@ const setUserAccounts = (user, accounts, institutionName) => {
 };
 
 // Add bank accounts to user profile after link - TO-DO Change Update Accounts to work for every LinkedItem.
-export const updatedUserAccounts = (user, itemID) => {
-  const { accessToken, institutionName } = user.links.get(itemID);
-  // Pull accounts for the Item
-  return getAccounts(accessToken)
-    .then(accounts => {
-      const doc = setUserAccounts(user, accounts, institutionName);
-      return doc.save();
-    })
-    .catch(err => {
-      throw err;
-    });
-};
-
-// Add bank accounts to user profile after link - TO-DO Change Update Accounts to work for every LinkedItem.
 export const updateAccounts = (req, res) => {
   const { itemID } = req.body;
   const { accessToken, institutionName } = req.user.links.get(itemID);
 
   // Pull accounts for the Item
-  getAccounts(accessToken)
+  PLAID.getAccounts(accessToken)
     .then(accounts => {
       const user = setUserAccounts(req.user, accounts, institutionName);
       return user.save();
@@ -81,10 +68,10 @@ export const updateAccounts = (req, res) => {
 };
 
 // Pulls historical data for a institution to gather user transactions
-export const syncTransactions = async (user, startDate, endDate, accessToken) => {
+const syncTransactions = async (user, startDate, endDate, accessToken) => {
   try {
     console.log('Getting transactions from:', startDate, 'till:', endDate);
-    const transactions = await getTransactions(accessToken, startDate, endDate);
+    const transactions = await PLAID.getTransactions(accessToken, startDate, endDate);
     console.log('Got transactions. Adding into DB...');
     transactions.map(transaction => {
       const transactionObject = {
@@ -105,14 +92,14 @@ export const syncTransactions = async (user, startDate, endDate, accessToken) =>
       }
       return user.transactions.push(transactionObject);
     });
-    return await user.save();
+    return user;
   } catch (err) {
     console.log(err);
-    return Promise.reject(err);
+    throw err;
   }
 };
 
-// Sync transactions for an item and update associated users - sync by default from 1 month ago.
+// Called by Webhook update - Sync transactions for an item and update associated users - sync by default from 1 month ago.
 export const updateItemTransactions = async (
   startDate = moment(Date.now())
     .subtract(1, 'month')
@@ -120,24 +107,31 @@ export const updateItemTransactions = async (
   endDate = Date.now(),
   itemID
 ) => {
+  const session = await mongoose.startSession();
   try {
+    session.startTransaction();
     endDate = moment(endDate).format('YYYY-MM-DD');
-    const itemLink = await ItemModel.findOne({ itemID });
-    // Usually just one id.
+    const itemLink = await (await ItemModel.findOne({ itemID })).session(session);
+    // For each user associated with the item (usually just one), update that items transactions
     for (const id of itemLink.users) {
       // Update this users transactions.
       console.log('Item is associated with userID:', id);
-      const user = await UserModel.findById(id);
+      let user = await UserModel.findById(id).session(session);
       const { accessToken } = user.links.get(itemID);
-      await syncTransactions(user, startDate, endDate, accessToken);
+      user = await syncTransactions(user, startDate, endDate, accessToken);
+      user.save();
     }
+    session.commitTransaction();
     return Promise.resolve();
   } catch (err) {
-    console.log(err);
+    session.abortTransaction();
     return Promise.reject(err);
+  } finally {
+    session.endSession();
   }
 };
 
+// Used to test different functions
 export const testAPI = async (req, res) => {
   const startDate = moment()
     .subtract(1, 'year')
@@ -147,25 +141,25 @@ export const testAPI = async (req, res) => {
   return res.status(200).json({ message: 'This works.' });
 };
 
-// Sync user account post link - default of 6 months
-const syncAccount = async (
+// Sync user account - default of 1 months - called by postLink and also whenever a users account needs to be fully refreshed
+export const syncAccount = async (
   user,
-  itemID,
   startDate = moment(Date.now())
-    .subtract(6, 'month')
+    .subtract(1, 'month')
     .format('YYYY-MM-DD'),
   endDate = moment(Date.now()).format('YYYY-MM-DD')
 ) => {
-  // Add new accounts for the user
-  const { accessToken } = user.links.get(itemID);
-  return updatedUserAccounts(user, itemID)
-    .then(updatedUser => {
-      // Update transactions for the user and return the updated user account
-      return syncTransactions(updatedUser, startDate, endDate, accessToken);
-    })
-    .catch(err => {
-      throw err;
-    });
+  // For each institution that the user has linked, update info.
+  for (const [key, value] of user.links) {
+    const { accessToken, institutionName } = user.links.get(key);
+    // First update all account balances
+    const accounts = await PLAID.getAccounts(accessToken);
+    user = setUserAccounts(user, accounts, institutionName);
+    // Then check for any transaction updates
+    user = await syncTransactions(user, startDate, endDate, accessToken);
+  }
+  await user.save();
+  return user;
 };
 
 // Create a new item to store in Item db
@@ -184,6 +178,7 @@ const linkItemToUser = async (user, itemID) => {
   return item.save();
 };
 
+// Handle the linking of a institution to plaid
 export const linkPlaidToUser = async (req, res) => {
   // Grab public token from body
   const { publicToken, institutionName } = req.body;
@@ -192,25 +187,34 @@ export const linkPlaidToUser = async (req, res) => {
   try {
     session.startTransaction();
     // Get the user session
-    const user = await UserModel.findById(req.user.id).session(session);
+    let user = await UserModel.findById(req.user.id).session(session);
     // Link user to plaid with token
-    const token = await exchangeToken(publicToken);
+    const token = await PLAID.exchangeToken(publicToken);
     user.links.set(token.item_id, {
       accessToken: token.access_token,
       institutionName
     });
+    // Add the new institutions accounts to the user
+    const accounts = await PLAID.getAccounts(token.access_token);
+    user = setUserAccounts(user, accounts, institutionName);
+    // Synch users transactions with new institutions data from upto 6 months prior
+    const startDate = moment(Date.now())
+      .subtract(6, 'month')
+      .format('YYYY-MM-DD');
+    const endDate = moment(Date.now()).format('YYYY-MM-DD');
+    user = await syncTransactions(user, startDate, endDate, token.access_token);
+    // Save changs made to the user in the database
     await user.save();
-    // Synch users account with new institutions data
-    const synchedUser = await syncAccount(user, token.item_id);
-    synchedUser.password = undefined;
-    synchedUser.__v = undefined;
     // Finally link the itemId to this user for future webhook updates
     await linkItemToUser(user, token.item_id);
-    // Commit transaction and return the updated user info
+    // Commit transaction
     await session.commitTransaction();
+    user.password = undefined;
+    user.__v = undefined;
+    // Return the updated user info with new institution info added
     return res.status(200).json({
       message: 'Added Link Successfully and Updated Accounts.',
-      user: synchedUser
+      user
     });
   } catch (err) {
     // Catching a error so we roll back all changes

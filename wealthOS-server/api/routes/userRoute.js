@@ -4,7 +4,8 @@ import {
   linkPlaidToUser,
   updateAccounts,
   updateItemTransactions,
-  testAPI
+  testAPI,
+  syncAccount
 } from '../controllers/userController';
 
 const router = express.Router();
@@ -35,6 +36,18 @@ router.post('/syncTransactions', async (req, res) => {
   try {
     await updateItemTransactions(startDate, endDate, itemID);
     return res.status(200).json({ message: 'Transactions synced successfully.' });
+  } catch (err) {
+    console.log(err);
+    return res.status(400).json({ message: err.message });
+  }
+});
+
+// Sync user information
+router.get('/sync', async (req, res) => {
+  let { user } = req;
+  try {
+    user = await syncAccount(user);
+    return res.status(200).json({ message: 'Synched user successfully.', user });
   } catch (err) {
     console.log(err);
     return res.status(400).json({ message: err.message });
