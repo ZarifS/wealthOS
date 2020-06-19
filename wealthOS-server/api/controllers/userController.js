@@ -111,7 +111,7 @@ export const updateItemTransactions = async (
   try {
     session.startTransaction();
     endDate = moment(endDate).format('YYYY-MM-DD');
-    const itemLink = await (await ItemModel.findOne({ itemID })).session(session);
+    const itemLink = await ItemModel.findOne({ itemID }).session(session);
     // For each user associated with the item (usually just one), update that items transactions
     for (const id of itemLink.users) {
       // Update this users transactions.
@@ -197,13 +197,13 @@ export const linkPlaidToUser = async (req, res) => {
     // Add the new institutions accounts to the user
     const accounts = await PLAID.getAccounts(token.access_token);
     user = setUserAccounts(user, accounts, institutionName);
-    // Synch users transactions with new institutions data from upto 6 months prior
+    // Synch users transactions with new institutions data intitially 1 months prior
     const startDate = moment(Date.now())
-      .subtract(6, 'month')
+      .subtract(1, 'month')
       .format('YYYY-MM-DD');
     const endDate = moment(Date.now()).format('YYYY-MM-DD');
     user = await syncTransactions(user, startDate, endDate, token.access_token);
-    // Save changs made to the user in the database
+    // Save changes made to the user in the database
     await user.save();
     // Finally link the itemId to this user for future webhook updates
     await linkItemToUser(user, token.item_id);

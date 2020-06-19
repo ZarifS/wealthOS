@@ -1,10 +1,13 @@
 import axios from 'axios';
 
+const prod = 'https://wealth-os.now.sh';
+const dev = 'http://localhost:5000';
+
 const api = axios.create({
   /**
    * Import the config from the App/Config/index.js file later
    */
-  baseURL: 'http://localhost:5000',
+  baseURL: prod,
   headers: {
     Accept: 'application/json',
     'Content-Type': 'application/json',
@@ -60,4 +63,5 @@ export default {
   registerUser,
   checkEmailExists,
   linkUser,
+  server: prod,
 };
