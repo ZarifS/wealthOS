@@ -87,7 +87,6 @@ const syncTransactions = async (user, startDate, endDate, accessToken) => {
       };
       // Check for duplicated transactions, if already exists, replace it.
       if (user.transactions.id(transaction.transaction_id)) {
-        console.log('Transaction already exists, replacing.');
         user.transactions.pull(transaction.transaction_id);
       }
       return user.transactions.push(transactionObject);
@@ -121,10 +120,10 @@ export const updateItemTransactions = async (
       user = await syncTransactions(user, startDate, endDate, accessToken);
       user.save();
     }
-    session.commitTransaction();
+    await session.commitTransaction();
     return Promise.resolve();
   } catch (err) {
-    session.abortTransaction();
+    await session.abortTransaction();
     return Promise.reject(err);
   } finally {
     session.endSession();

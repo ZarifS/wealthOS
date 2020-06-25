@@ -6,35 +6,39 @@ import { updateItemTransactions } from './userController';
 const transactionsHandler = async (webhook_code, item_id) => {
   let startDate;
   const endDate = Date.now();
-  switch (webhook_code) {
-    case 'DEFAULT_UPDATE':
-      console.log('Got a default update.');
-      console.log('Transaction updates are available for itemID:', item_id);
-      startDate = moment()
-        .subtract(15, 'days')
-        .format('YYYY-MM-DD');
-      await updateItemTransactions(startDate, endDate, item_id);
-      break;
-    case 'HISTORICAL_UPDATE':
-      console.log('Got a historical update.');
-      startDate = moment()
-        .subtract(1, 'year')
-        .format('YYYY-MM-DD');
-      await updateItemTransactions(startDate, endDate, item_id);
-      break;
-    case 'INITIAL_UPDATE':
-      console.log('Got a initial update.');
-      startDate = moment()
-        .subtract(1, 'months')
-        .format('YYYY-MM-DD');
-      await updateItemTransactions(startDate, endDate, item_id);
-      break;
-    case 'TRANSACTIONS_REMOVED':
-      // To-DO
-      console.log('Some transactions have been removed.');
-      break;
-    default:
-      console.log('Unhandled webhook type.');
+  console.log('Transaction updates are available for itemID:', item_id);
+  try {
+    switch (webhook_code) {
+      case 'DEFAULT_UPDATE':
+        console.log('Got a default update.');
+        startDate = moment()
+          .subtract(15, 'days')
+          .format('YYYY-MM-DD');
+        await updateItemTransactions(startDate, endDate, item_id);
+        break;
+      case 'HISTORICAL_UPDATE':
+        console.log('Got a historical update.');
+        startDate = moment()
+          .subtract(1, 'year')
+          .format('YYYY-MM-DD');
+        await updateItemTransactions(startDate, endDate, item_id);
+        break;
+      case 'INITIAL_UPDATE':
+        console.log('Got a initial update.');
+        startDate = moment()
+          .subtract(1, 'months')
+          .format('YYYY-MM-DD');
+        await updateItemTransactions(startDate, endDate, item_id);
+        break;
+      case 'TRANSACTIONS_REMOVED':
+        // To-DO
+        console.log('Some transactions have been removed.');
+        break;
+      default:
+        console.log('Unhandled webhook type.');
+    }
+  } catch (err) {
+    console.log(err);
   }
 };
 
