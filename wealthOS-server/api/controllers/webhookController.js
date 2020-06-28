@@ -6,25 +6,21 @@ import { updateItemTransactions } from './userController';
 const transactionsHandler = async (webhook_code, item_id) => {
   let startDate;
   const endDate = Date.now();
-  console.log('Transaction updates are available for itemID:', item_id);
   try {
     switch (webhook_code) {
       case 'DEFAULT_UPDATE':
-        console.log('Got a default update.');
         startDate = moment()
           .subtract(15, 'days')
           .format('YYYY-MM-DD');
         await updateItemTransactions(startDate, endDate, item_id);
         break;
       case 'HISTORICAL_UPDATE':
-        console.log('Got a historical update.');
         startDate = moment()
           .subtract(1, 'year')
           .format('YYYY-MM-DD');
         await updateItemTransactions(startDate, endDate, item_id);
         break;
       case 'INITIAL_UPDATE':
-        console.log('Got a initial update.');
         startDate = moment()
           .subtract(1, 'months')
           .format('YYYY-MM-DD');
@@ -32,51 +28,50 @@ const transactionsHandler = async (webhook_code, item_id) => {
         break;
       case 'TRANSACTIONS_REMOVED':
         // To-DO
-        console.log('Some transactions have been removed.');
         break;
       default:
         console.log('Unhandled webhook type.');
     }
   } catch (err) {
     console.log(err);
+  } finally {
+    console.log('Webhook handled.');
   }
+};
+
+export const addWebhookToItem = accessToken => {
+  // Development Server, close all Tunnels, connect ->  Tunnel Connection for Webhook Testing
+  console.log('Adding webhook..');
+  return ngrok
+    .connect(5000)
+    .then(url => {
+      const webhookURL = `${url}/webhook/`;
+      console.log('Connected to Tunnel at:', webhookURL);
+      return addWebhook(accessToken, webhookURL);
+    })
+    .then(() => {
+      console.log('Added webhook successfully!');
+    })
+    .catch(err => {
+      throw err;
+    });
 };
 
 export const addWebhookToUser = (req, res) => {
   const { itemID } = req.body;
   const { accessToken } = req.user.links.get(itemID);
   // User supplied webhookURL
-  if (req.body.webhookURL) {
-    console.log('Setting webhook at:', req.body.webhookURL);
-    addWebhook(accessToken, req.body.webhookURL)
-      .then(() => {
-        return res.status(200).json({
-          message: 'Updated Webhook Successfully'
-        });
-      })
-      .catch(err => {
-        console.log(err);
-        return res.status(400).json({ message: err.message });
+  console.log('Setting webhook at:', req.body.webhookURL);
+  addWebhook(accessToken, req.body.webhookURL)
+    .then(() => {
+      return res.status(200).json({
+        message: 'Updated Webhook Successfully'
       });
-  } else {
-    // Development Server, close all Tunnels, connect ->  Tunnel Connection for Webhook Testing
-    ngrok
-      .connect(5000)
-      .then(url => {
-        const webhookURL = `${url}/webhook/`;
-        console.log('Connected to Tunnel at:', webhookURL);
-        return addWebhook(accessToken, webhookURL);
-      })
-      .then(() => {
-        return res.status(200).json({
-          message: 'Updated Webhook Successfully'
-        });
-      })
-      .catch(err => {
-        console.log(err);
-        return res.status(400).json({ message: err.message });
-      });
-  }
+    })
+    .catch(err => {
+      console.log(err);
+      return res.status(400).json({ message: err.message });
+    });
 };
 
 export const fireWebhook = async (req, res) => {
@@ -88,20 +83,26 @@ export const fireWebhook = async (req, res) => {
   });
 };
 
-export const handleWebhook = (req, res) => {
+export const handleWebhook = async (req, res) => {
   const { item_id, webhook_type, webhook_code } = req.body;
-  console.log('Got a Webhook with Type', webhook_type);
+  console.log('Got a Webhook with Type', webhook_type, ' - ', webhook_code, '- ITEMID:', item_id);
+  res.status(200).json({ message: 'Recieved and handled.' });
   // Alert plaid the webhook was received.
-  res.status(200).json({ message: 'Recieved.' });
-  switch (webhook_type) {
-    case 'TRANSACTIONS':
-      return transactionsHandler(webhook_code, item_id);
-    case 'ITEM':
-      // To-DO
-      console.log('Got a item update.');
-      return null;
-    default:
-      console.log('Unhandled webhook type.');
-      return null;
+  // Handle the webhook on the server
+  try {
+    switch (webhook_type) {
+      case 'TRANSACTIONS':
+        await transactionsHandler(webhook_code, item_id);
+        break;
+      case 'ITEM':
+        // To-DO
+        console.log('Got a item update for itemID:', item_id);
+        break;
+      default:
+        console.log('Unhandled webhook type.');
+        return;
+    }
+  } catch (err) {
+    console.log('Webhook was not handed. Error:', err);
   }
 };

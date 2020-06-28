@@ -19,6 +19,7 @@ class HomeScreen extends Component {
       accountsModal: false,
       errorMessage: '',
       errorModal: false,
+      loading: false,
     };
   }
 
@@ -42,14 +43,16 @@ class HomeScreen extends Component {
 
   linkAccount = async (data) => {
     // To-DO Move API call to a saga and redux
+    this.setState({ loading: true });
     try {
       const { public_token, institution } = data;
       const institutionName = institution.name;
       await API.linkUser(this.props.token, public_token, institutionName);
       this.toggleModal('accountsModal');
-      alert('Successfully linked!');
+      this.setState({ loading: false });
     } catch (error) {
       // To-DO Change to error message from server
+      this.setState({ loading: false });
       this.setState({
         errorMessage:
           'There was an issue linking your account to the institution. Please try again or contact us for help.',
@@ -120,7 +123,7 @@ class HomeScreen extends Component {
         </ModalForError>
       </Container>
     );
-    return <Screen>{this.props.userIsLoading ? spinner : content}</Screen>;
+    return <Screen>{this.props.userIsLoading || this.state.loading ? spinner : content}</Screen>;
   }
 }
 
