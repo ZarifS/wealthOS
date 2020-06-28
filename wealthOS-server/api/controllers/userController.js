@@ -3,6 +3,7 @@ import mongoose from 'mongoose';
 import * as PLAID from './plaidController';
 import ItemModel from '../models/itemLinkModel';
 import UserModel from '../models/userModel';
+// eslint-disable-next-line import/no-cycle
 import { addWebhookToItem } from './webhookController';
 
 // Whenever accounts are modified, update.
@@ -137,7 +138,7 @@ export const testAPI = async (req, res) => {
 };
 
 // Sync user account - default of 1 months - called by postLink and also whenever a users account needs to be fully refreshed
-const syncAllAccounts = async (
+export const syncAllAccounts = async (
   user,
   startDate = moment(Date.now())
     .subtract(1, 'month')
@@ -145,6 +146,7 @@ const syncAllAccounts = async (
   endDate = moment(Date.now()).format('YYYY-MM-DD')
 ) => {
   // For each institution that the user has linked, update info.
+  // eslint-disable-next-line no-unused-vars
   for (const [key, value] of user.links) {
     const { accessToken, institutionName } = user.links.get(key);
     // First update all account balances
@@ -197,7 +199,7 @@ const linkItemToUser = async (user, itemID, session) => {
 // Handle the linking of a institution to plaid
 export const linkPlaidToUser = async (req, res) => {
   // Grab public token from body
-  const { publicToken, institutionName } = req.body;
+  const { publicToken, institutionName, webhookURL } = req.body;
   // Start the mongo session
   const session = await mongoose.startSession();
   try {
@@ -212,9 +214,14 @@ export const linkPlaidToUser = async (req, res) => {
       });
       // Link the itemId to this user for future webhook updates
       await linkItemToUser(sessionedUser, token.item_id, session);
-      // Finally return the saved user object
+      // If a custom webhook was passed
+      if (webhookURL) {
+        await addWebhookToItem(token.access_token, webhookURL);
+      }
+      // Finally return the updated user object
       return sessionedUser.save();
     });
+
     user.password = undefined;
     user.__v = undefined;
     // Return the updated user info with new institution info added
@@ -224,6 +231,52 @@ export const linkPlaidToUser = async (req, res) => {
     });
   } catch (err) {
     // Catching a error so we roll back all changes
+    console.log('Aborting due to error:', err);
+    return res.status(400).json([{ message: err.message }]);
+  } finally {
+    // Ending the session
+    session.endSession();
+  }
+};
+
+export const unlinkAccount = async (req, res) => {
+  const { itemID } = req.body;
+  const session = await mongoose.startSession();
+  try {
+    const { accessToken, institutionName } = req.user.links.get(itemID);
+    await session.withTransaction(async () => {
+      // Unlink the access token from PLIAD
+      await PLAID.removeItem(accessToken);
+      // Remove the link from the users links
+      const sessionedUser = await UserModel.findById(req.user.id).session(session);
+      sessionedUser.links.delete(itemID);
+      // Remove transactions associated with the account
+      const linkedAccounts = sessionedUser.accounts.get(institutionName);
+      const accountIDs = [];
+      linkedAccounts.map(account => accountIDs.push(account.accountID));
+      // Filter out transactions that are not associated with any of the accounts
+      // being unlinked
+      sessionedUser.transactions = sessionedUser.transactions.filter(
+        transaction => !accountIDs.includes(transaction.accountID)
+      );
+      // Remove accounts associated with the itemID
+      sessionedUser.accounts.delete(institutionName);
+      // Save the updated user
+      await sessionedUser.save();
+      const sessionedItem = await ItemModel.findOne({ itemID }).session(session);
+      // If there is only one user remove the entire itemLink entry
+      if (sessionedItem.users.length === 1) {
+        await ItemModel.findOneAndDelete({ itemID }).session(session);
+      } else {
+        // Multiple users are tracking this item, remove this user from the itemLink
+        sessionedItem.users = sessionedItem.users.filter(item => item !== req.user.id);
+        await sessionedItem.save();
+      }
+    });
+    return res.status(200).json({
+      message: 'Removed link successfully.'
+    });
+  } catch (err) {
     console.log('Aborting due to error:', err);
     return res.status(400).json([{ message: err.message }]);
   } finally {

@@ -1,6 +1,7 @@
 import ngrok from 'ngrok';
 import moment from 'moment';
 import { addWebhook, fireTransactionWebhook } from './plaidController';
+// eslint-disable-next-line import/no-cycle
 import { updateItemTransactions } from './userController';
 
 const transactionsHandler = async (webhook_code, item_id) => {
@@ -39,22 +40,10 @@ const transactionsHandler = async (webhook_code, item_id) => {
   }
 };
 
-export const addWebhookToItem = accessToken => {
+export const addWebhookToItem = (accessToken, webhookURL) => {
   // Development Server, close all Tunnels, connect ->  Tunnel Connection for Webhook Testing
   console.log('Adding webhook..');
-  return ngrok
-    .connect(5000)
-    .then(url => {
-      const webhookURL = `${url}/webhook/`;
-      console.log('Connected to Tunnel at:', webhookURL);
-      return addWebhook(accessToken, webhookURL);
-    })
-    .then(() => {
-      console.log('Added webhook successfully!');
-    })
-    .catch(err => {
-      throw err;
-    });
+  return addWebhook(accessToken, webhookURL);
 };
 
 export const addWebhookToUser = (req, res) => {
