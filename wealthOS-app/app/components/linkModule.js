@@ -2,6 +2,7 @@ import React from 'react';
 import { Text } from 'react-native';
 import Button from './button';
 import PlaidLink from 'react-native-plaid-link-sdk';
+import API from '../services/api.js';
 
 export default class LinkModule extends React.Component {
   render() {
@@ -17,6 +18,7 @@ export default class LinkModule extends React.Component {
         componentProps={{ title: 'Linked', small: true, primary: true }}
         onSuccess={(data) => this.props.onSuccess(data)}
         onExit={(data) => console.log(data)}
+        webhook={`${API.server}/webhook`}
       >
         <Text>Add Account</Text>
       </PlaidLink>

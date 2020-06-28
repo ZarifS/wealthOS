@@ -15,7 +15,10 @@ export const createPublicToken = (req, res) => {
   // CIBC
   const institutionId = 'ins_37';
   client
-    .sandboxPublicTokenCreate(institutionId, ['transactions'])
+    .sandboxPublicTokenCreate(institutionId, ['transactions'], {
+      override_username: 'user_custom',
+      override_password: '{}'
+    })
     .then(token => {
       return res.status(200).json({
         publicToken: token.public_token
@@ -107,4 +110,8 @@ export const getCategories = async (req, res) => {
     console.log(error);
     return res.status(400).json({ message: error.message });
   }
+};
+
+export const removeItem = async accessToken => {
+  return client.removeItem(accessToken);
 };

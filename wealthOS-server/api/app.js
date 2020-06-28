@@ -28,7 +28,12 @@ app.use('/user', ensureAuthenticated, userRoute);
 app.use('/webhook', webhookRoute);
 
 // Connect to Mongo DB
-dbConnection(false);
-
-// Start Server
-app.listen(port, () => console.info(`Server has started on ${port}`));
+dbConnection(false)
+  .then(() => {
+    // Start Server
+    app.listen(port, () => console.info(`Server has started on ${port}`));
+  })
+  .catch(err => {
+    // Could not connect to the database
+    console.log(err);
+  });

@@ -3,6 +3,8 @@ import mongoose from 'mongoose';
 import * as PLAID from './plaidController';
 import ItemModel from '../models/itemLinkModel';
 import UserModel from '../models/userModel';
+// eslint-disable-next-line import/no-cycle
+import { addWebhookToItem } from './webhookController';
 
 // Whenever accounts are modified, update.
 const calculateUserBalance = accounts => {
@@ -87,7 +89,6 @@ const syncTransactions = async (user, startDate, endDate, accessToken) => {
       };
       // Check for duplicated transactions, if already exists, replace it.
       if (user.transactions.id(transaction.transaction_id)) {
-        console.log('Transaction already exists, replacing.');
         user.transactions.pull(transaction.transaction_id);
       }
       return user.transactions.push(transactionObject);
@@ -100,31 +101,26 @@ const syncTransactions = async (user, startDate, endDate, accessToken) => {
 };
 
 // Called by Webhook update - Sync transactions for an item and update associated users - sync by default from 1 month ago.
-export const updateItemTransactions = async (
-  startDate = moment(Date.now())
-    .subtract(1, 'month')
-    .format('YYYY-MM-DD'),
-  endDate = Date.now(),
-  itemID
-) => {
+export const updateItemTransactions = async (startDate, endDate, itemID) => {
   const session = await mongoose.startSession();
+  endDate = moment(endDate).format('YYYY-MM-DD');
   try {
-    session.startTransaction();
-    endDate = moment(endDate).format('YYYY-MM-DD');
-    const itemLink = await (await ItemModel.findOne({ itemID })).session(session);
-    // For each user associated with the item (usually just one), update that items transactions
-    for (const id of itemLink.users) {
-      // Update this users transactions.
-      console.log('Item is associated with userID:', id);
-      let user = await UserModel.findById(id).session(session);
-      const { accessToken } = user.links.get(itemID);
-      user = await syncTransactions(user, startDate, endDate, accessToken);
-      user.save();
-    }
-    session.commitTransaction();
-    return Promise.resolve();
+    return await session.withTransaction(async () => {
+      const itemLink = await ItemModel.findOne({ itemID });
+      if (itemLink) {
+        for (const id of itemLink.users) {
+          // Update this users transactions.
+          console.log('Item is associated with userID:', id);
+          let user = await UserModel.findById(id).session(session);
+          user = await syncAccount(user, startDate, endDate, itemID);
+          await user.save();
+        }
+      } else {
+        console.log('Item is no longer stored in database. Please remove webhook.');
+      }
+      return Promise.resolve();
+    });
   } catch (err) {
-    session.abortTransaction();
     return Promise.reject(err);
   } finally {
     session.endSession();
@@ -142,7 +138,7 @@ export const testAPI = async (req, res) => {
 };
 
 // Sync user account - default of 1 months - called by postLink and also whenever a users account needs to be fully refreshed
-export const syncAccount = async (
+export const syncAllAccounts = async (
   user,
   startDate = moment(Date.now())
     .subtract(1, 'month')
@@ -150,6 +146,7 @@ export const syncAccount = async (
   endDate = moment(Date.now()).format('YYYY-MM-DD')
 ) => {
   // For each institution that the user has linked, update info.
+  // eslint-disable-next-line no-unused-vars
   for (const [key, value] of user.links) {
     const { accessToken, institutionName } = user.links.get(key);
     // First update all account balances
@@ -162,53 +159,69 @@ export const syncAccount = async (
   return user;
 };
 
+// Sync user account - default of 1 months - called by postLink and also whenever a users account needs to be fully refreshed
+const syncAccount = async (
+  user,
+  startDate = moment(Date.now())
+    .subtract(1, 'month')
+    .format('YYYY-MM-DD'),
+  endDate = moment(Date.now()).format('YYYY-MM-DD'),
+  itemId
+) => {
+  const { accessToken, institutionName } = user.links.get(itemId);
+  // First update all account balances
+  const accounts = await PLAID.getAccounts(accessToken);
+  user = setUserAccounts(user, accounts, institutionName);
+  // Then check for any transaction updates
+  user = await syncTransactions(user, startDate, endDate, accessToken);
+  return user;
+};
+
 // Create a new item to store in Item db
-const linkItemToUser = async (user, itemID) => {
+const linkItemToUser = async (user, itemID, session) => {
   if (await ItemModel.exists({ itemID })) {
     console.log('This item already exists, adding new user to the item.');
-    const item = await ItemModel.findOne({ itemID });
+    const item = await ItemModel.findOne({ itemID }).session(session);
     item.users.push(user.id);
     return item.save();
   }
-  const item = new ItemModel({
-    itemID,
-    users: [user.id]
-  });
-  // Save to DB
-  return item.save();
+  return ItemModel.create(
+    [
+      {
+        itemID,
+        users: [user.id]
+      }
+    ],
+    { session }
+  );
 };
 
 // Handle the linking of a institution to plaid
 export const linkPlaidToUser = async (req, res) => {
   // Grab public token from body
-  const { publicToken, institutionName } = req.body;
+  const { publicToken, institutionName, webhookURL } = req.body;
   // Start the mongo session
   const session = await mongoose.startSession();
   try {
-    session.startTransaction();
-    // Get the user session
-    let user = await UserModel.findById(req.user.id).session(session);
-    // Link user to plaid with token
-    const token = await PLAID.exchangeToken(publicToken);
-    user.links.set(token.item_id, {
-      accessToken: token.access_token,
-      institutionName
+    const user = await session.withTransaction(async () => {
+      // Get the user session
+      const sessionedUser = await UserModel.findById(req.user.id).session(session);
+      // Link user to plaid with token
+      const token = await PLAID.exchangeToken(publicToken);
+      sessionedUser.links.set(token.item_id, {
+        accessToken: token.access_token,
+        institutionName
+      });
+      // Link the itemId to this user for future webhook updates
+      await linkItemToUser(sessionedUser, token.item_id, session);
+      // If a custom webhook was passed
+      if (webhookURL) {
+        await addWebhookToItem(token.access_token, webhookURL);
+      }
+      // Finally return the updated user object
+      return sessionedUser.save();
     });
-    // Add the new institutions accounts to the user
-    const accounts = await PLAID.getAccounts(token.access_token);
-    user = setUserAccounts(user, accounts, institutionName);
-    // Synch users transactions with new institutions data from upto 6 months prior
-    const startDate = moment(Date.now())
-      .subtract(6, 'month')
-      .format('YYYY-MM-DD');
-    const endDate = moment(Date.now()).format('YYYY-MM-DD');
-    user = await syncTransactions(user, startDate, endDate, token.access_token);
-    // Save changs made to the user in the database
-    await user.save();
-    // Finally link the itemId to this user for future webhook updates
-    await linkItemToUser(user, token.item_id);
-    // Commit transaction
-    await session.commitTransaction();
+
     user.password = undefined;
     user.__v = undefined;
     // Return the updated user info with new institution info added
@@ -218,7 +231,52 @@ export const linkPlaidToUser = async (req, res) => {
     });
   } catch (err) {
     // Catching a error so we roll back all changes
-    await session.abortTransaction();
+    console.log('Aborting due to error:', err);
+    return res.status(400).json([{ message: err.message }]);
+  } finally {
+    // Ending the session
+    session.endSession();
+  }
+};
+
+export const unlinkAccount = async (req, res) => {
+  const { itemID } = req.body;
+  const session = await mongoose.startSession();
+  try {
+    const { accessToken, institutionName } = req.user.links.get(itemID);
+    await session.withTransaction(async () => {
+      // Unlink the access token from PLIAD
+      await PLAID.removeItem(accessToken);
+      // Remove the link from the users links
+      const sessionedUser = await UserModel.findById(req.user.id).session(session);
+      sessionedUser.links.delete(itemID);
+      // Remove transactions associated with the account
+      const linkedAccounts = sessionedUser.accounts.get(institutionName);
+      const accountIDs = [];
+      linkedAccounts.map(account => accountIDs.push(account.accountID));
+      // Filter out transactions that are not associated with any of the accounts
+      // being unlinked
+      sessionedUser.transactions = sessionedUser.transactions.filter(
+        transaction => !accountIDs.includes(transaction.accountID)
+      );
+      // Remove accounts associated with the itemID
+      sessionedUser.accounts.delete(institutionName);
+      // Save the updated user
+      await sessionedUser.save();
+      const sessionedItem = await ItemModel.findOne({ itemID }).session(session);
+      // If there is only one user remove the entire itemLink entry
+      if (sessionedItem.users.length === 1) {
+        await ItemModel.findOneAndDelete({ itemID }).session(session);
+      } else {
+        // Multiple users are tracking this item, remove this user from the itemLink
+        sessionedItem.users = sessionedItem.users.filter(item => item !== req.user.id);
+        await sessionedItem.save();
+      }
+    });
+    return res.status(200).json({
+      message: 'Removed link successfully.'
+    });
+  } catch (err) {
     console.log('Aborting due to error:', err);
     return res.status(400).json([{ message: err.message }]);
   } finally {

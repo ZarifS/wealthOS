@@ -17,9 +17,7 @@ export default async (req, res, next) => {
   }
 
   // User Validation
-  console.log('Here');
   const user = await UserModel.exists({ email });
-  console.log(user);
   // User already exists
   if (user) {
     console.log('User already exists');

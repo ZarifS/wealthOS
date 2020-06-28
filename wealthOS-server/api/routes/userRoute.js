@@ -5,7 +5,8 @@ import {
   updateAccounts,
   updateItemTransactions,
   testAPI,
-  syncAccount
+  unlinkAccount,
+  syncAllAccounts
 } from '../controllers/userController';
 
 const router = express.Router();
@@ -27,6 +28,9 @@ router.get('/getPublicToken', createPublicToken);
 // User Links Plaid - {institutionName:"CIBC", publicToken: "string"}
 router.post('/link', linkPlaidToUser);
 
+// User Unlinks a Plaid account - {itemID: "string"}
+router.post('/unlink', unlinkAccount);
+
 // Initialize or update accounts for a linked Item - {institutionName:"string"}
 router.post('/setAccounts', updateAccounts);
 
@@ -46,7 +50,7 @@ router.post('/syncTransactions', async (req, res) => {
 router.get('/sync', async (req, res) => {
   let { user } = req;
   try {
-    user = await syncAccount(user);
+    user = await syncAllAccounts(user);
     return res.status(200).json({ message: 'Synched user successfully.', user });
   } catch (err) {
     console.log(err);
