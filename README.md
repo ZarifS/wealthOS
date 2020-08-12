@@ -90,9 +90,10 @@ More information on the project archeticture can be found on the Wiki.
 
 ## Installation and Deployment Instructions (Getting Started)
 
-- Install watchman and react-native
+- Install watchman, react-native and cocopods
     - `brew install watchman`
     - `sudo npm install -g react-native-cli`
+    - `sudo gem install cocoapods`
 - If you are on Windows download and install Android studio,
 - If you are on Mac download and install Xcode, and install the command line tools
     - `xcode-select --install`
