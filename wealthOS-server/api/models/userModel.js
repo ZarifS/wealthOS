@@ -1,11 +1,11 @@
-import mongoose from 'mongoose';
-import bcrypt from 'bcrypt';
+import mongoose from 'mongoose'
+import bcrypt from 'bcrypt'
 
 // Holds the Plaid accessToken needed to access the itemId associated with the item
 const LinksSchema = new mongoose.Schema({
   accessToken: String,
   institutionName: String
-});
+})
 
 // Transaction data for both manual entries and Plaid aggregated ones
 const TransactionsSchema = new mongoose.Schema({
@@ -45,7 +45,7 @@ const TransactionsSchema = new mongoose.Schema({
     type: Boolean,
     default: false
   }
-});
+})
 
 // Define User Schema
 const UserSchema = new mongoose.Schema({
@@ -85,27 +85,27 @@ const UserSchema = new mongoose.Schema({
     type: Number
   },
   transactions: [TransactionsSchema]
-});
+})
 
 // Define schema methods
 UserSchema.methods = {
   // Returns true if the password is correct
-  checkPassword(inputPassword) {
-    return bcrypt.compareSync(inputPassword, this.password);
+  checkPassword (inputPassword) {
+    return bcrypt.compareSync(inputPassword, this.password)
   },
   // Creates a encrypted password for the user
-  hashPassword: plainTextPassword => bcrypt.hashSync(plainTextPassword, 10)
-};
+  hashPassword: (plainTextPassword) => bcrypt.hashSync(plainTextPassword, 10)
+}
 
 // Define hooks for pre-saving, ensure password is never added to database unencrypted
 // eslint-disable-next-line func-names
-UserSchema.pre('save', function(next) {
+UserSchema.pre('save', function (next) {
   // Password is being updated
   if (this.isModified('password')) {
-    console.log('Password was modified, encrypting.');
-    this.password = this.hashPassword(this.password);
-    next();
-  } else next();
-});
+    console.log('Password was modified, encrypting.')
+    this.password = this.hashPassword(this.password)
+    next()
+  } else next()
+})
 
-export default mongoose.model('User', UserSchema);
+export default mongoose.model('User', UserSchema)
