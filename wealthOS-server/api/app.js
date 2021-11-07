@@ -8,7 +8,7 @@ import dbConnection from './helpers/dbConnection'
 import { ensureAuthenticated } from './helpers/auth'
 
 // Init Server
-const port = process.env.PORT || 5000
+const port = process.env.PORT || 5025
 const app = express()
 
 // Express Body Parser

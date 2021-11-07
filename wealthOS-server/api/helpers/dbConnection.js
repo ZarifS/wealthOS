@@ -6,7 +6,6 @@ const dbConnection = async (local = true) => {
     console.log('Connecting to local database..')
     return mongoose
       .connect(`mongodb://localhost:27017/${DB_NAME}`, {
-        useCreateIndex: true,
         useNewUrlParser: true,
         useUnifiedTopology: true
       })
@@ -21,8 +20,7 @@ const dbConnection = async (local = true) => {
   }
   console.log('Connecting to database..')
   return mongoose
-    .connect(`mongodb+srv://${DB_USER}:${DB_PASSWORD}@${DB_URL}/${DB_NAME}${DB_OPTIONS}}`, {
-      useCreateIndex: true,
+    .connect(`mongodb+srv://${DB_USER}:${DB_PASSWORD}@${DB_URL}/${DB_NAME}${DB_OPTIONS}`, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
       dbName: DB_NAME

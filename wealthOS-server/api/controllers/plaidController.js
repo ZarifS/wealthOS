@@ -1,14 +1,19 @@
-import plaid from 'plaid'
+import { Configuration, PlaidApi, PlaidEnvironments } from 'plaid'
 import moment from 'moment'
-import { PLAID_CLIENT_ID, PLAID_PUBLIC_KEY, PLAID_SECRET, PLAID_ENV } from '../helpers/secrets'
+import { PLAID_CLIENT_ID, PLAID_SECRET } from '../helpers/secrets'
 
 // Initialize the Plaid client
-const client = new plaid.Client(
-  PLAID_CLIENT_ID,
-  PLAID_SECRET,
-  PLAID_PUBLIC_KEY,
-  plaid.environments[PLAID_ENV]
-)
+const configuration = new Configuration({
+  basePath: PlaidEnvironments.sandbox,
+  baseOptions: {
+    headers: {
+      'PLAID-CLIENT-ID': PLAID_CLIENT_ID,
+      'PLAID-SECRET': PLAID_SECRET
+    }
+  }
+})
+
+const client = new PlaidApi(configuration)
 
 // Sandbox create a new public token
 export const createPublicToken = (req, res) => {
