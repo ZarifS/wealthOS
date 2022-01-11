@@ -5,8 +5,9 @@ import * as admin from "firebase-admin";
 import * as functions from "firebase-functions";
 import {initializeApp} from "firebase/app";
 import {getAuth, createUserWithEmailAndPassword,
-  signInWithEmailAndPassword, connectAuthEmulator} from "firebase/auth";
+  signInWithEmailAndPassword, connectAuthEmulator, signInWithCustomToken} from "firebase/auth";
 import {User} from "../controllers/user";
+import {ItemLinks} from "../controllers/itemLinks";
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const serviceAccount = require("../../serviceAccountCredentials.json");
@@ -22,11 +23,12 @@ const firebaseConfig = {
   measurementId: "G-SYJ7N0HH26",
 };
 
-
 // Init admin app with secret account keys
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
 });
+
+// Setup admin db and auth
 admin.firestore().settings({
   ignoreUndefinedProperties: true,
 });
@@ -52,6 +54,7 @@ const dataPoint = <T>(collectionPath: string) =>
 // Setup DB objects
 const db = {
   users: dataPoint<User>("users"),
+  itemLinks: dataPoint<ItemLinks>("itemLinks"),
 };
 
 export {
@@ -61,4 +64,5 @@ export {
   adminAuth,
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
+  signInWithCustomToken,
 };
