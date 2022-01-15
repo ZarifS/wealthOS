@@ -23,30 +23,43 @@ const firebaseConfig = {
   measurementId: "G-SYJ7N0HH26",
 };
 
-// Init admin app with secret account keys
+// Init admin app with secret account keys and configs
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
 });
-
-// Setup admin db and auth
 admin.firestore().settings({
   ignoreUndefinedProperties: true,
 });
 const adminAuth = admin.auth();
 
+
 // Initialize Firebase client SDK
 const client = initializeApp(firebaseConfig);
+
 // Authentication for Client SDK
 const auth = getAuth(client);
+
+// Setup emulator for when running in local development
 connectAuthEmulator(auth, "http://localhost:9099" );
 
-
-// Set types for firestore db
+/**
+ * Takes a specific data object and sets its type to whatever is passed.
+ * Use this to setup typesafe firestore collections
+ * @template T
+ * @return {FirebaseFirestore.FirestoreDataConverter<T>}
+ */
 const converter = <T>() => ({
   toFirestore: (data: T) => data,
   fromFirestore: (snap: FirebaseFirestore.QueryDocumentSnapshot) =>
         snap.data() as T,
 });
+
+/**
+ * Returns a firebase collection using a data converter
+ * @template T
+ * @param {string} collectionPath
+ * @return {FirebaseFirestore.CollectionReference<T>}
+ */
 const dataPoint = <T>(collectionPath: string) =>
   admin.firestore().collection(collectionPath).withConverter(converter<T>());
 

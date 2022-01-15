@@ -1,10 +1,15 @@
 import * as Plaid from "plaid";
+import * as moment from "moment";
 import {PLAID_CLIENT_ID, PLAID_SECRET} from "../utils/secrets";
 
 type TokenResponse = {
   itemId: string,
   accessToken: string
 }
+
+// Plaid Types
+export {AccountBase} from "plaid";
+
 
 // Initialize the Plaid client
 const configuration = new Plaid.Configuration({
@@ -45,23 +50,23 @@ export const exchangeToken = async (publicToken: string): Promise<TokenResponse>
 };
 
 // Makes a call to the Plaids Transactions API for Account information for a given Item/Institution
-// export const getAccounts = async (accessToken: string): Promise<Plaid.AccountBase[]> => {
-//   // Last 30 Days
-//   const startDate = moment().subtract(1, "days").format("YYYY-MM-DD");
-//   const endDate = moment().format("YYYY-MM-DD");
+export const getAccounts = async (accessToken: string): Promise<Plaid.AccountBase[]> => {
+  // Last 30 Days
+  const startDate = moment().subtract(1, "days").format("YYYY-MM-DD");
+  const endDate = moment().format("YYYY-MM-DD");
 
-//   // Call Plaid API Transactions
-//   const transactionsRequest: Plaid.TransactionsGetRequest = {
-//     access_token: accessToken,
-//     start_date: startDate,
-//     end_date: endDate,
-//   };
-//   const response = await client.transactionsGet(transactionsRequest, {
-//     count: 1,
-//     offset: 0,
-//   });
-//   return response.data.accounts;
-// };
+  // Call Plaid API Transactions
+  const transactionsRequest: Plaid.TransactionsGetRequest = {
+    access_token: accessToken,
+    start_date: startDate,
+    end_date: endDate,
+  };
+  const response = await client.transactionsGet(transactionsRequest, {
+    count: 1,
+    offset: 0,
+  });
+  return response.data.accounts;
+};
 
 
 // Makes a call to the Plaids Transactions API for a given Item/Institution

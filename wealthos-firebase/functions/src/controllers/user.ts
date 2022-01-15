@@ -1,8 +1,11 @@
+import * as moment from "moment";
 import {db as Database} from "../utils/firebase";
-// import * as Plaid from "./plaid";
+import * as Plaid from "./plaid";
+
 type Link = {
   accessToken: string,
-  institutionName?: string
+  institutionName: string,
+  institutionId: string,
 }
 
 type Transactions = {
@@ -20,6 +23,7 @@ type Transactions = {
 }
 
 export type User = {
+    uuid: string,
     firstName?: string,
     lastName?: string,
     email: string,
@@ -51,45 +55,34 @@ export async function getUserById(userId: string): Promise<User | undefined> {
 
 
 /**
- * Create a new user with a specific docId or a random docId if not
- * provided.
+ * Create a new user with a specific docId matching authentications uuid
  * @export
- * @param {(string | undefined)} userId
+ * @param {string} uuid firebase auth uuid
  * @param {Partial<User>} data
  * @return {Promise<FirebaseFirestore.WriteResult>}
  */
-export async function createUser(userId: string | undefined, data: Partial<User>):
+export async function createUser(uuid: string, data: Partial<User>):
 Promise<FirebaseFirestore.WriteResult> {
   try {
-    if (userId) {
-      return await db.doc(userId).set({
-        email: data.email as string,
-        firstName: data.firstName,
-        lastName: data.lastName,
-        links: {},
-        balance: 0,
-        transactions: [],
-        accounts: {},
-      });
-    } else {
-      return await db.doc().set({
-        email: data.email as string,
-        firstName: data.firstName,
-        lastName: data.lastName,
-        links: {},
-        balance: 0,
-        transactions: [],
-        accounts: {},
-      });
-    }
+    if (!uuid) throw new Error("Missing or invalid uuid.");
+    return await db.doc(uuid).set({
+      email: data.email as string,
+      firstName: data.firstName,
+      lastName: data.lastName,
+      links: {},
+      balance: 0,
+      transactions: [],
+      accounts: {},
+      uuid,
+    });
   } catch (error) {
-    console.log("Error trying to create a new user", error);
+    console.error("Error trying to create a new user:", error);
     throw error;
   }
 }
 
 /**
- * Replaces a users documents field(s) with data that is provided
+ * Replaces a users document field(s) with data that is provided
  * @param {string} userId
  * @param {Partial<User>} data
  * @return {Promise<FirebaseFirestore.WriteResult>}
@@ -104,47 +97,39 @@ export async function updateUser(userId:string, data: Partial<User>):
   }
 }
 
-// export async function getAccounts(user: User) {
-//   try {
-//     // eslint-disable-next-line guard-for-in
-//     for (const key in user.links) {
-//       const {accessToken, institutionName} = user.links[key];
-//       // First update all account balances
-//       const accounts = await Plaid.getAccounts(accessToken);
-//       user = setUserAccounts(user, accounts, institutionName);
-//     }
-//   } catch (error) {
-//     console.error(error);
-//     throw error;
-//   }
-// }
+/**
+ * Fetches and updates all account balances for a user
+ * @export
+ * @param {User} user
+ */
+export async function fetchAndUpdateAccounts(user: User) {
+  try {
+    for (const key in user.links) {
+        const {accessToken, institutionName} = user.links[key];
+        // First get the account balances for this accessToken
+        const accounts = await Plaid.getAccounts(accessToken);
+        // Update the user.accounts with the new information
+        user.accounts[institutionName] = accounts.map(account => {
+          return {
+            name: account.name,
+            balance: account.balances.current,
+            type: account.type,
+            currency: account.balances.iso_currency_code,
+            mask: account.mask,
+            accountId: account.account_id,
+            lastUpdated: moment(Date.now()).format("YYYY-MM-DD, h:mm:ss a"),
+          };
+        });
+    }
+    // All user accounts updated, update balance
+    return await updateUser(user.uuid, {accounts: user.accounts});
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}
 
-// // Add new institution accounts to the User
-// const setUserAccounts = (user: User, accounts: any, institutionName: any) => {
-//   // Setup user accounts for each account associated with the Plaid item
-//   const newAccounts: any = [];
-//   accounts.forEach((account: any) => {
-//     const {account_id: accountId, balances, name, type, mask} = account;
-//     const newAccount = {
-//       name,
-//       balance: balances.current,
-//       type,
-//       currency: balances.iso_currency_code,
-//       mask,
-//       accountId,
-//       // lastUpdated: moment(Date.now()).format("YYYY-MM-DD, h:mm:ss a"),
-//     };
-//     newAccounts.push(newAccount);
-//   });
-//   user.accounts[institutionName] = newAccounts;
-
-//   // Recalculate the users current balance
-//   user.balance = calculateUserBalance(user.accounts);
-
-//   return user;
-// };
-
-// // Whenever accounts are modified, update.
+// Whenever accounts are modified, update.
 // const calculateUserBalance = (accounts: any) => {
 //   let sum = 0;
 //   accounts.forEach((institution: any) => {
