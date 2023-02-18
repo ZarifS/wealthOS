@@ -1,5 +1,5 @@
 import * as moment from "moment";
-import {db as Database} from "../utils/firebase";
+import { db as Database } from "../utils/firebase";
 import * as Plaid from "./plaid";
 
 type Link = {
@@ -23,14 +23,14 @@ type Transactions = {
 }
 
 export type User = {
-    uuid: string,
-    firstName?: string,
-    lastName?: string,
-    email: string,
-    links: Record<string, Link>
-    balance: number,
-    transactions: Transactions[],
-    accounts: Record<string, any>
+  uuid: string,
+  firstName?: string,
+  lastName?: string,
+  email: string,
+  links: Record<string, Link>
+  balance: number,
+  transactions: Transactions[],
+  accounts: Record<string, any>
 }
 
 // Get user collection slice from database
@@ -41,7 +41,7 @@ export const db = Database.users;
  * @param {String} userId:
  * @return {Promise<User | undefined>}
  */
-export async function getUserById(userId: string): Promise<User | undefined> {
+export async function getUserById(userId: string): Promise<any | undefined> {
   try {
     const user = (await db.doc(userId).get()).data();
     if (user) {
@@ -62,7 +62,7 @@ export async function getUserById(userId: string): Promise<User | undefined> {
  * @return {Promise<FirebaseFirestore.WriteResult>}
  */
 export async function createUser(uuid: string, data: Partial<User>):
-Promise<FirebaseFirestore.WriteResult> {
+  Promise<FirebaseFirestore.WriteResult> {
   try {
     if (!uuid) throw new Error("Missing or invalid uuid.");
     return await db.doc(uuid).set({
@@ -87,8 +87,8 @@ Promise<FirebaseFirestore.WriteResult> {
  * @param {Partial<User>} data
  * @return {Promise<FirebaseFirestore.WriteResult>}
  */
-export async function updateUser(userId:string, data: Partial<User>):
- Promise<FirebaseFirestore.WriteResult> {
+export async function updateUser(userId: string, data: Partial<User>):
+  Promise<FirebaseFirestore.WriteResult> {
   try {
     return await db.doc(userId).update(data);
   } catch (error) {
@@ -105,24 +105,24 @@ export async function updateUser(userId:string, data: Partial<User>):
 export async function fetchAndUpdateAccounts(user: User) {
   try {
     for (const key in user.links) {
-        const {accessToken, institutionName} = user.links[key];
-        // First get the account balances for this accessToken
-        const accounts = await Plaid.getAccounts(accessToken);
-        // Update the user.accounts with the new information
-        user.accounts[institutionName] = accounts.map(account => {
-          return {
-            name: account.name,
-            balance: account.balances.current,
-            type: account.type,
-            currency: account.balances.iso_currency_code,
-            mask: account.mask,
-            accountId: account.account_id,
-            lastUpdated: moment(Date.now()).format("YYYY-MM-DD, h:mm:ss a"),
-          };
-        });
+      const { accessToken, institutionName } = user.links[key];
+      // First get the account balances for this accessToken
+      const accounts = await Plaid.getAccounts(accessToken);
+      // Update the user.accounts with the new information
+      user.accounts[institutionName] = accounts.map(account => {
+        return {
+          name: account.name,
+          balance: account.balances.current,
+          type: account.type,
+          currency: account.balances.iso_currency_code,
+          mask: account.mask,
+          accountId: account.account_id,
+          lastUpdated: moment(Date.now()).format("YYYY-MM-DD, h:mm:ss a"),
+        };
+      });
     }
     // All user accounts updated, update balance
-    return await updateUser(user.uuid, {accounts: user.accounts});
+    return await updateUser(user.uuid, { accounts: user.accounts });
   } catch (error) {
     console.error(error);
     throw error;

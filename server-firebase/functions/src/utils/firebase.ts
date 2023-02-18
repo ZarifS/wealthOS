@@ -3,11 +3,13 @@
  */
 import * as admin from "firebase-admin";
 import * as functions from "firebase-functions";
-import {initializeApp} from "firebase/app";
-import {getAuth, createUserWithEmailAndPassword,
-  signInWithEmailAndPassword, connectAuthEmulator, signInWithCustomToken} from "firebase/auth";
-import {User} from "../controllers/user";
-import {ItemLinks} from "../controllers/itemLinks";
+import { initializeApp } from "firebase/app";
+import {
+  getAuth, createUserWithEmailAndPassword,
+  signInWithEmailAndPassword, connectAuthEmulator, signInWithCustomToken
+} from "firebase/auth";
+// import { User } from "../controllers/user";
+// import { ItemLinks } from "../controllers/itemLinks";
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const serviceAccount = require("../../serviceAccountCredentials.json");
@@ -40,7 +42,7 @@ const client = initializeApp(firebaseConfig);
 const auth = getAuth(client);
 
 // Setup emulator for when running in local development
-connectAuthEmulator(auth, "http://localhost:9099" );
+connectAuthEmulator(auth, "http://localhost:9099");
 
 /**
  * Takes a specific data object and sets its type to whatever is passed.
@@ -48,11 +50,11 @@ connectAuthEmulator(auth, "http://localhost:9099" );
  * @template T
  * @return {FirebaseFirestore.FirestoreDataConverter<T>}
  */
-const converter = <T>() => ({
-  toFirestore: (data: T) => data,
-  fromFirestore: (snap: FirebaseFirestore.QueryDocumentSnapshot) =>
-        snap.data() as T,
-});
+// const converter = <T>() => ({
+//   toFirestore: (data: T) => data,
+//   fromFirestore: (snap: FirebaseFirestore.QueryDocumentSnapshot) =>
+//     snap.data() as T,
+// });
 
 /**
  * Returns a firebase collection using a data converter
@@ -60,14 +62,14 @@ const converter = <T>() => ({
  * @param {string} collectionPath
  * @return {FirebaseFirestore.CollectionReference<T>}
  */
-const dataPoint = <T>(collectionPath: string) =>
-  admin.firestore().collection(collectionPath).withConverter(converter<T>());
+// const dataPoint = <T>(collectionPath: string) =>
+//   admin.firestore().collection(collectionPath).withConverter(null);
 
 
 // Setup DB objects
 const db = {
-  users: dataPoint<User>("users"),
-  itemLinks: dataPoint<ItemLinks>("itemLinks"),
+  users: admin.firestore().collection('users'),
+  itemLinks: admin.firestore().collection('itemLinks'),
 };
 
 export {

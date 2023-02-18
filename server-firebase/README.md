@@ -1,6 +1,7 @@
 # WealthOS Server
 
 # Getting Started
+
 ## Running Locally
 - Intall firebase command line tools globally `npm install -g firebase`
 - Go into functions directory `cd functions`
