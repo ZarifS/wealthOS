@@ -1,9 +1,24 @@
 import type { NextPage } from 'next'
 import Head from 'next/head'
 import Image from 'next/image'
+import { useEffect } from 'react'
+import { useRouter } from 'next/router'
+
 import styles from '../styles/Home.module.css'
 
+// Here you would fetch and return the user
+const useUser = () => ({ user: null, loading: false })
+
 const Home: NextPage = () => {
+  const {user, loading} = useUser();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (!(user || loading)) {
+      router.push('/login')
+    }
+  }, [user, loading])
+  
   return (
     <div className={styles.container}>
       <Head>
