@@ -2,7 +2,11 @@ import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 
 import AuthService, {RegisterPayload, LoginPayload} from "../services/authService";
 
-const user = JSON.parse(localStorage.getItem("user") as string) || null;
+let user;
+
+if (typeof window !== 'undefined') {
+   user = JSON.parse(localStorage.getItem("user") as string) || null;
+}
 
 export const register = createAsyncThunk(
   "auth/register",
