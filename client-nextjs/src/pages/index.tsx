@@ -1,22 +1,21 @@
 import type { NextPage } from 'next'
+import { useDispatch, useSelector } from 'react-redux'
 import Head from 'next/head'
 import Image from 'next/image'
 import { useEffect } from 'react'
 import { useRouter } from 'next/router'
 import styles from '../styles/Home.module.css'
-
-// Here you would fetch and return the user
-const useUser = () => ({ user: null, loading: false })
+import { RootState } from '../store'
 
 const Home: NextPage = () => {
-  const { user, loading } = useUser();
+  const { isLoggedIn } = useSelector((state: RootState) => state.auth);
   const router = useRouter();
 
   useEffect(() => {
-    if (!(user || loading)) {
+    if (!isLoggedIn) {
       router.push('/login')
     }
-  }, [user, loading])
+  }, [isLoggedIn])
 
   return (
     <div className={styles.container}>

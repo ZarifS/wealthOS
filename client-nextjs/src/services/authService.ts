@@ -22,7 +22,7 @@ const register = async ({ firstName, lastName, email, password, confirmedPasswor
     lastName,
     email,
     password,
-    confirmedPassword
+    password2: confirmedPassword
   });
 };
 

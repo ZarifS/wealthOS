@@ -1,11 +1,11 @@
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 
-import AuthService, {RegisterPayload, LoginPayload} from "../services/authService";
+import AuthService, { RegisterPayload, LoginPayload } from "../services/authService";
 
 let user;
 
 if (typeof window !== 'undefined') {
-   user = JSON.parse(localStorage.getItem("user") as string) || null;
+  user = JSON.parse(localStorage.getItem("user") as string) || null;
 }
 
 export const register = createAsyncThunk(
@@ -30,7 +30,7 @@ export const login = createAsyncThunk(
   "auth/login",
   async ({ email, password }: LoginPayload, thunkAPI) => {
     try {
-      const data = await AuthService.login({email, password});
+      const data = await AuthService.login({ email, password });
       return { user: data };
     } catch (error: any) {
       const message =
@@ -50,12 +50,13 @@ export const logout = createAsyncThunk("auth/logout", async () => {
 
 interface AuthState {
   isLoggedIn: boolean,
+  loading: boolean,
   user: any
 }
 
 const initialState: AuthState = user
-  ? { isLoggedIn: true, user }
-  : { isLoggedIn: false, user: null };
+  ? { isLoggedIn: true, user, loading: false }
+  : { isLoggedIn: false, user: null, loading: false };
 
 const authSlice = createSlice({
   name: "auth",
@@ -65,9 +66,13 @@ const authSlice = createSlice({
       AuthService.logout();
       state.isLoggedIn = false;
       state.user = null;
+      state.loading = false;
     }
   },
   extraReducers: (builder) => {
+    builder.addCase(register.pending, (state: AuthState) => {
+      state.loading = true;
+    })
     builder.addCase(register.fulfilled, (state: AuthState, action: PayloadAction<any>) => {
       state.isLoggedIn = true;
       state.user = action.payload.user
@@ -75,7 +80,10 @@ const authSlice = createSlice({
     builder.addCase(register.rejected, (state: AuthState) => {
       state.isLoggedIn = false;
     })
-    builder.addCase(login.fulfilled, (state: AuthState, action:PayloadAction<any>) => {
+    builder.addCase(login.pending, (state: AuthState) => {
+      state.loading = true;
+    })
+    builder.addCase(login.fulfilled, (state: AuthState, action: PayloadAction<any>) => {
       state.isLoggedIn = true;
       state.user = action.payload.user;
     })
