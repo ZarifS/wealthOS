@@ -51,12 +51,13 @@ export const logout = createAsyncThunk("auth/logout", async () => {
 interface AuthState {
   isLoggedIn: boolean,
   loading: boolean,
-  user: any
+  user: any,
+  message: string | null
 }
 
 const initialState: AuthState = user
-  ? { isLoggedIn: true, user, loading: false }
-  : { isLoggedIn: false, user: null, loading: false };
+  ? { isLoggedIn: true, user, loading: false, message: null }
+  : { isLoggedIn: false, user: null, loading: false, message: null };
 
 const authSlice = createSlice({
   name: "auth",
@@ -67,29 +68,39 @@ const authSlice = createSlice({
       state.isLoggedIn = false;
       state.user = null;
       state.loading = false;
+      state.message = null;
     }
   },
   extraReducers: (builder) => {
     builder.addCase(register.pending, (state: AuthState) => {
       state.loading = true;
+      state.message = null;
+      state.isLoggedIn = false;
+      state.user = null;
     })
     builder.addCase(register.fulfilled, (state: AuthState, action: PayloadAction<any>) => {
       state.isLoggedIn = true;
       state.user = action.payload.user
+      state.loading = false;
     })
-    builder.addCase(register.rejected, (state: AuthState) => {
-      state.isLoggedIn = false;
+    builder.addCase(register.rejected, (state: AuthState, action: PayloadAction<any>) => {
+      state.loading = false;
+      state.message = action.payload;
     })
     builder.addCase(login.pending, (state: AuthState) => {
       state.loading = true;
+      state.message = null;
+      state.user = null;
+      state.isLoggedIn = false;
     })
     builder.addCase(login.fulfilled, (state: AuthState, action: PayloadAction<any>) => {
       state.isLoggedIn = true;
       state.user = action.payload.user;
+      state.loading = false;
     })
-    builder.addCase(login.rejected, (state: AuthState) => {
-      state.isLoggedIn = false;
-      state.user = null;
+    builder.addCase(login.rejected, (state: AuthState, action: PayloadAction<any>) => {
+      state.loading = false;
+      state.message = action.payload
     })
   }
 });

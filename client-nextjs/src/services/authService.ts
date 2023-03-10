@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_URL = "localhost:5001/wealthos/us-central1/app/auth";
+const API_URL = "https://localhost:5001/wealthos/us-central1/app/auth";
 
 export interface RegisterPayload {
   firstName: string,
