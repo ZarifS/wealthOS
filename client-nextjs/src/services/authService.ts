@@ -1,6 +1,9 @@
 import axios from "axios";
+import { setLocalStorageWithExpiry } from "../util";
+const API_URL = "http://localhost:5001/wealthos/us-central1/app/auth";
 
-const API_URL = "https://localhost:5001/wealthos/us-central1/app/auth";
+const TOKEN_EXPIRY = 15 * 1000; // in milliseconds
+export const TOKEN_KEY = "USER-TOKEN"
 
 export interface RegisterPayload {
   firstName: string,
@@ -33,13 +36,13 @@ const login = async ({ email, password }: LoginPayload) => {
       password,
     });
   if (response.data.token) {
-    localStorage.setItem("user", JSON.stringify(response.data));
+    setLocalStorageWithExpiry(TOKEN_KEY, response.data.token, TOKEN_EXPIRY)
   }
   return response.data;
 };
 
 const logout = () => {
-  localStorage.removeItem("user");
+  localStorage.removeItem(TOKEN_KEY);
 };
 
 // Helper function to get auth header for user

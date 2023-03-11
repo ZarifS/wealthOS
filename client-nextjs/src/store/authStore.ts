@@ -1,11 +1,11 @@
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
-
-import AuthService, { RegisterPayload, LoginPayload } from "../services/authService";
+import { getLocalStorageWithExpiry } from "../util";
+import AuthService, { RegisterPayload, LoginPayload, TOKEN_KEY } from "../services/authService";
 
 let user;
 
 if (typeof window !== 'undefined') {
-  user = JSON.parse(localStorage.getItem("user") as string) || null;
+  user = getLocalStorageWithExpiry(TOKEN_KEY);
 }
 
 export const register = createAsyncThunk(
