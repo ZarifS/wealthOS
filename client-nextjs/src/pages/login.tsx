@@ -3,9 +3,12 @@ import { useDispatch, useSelector } from "react-redux";
 import type { NextPage } from 'next'
 import { RootState, AppDispatch } from "../store";
 import { login } from '../store/authStore'
+import Input from '../components/input'
+
 import { useRouter } from "next/router";
 
 import styles from './login.module.scss'
+import { LoginPayload } from "../services/authService";
 
 const Login: NextPage = () => {
     // Get hooks
@@ -14,21 +17,31 @@ const Login: NextPage = () => {
 
     // Setup state
     const { loading, isLoggedIn, message } = useSelector((state: RootState) => state.auth);
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-
-    // Handle submit
-    const onSubmit = (event: FormEvent) => {
-        event.preventDefault();
-        console.log(email, password)
-        dispatch(login({ email, password }))
-    }
 
     // Route back to app once we are logged in
     useEffect(() => {
         if (isLoggedIn) router.push('/')
     }, [isLoggedIn])
 
+    const [formFields, setFormFields] = useState<LoginPayload>({
+        email: '',
+        password: ''
+    })
+
+    // Handle submit
+    const onSubmit = (event: FormEvent) => {
+        event.preventDefault();
+        const { email, password } = formFields
+        dispatch(login({ email, password }))
+    }
+
+    // Handle field updates
+    const onChange = ({ key, val }: { key: string, val: string }) => {
+        setFormFields({
+            ...formFields,
+            [key]: val
+        })
+    }
 
     const Message = () => {
         if (loading) return <h2>Loading...</h2>
@@ -43,14 +56,8 @@ const Login: NextPage = () => {
             </div>
             <form onSubmit={(event) => onSubmit(event)} className={styles.form}>
                 <div className={styles.formInputs}>
-                    <label htmlFor="email">
-                        Email:
-                        <input type="email" id="email" name="email" value={email} onChange={(event) => setEmail(event.target.value)} />
-                    </label>
-                    <label htmlFor="password">
-                        Password:
-                        <input type="password" id="password" name="password" value={password} onChange={(event) => setPassword(event.target.value)} />
-                    </label>
+                    <Input label='Email' name='email' inputType='email' onChange={onChange} />
+                    <Input label='Password' name='password' inputType='password' onChange={onChange} />
                 </div>
                 <input type="submit" value="Submit" />
             </form>
