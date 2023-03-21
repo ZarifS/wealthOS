@@ -1,6 +1,6 @@
 import styles from './button.module.scss';
 
-interface CustomButtonProps {
+export interface ButtonProps {
     text: string;
     type?: 'button' | 'submit' | 'reset';
     onClick?: (event: React.MouseEvent<HTMLButtonElement>) => void;
@@ -9,14 +9,14 @@ interface CustomButtonProps {
     style?: React.CSSProperties;
 }
 
-const CustomButton = ({
+const Button = ({
     text,
     type = 'button',
     onClick,
     className = '',
     disabled = false,
     style,
-}: CustomButtonProps) => {
+}: ButtonProps) => {
     return (
         <button
             type={type}
@@ -30,4 +30,4 @@ const CustomButton = ({
     );
 };
 
-export default CustomButton;
+export default Button;
