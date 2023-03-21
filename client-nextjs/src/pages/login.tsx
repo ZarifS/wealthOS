@@ -4,6 +4,7 @@ import type { NextPage } from 'next'
 import { RootState, AppDispatch } from "../store";
 import { login } from '../store/authStore'
 import Input from '../components/input'
+import Button from '../components/button'
 
 import { useRouter } from "next/router";
 
@@ -51,15 +52,15 @@ const Login: NextPage = () => {
 
     return (
         <div className={styles.main}>
-            <div className={styles.header}>
-                <h1>Login Below</h1>
-            </div>
+            <h1 className={styles.header}>
+                Login Below
+            </h1>
             <form onSubmit={(event) => onSubmit(event)} className={styles.form}>
                 <div className={styles.formInputs}>
-                    <Input label='Email' name='email' inputType='email' onChange={onChange} />
+                    <Input label='Email' name='email' placeholder='john.doe@gmail.com' inputType='email' onChange={onChange} />
                     <Input label='Password' name='password' inputType='password' onChange={onChange} />
                 </div>
-                <input type="submit" value="Submit" />
+                <Button type="submit" text="Sign In" onClick={onSubmit} />
             </form>
             <div className={styles.message}>
                 <Message />
