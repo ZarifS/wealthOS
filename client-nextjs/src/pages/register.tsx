@@ -3,16 +3,16 @@ import { useDispatch, useSelector } from "react-redux";
 import type { NextPage } from 'next'
 import Link from 'next/link';
 import { RootState, AppDispatch } from "../store";
-import { login } from '../store/authStore'
+import { register } from '../store/authStore'
 import Input from '../components/input'
 import Button from '../components/button'
 
 import { useRouter } from "next/router";
 
-import styles from './login.module.scss'
-import { LoginPayload } from "../services/authService";
+import styles from './register.module.scss'
+import { RegisterPayload } from "../services/authService";
 
-const Login: NextPage = () => {
+const Register: NextPage = () => {
     // Get hooks
     const dispatch = useDispatch<AppDispatch>();
     const router = useRouter();
@@ -20,21 +20,24 @@ const Login: NextPage = () => {
     // Setup state
     const { loading, isLoggedIn, message } = useSelector((state: RootState) => state.auth);
 
-    // Route back to app once we are logged in
+    // Route back to app once we are registered and logged in
     useEffect(() => {
         if (isLoggedIn) router.push('/')
     }, [isLoggedIn])
 
-    const [formFields, setFormFields] = useState<LoginPayload>({
+    const [formFields, setFormFields] = useState<RegisterPayload>({
+        firstName: '',
+        lastName: '',
         email: '',
-        password: ''
+        password: '',
+        confirmedPassword: ''
     })
 
     // Handle submit
     const onSubmit = (event: FormEvent) => {
         event.preventDefault();
-        const { email, password } = formFields
-        dispatch(login({ email, password }))
+        const { firstName, lastName, email, password, confirmedPassword } = formFields
+        dispatch(register({ firstName, lastName, email, password, confirmedPassword }))
     }
 
     // Handle field updates
@@ -54,25 +57,28 @@ const Login: NextPage = () => {
     return (
         <div className={styles.main}>
             <h1 className={styles.header}>
-                Sign In
+                Sign Up
             </h1>
             <form onSubmit={(event) => onSubmit(event)} className={styles.form}>
                 <div className={styles.formInputs}>
+                    <Input label='First Name' name='firstName' placeholder='John' inputType='text' onChange={onChange} />
+                    <Input label='Last Name' name='lastName' placeholder='Doe' inputType='text' onChange={onChange} />
                     <Input label='Email' name='email' placeholder='john.doe@gmail.com' inputType='email' onChange={onChange} />
                     <Input label='Password' name='password' inputType='password' onChange={onChange} />
+                    <Input label='Confirm Password' name='confirmedPassword' inputType='password' onChange={onChange} />
                 </div>
-                <Button type="submit" text="Sign In" onClick={onSubmit} />
+                <Button type="submit" text="Sign Up" onClick={onSubmit} />
             </form>
             <div className={styles.message}>
                 <Message />
             </div>
             <div className={styles.switchAuth}>
-                <Link href="/register">
-                    <p>Don't have an account? Register now!</p>
+                <Link href="/login">
+                    <p>Already have an account? Login now!</p>
                 </Link>
             </div>
         </div>
     )
 }
 
-export default Login;
+export default Register;
