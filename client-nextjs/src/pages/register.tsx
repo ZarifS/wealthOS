@@ -6,6 +6,7 @@ import { RootState, AppDispatch } from "../store";
 import { register } from '../store/authStore'
 import Input from '../components/input'
 import Button from '../components/button'
+import ToastMessage from "../components/toastMessage";
 
 import { useRouter } from "next/router";
 
@@ -67,11 +68,12 @@ const Register: NextPage = () => {
                     <Input label='Password' name='password' inputType='password' onChange={onChange} />
                     <Input label='Confirm Password' name='confirmedPassword' inputType='password' onChange={onChange} />
                 </div>
+                <div className={styles.message}>
+                    {loading && <ToastMessage message="Loading..." state="warning" />}
+                    {message && <ToastMessage message={message} state="error" />}
+                </div>
                 <Button type="submit" text="Sign Up" onClick={onSubmit} />
             </form>
-            <div className={styles.message}>
-                <Message />
-            </div>
             <div className={styles.switchAuth}>
                 <Link href="/login">
                     <p>Already have an account? Login now!</p>

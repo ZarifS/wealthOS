@@ -6,6 +6,7 @@ import { RootState, AppDispatch } from "../store";
 import { login } from '../store/authStore'
 import Input from '../components/input'
 import Button from '../components/button'
+import ToastMessage from "../components/toastMessage";
 
 import { useRouter } from "next/router";
 
@@ -45,12 +46,6 @@ const Login: NextPage = () => {
         })
     }
 
-    const Message = () => {
-        if (loading) return <h2>Loading...</h2>
-        else if (message) return <h2>{message}</h2>
-        else return null
-    }
-
     return (
         <div className={styles.main}>
             <h1 className={styles.header}>
@@ -61,11 +56,12 @@ const Login: NextPage = () => {
                     <Input label='Email' name='email' placeholder='john.doe@gmail.com' inputType='email' onChange={onChange} />
                     <Input label='Password' name='password' inputType='password' onChange={onChange} />
                 </div>
+                <div className={styles.message}>
+                    {loading && <ToastMessage message="Loading..." state="warning" />}
+                    {message && <ToastMessage message={message} state="error" />}
+                </div>
                 <Button type="submit" text="Sign In" onClick={onSubmit} />
             </form>
-            <div className={styles.message}>
-                <Message />
-            </div>
             <div className={styles.switchAuth}>
                 <Link href="/register">
                     <p>Don't have an account? Register now!</p>

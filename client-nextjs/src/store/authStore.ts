@@ -8,6 +8,18 @@ if (typeof window !== 'undefined') {
   user = getLocalStorageWithExpiry(TOKEN_KEY);
 }
 
+interface AuthState {
+  isLoggedIn: boolean,
+  loading: boolean,
+  user: any,
+  message: string | null
+}
+
+const initialState: AuthState = user
+  ? { isLoggedIn: true, user, loading: false, message: null }
+  : { isLoggedIn: false, user: null, loading: false, message: null };
+
+
 export const register = createAsyncThunk(
   "auth/register",
   async ({ firstName, lastName, email, password, confirmedPassword }: RegisterPayload, thunkAPI) => {
@@ -47,17 +59,6 @@ export const login = createAsyncThunk(
 export const logout = createAsyncThunk("auth/logout", async () => {
   return AuthService.logout();
 });
-
-interface AuthState {
-  isLoggedIn: boolean,
-  loading: boolean,
-  user: any,
-  message: string | null
-}
-
-const initialState: AuthState = user
-  ? { isLoggedIn: true, user, loading: false, message: null }
-  : { isLoggedIn: false, user: null, loading: false, message: null };
 
 const authSlice = createSlice({
   name: "auth",
