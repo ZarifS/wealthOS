@@ -3,7 +3,7 @@ import { setLocalStorageWithExpiry } from "../util";
 const API_URL = "http://localhost:5001/wealthos/us-central1/app/auth";
 
 const TOKEN_EXPIRY = 15 * 1000; // in milliseconds
-export const TOKEN_KEY = "USER-TOKEN"
+export const TOKEN_KEY = "WEALTHOS-USER-TOKEN"
 
 export interface RegisterPayload {
   firstName: string,
@@ -38,7 +38,7 @@ const login = async ({ email, password }: LoginPayload) => {
   if (response.data.token) {
     setLocalStorageWithExpiry(TOKEN_KEY, response.data.token, TOKEN_EXPIRY)
   }
-  return response.data;
+  return response.data
 };
 
 const logout = () => {
@@ -47,11 +47,11 @@ const logout = () => {
 
 // Helper function to get auth header for user
 export function authHeader() {
-  const user = JSON.parse(localStorage.getItem('user') as string) || null;
+  const token = JSON.parse(localStorage.getItem(TOKEN_KEY) as string) || null;
 
-  if (user && user.accessToken) {
+  if (token) {
     // for Node.js Express back-end
-    return { 'x-access-token': user.accessToken };
+    return { 'x-access-token': token };
   } else {
     return {};
   }

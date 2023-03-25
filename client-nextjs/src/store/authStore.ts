@@ -2,22 +2,22 @@ import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 import { getLocalStorageWithExpiry } from "../util";
 import AuthService, { RegisterPayload, LoginPayload, TOKEN_KEY } from "../services/authService";
 
-let user;
+let token;
 
 if (typeof window !== 'undefined') {
-  user = getLocalStorageWithExpiry(TOKEN_KEY);
+  token = getLocalStorageWithExpiry(TOKEN_KEY);
 }
 
 interface AuthState {
   isLoggedIn: boolean,
   loading: boolean,
-  user: any,
+  token: string | null,
   message: string | null
 }
 
-const initialState: AuthState = user
-  ? { isLoggedIn: true, user, loading: false, message: null }
-  : { isLoggedIn: false, user: null, loading: false, message: null };
+const initialState: AuthState = token
+  ? { isLoggedIn: true, token, loading: false, message: null }
+  : { isLoggedIn: false, token: null, loading: false, message: null };
 
 
 export const register = createAsyncThunk(
@@ -42,8 +42,8 @@ export const login = createAsyncThunk(
   "auth/login",
   async ({ email, password }: LoginPayload, thunkAPI) => {
     try {
-      const data = await AuthService.login({ email, password });
-      return { user: data };
+      const { token } = await AuthService.login({ email, password });
+      return { token };
     } catch (error: any) {
       const message =
         (error.response &&
@@ -67,7 +67,7 @@ const authSlice = createSlice({
     "logout": (state) => {
       AuthService.logout();
       state.isLoggedIn = false;
-      state.user = null;
+      state.token = null;
       state.loading = false;
       state.message = null;
     }
@@ -77,11 +77,11 @@ const authSlice = createSlice({
       state.loading = true;
       state.message = null;
       state.isLoggedIn = false;
-      state.user = null;
+      state.token = null;
     })
     builder.addCase(register.fulfilled, (state: AuthState, action: PayloadAction<any>) => {
       state.isLoggedIn = true;
-      state.user = action.payload.user
+      state.token = action.payload.token
       state.loading = false;
     })
     builder.addCase(register.rejected, (state: AuthState, action: PayloadAction<any>) => {
@@ -91,12 +91,12 @@ const authSlice = createSlice({
     builder.addCase(login.pending, (state: AuthState) => {
       state.loading = true;
       state.message = null;
-      state.user = null;
+      state.token = null;
       state.isLoggedIn = false;
     })
     builder.addCase(login.fulfilled, (state: AuthState, action: PayloadAction<any>) => {
       state.isLoggedIn = true;
-      state.user = action.payload.user;
+      state.token = action.payload.token;
       state.loading = false;
     })
     builder.addCase(login.rejected, (state: AuthState, action: PayloadAction<any>) => {

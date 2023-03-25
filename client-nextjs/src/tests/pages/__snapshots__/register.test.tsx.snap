@@ -1,0 +1,131 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Register page renders correctly 1`] = `
+<DocumentFragment>
+  <div
+    class="main"
+  >
+    <h1
+      class="header"
+    >
+      Sign Up
+    </h1>
+    <form
+      class="form"
+    >
+      <div
+        class="formInputs"
+      >
+        <div
+          class="main"
+        >
+          <label
+            class="label"
+            for="firstName"
+          >
+            First Name
+          </label>
+          <input
+            class="input"
+            id="firstName"
+            name="password"
+            placeholder="John"
+            type="text"
+            value=""
+          />
+        </div>
+        <div
+          class="main"
+        >
+          <label
+            class="label"
+            for="lastName"
+          >
+            Last Name
+          </label>
+          <input
+            class="input"
+            id="lastName"
+            name="password"
+            placeholder="Doe"
+            type="text"
+            value=""
+          />
+        </div>
+        <div
+          class="main"
+        >
+          <label
+            class="label"
+            for="email"
+          >
+            Email
+          </label>
+          <input
+            class="input"
+            id="email"
+            name="password"
+            placeholder="john.doe@gmail.com"
+            type="email"
+            value=""
+          />
+        </div>
+        <div
+          class="main"
+        >
+          <label
+            class="label"
+            for="password"
+          >
+            Password
+          </label>
+          <input
+            class="input"
+            id="password"
+            name="password"
+            type="password"
+            value=""
+          />
+        </div>
+        <div
+          class="main"
+        >
+          <label
+            class="label"
+            for="confirmedPassword"
+          >
+            Confirm Password
+          </label>
+          <input
+            class="input"
+            id="confirmedPassword"
+            name="password"
+            type="password"
+            value=""
+          />
+        </div>
+      </div>
+      <div
+        class="message"
+      />
+      <button
+        class="customButton "
+        type="submit"
+      >
+        Sign Up
+      </button>
+    </form>
+    <div
+      class="switchAuth"
+    >
+      <a
+        href="/login"
+      >
+        <p>
+          Already have an account? Login now!
+        </p>
+      </a>
+    </div>
+  </div>
+</DocumentFragment>
+`;
