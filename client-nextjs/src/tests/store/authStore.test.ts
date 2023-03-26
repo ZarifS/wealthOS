@@ -8,7 +8,6 @@ jest.mock('../../services/authService', () => {
     register: jest.fn(),
     login: jest.fn(),
     logout: jest.fn(),
-    authHeader: jest.fn(),
   };
 });
 

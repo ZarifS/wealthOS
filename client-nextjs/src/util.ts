@@ -29,3 +29,6 @@ export function getLocalStorageWithExpiry(key: string): any | null {
   }
   return item.value;
 }
+
+export const getAPIServerURL =
+  process.env.API_SERVER_URL || 'http://localhost:5001/wealthos/us-central1/app';

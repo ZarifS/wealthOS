@@ -60,22 +60,20 @@ const Register: NextPage = () => {
       <h1 className={styles.header}>Sign Up</h1>
       <form onSubmit={(event) => onSubmit(event)} className={styles.form}>
         <div className={styles.formInputs}>
-          <div>
-            <Input
-              label="First Name"
-              name="firstName"
-              placeholder="John"
-              inputType="text"
-              onChange={onChange}
-            />
-            <Input
-              label="Last Name"
-              name="lastName"
-              placeholder="Doe"
-              inputType="text"
-              onChange={onChange}
-            />
-          </div>
+          <Input
+            label="First Name"
+            name="firstName"
+            placeholder="John"
+            inputType="text"
+            onChange={onChange}
+          />
+          <Input
+            label="Last Name"
+            name="lastName"
+            placeholder="Doe"
+            inputType="text"
+            onChange={onChange}
+          />
           <Input
             label="Email"
             name="email"

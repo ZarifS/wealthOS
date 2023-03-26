@@ -68,7 +68,7 @@ const Login: NextPage = () => {
       </form>
       <div className={styles.switchAuth}>
         <Link href="/register">
-          <p>Don`&apos;`t have an account? Register now!</p>
+          <p>Don&apos;t have an account? Register now!</p>
         </Link>
       </div>
     </div>
