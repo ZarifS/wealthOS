@@ -1,10 +1,8 @@
-import type { NextPage } from 'next'
-import { useDispatch, useSelector } from 'react-redux'
-import Head from 'next/head'
-import Image from 'next/image'
-import { useEffect } from 'react'
-import { useRouter } from 'next/router'
-import { RootState } from '../store'
+import type { NextPage } from 'next';
+import { useDispatch, useSelector } from 'react-redux';
+import { useEffect } from 'react';
+import { useRouter } from 'next/router';
+import { RootState } from '../store';
 
 const Home: NextPage = () => {
   const { isLoggedIn } = useSelector((state: RootState) => state.auth);
@@ -12,15 +10,15 @@ const Home: NextPage = () => {
 
   useEffect(() => {
     if (!isLoggedIn) {
-      router.push('/login')
+      router.push('/login');
     }
-  }, [isLoggedIn, router])
+  }, [isLoggedIn, router]);
 
   return (
     <div className="">
       <h1>wealthOS</h1>
     </div>
-  )
-}
+  );
+};
 
-export default Home
+export default Home;

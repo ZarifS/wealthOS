@@ -4,38 +4,47 @@ import AuthService from '../../services/authService';
 
 // Mock the AuthService
 jest.mock('../../services/authService', () => {
-    return {
-        register: jest.fn(),
-        login: jest.fn(),
-        logout: jest.fn(),
-        authHeader: jest.fn(),
-    };
+  return {
+    register: jest.fn(),
+    login: jest.fn(),
+    logout: jest.fn(),
+    authHeader: jest.fn(),
+  };
 });
 
 // Create a mock store
 const store = configureStore({
-    reducer: {
-        auth: reducer,
-    },
+  reducer: {
+    auth: reducer,
+  },
 });
 
 describe('authStore', () => {
-    afterEach(() => {
-        jest.clearAllMocks();
-        store.dispatch(logout());
+  afterEach(() => {
+    jest.clearAllMocks();
+    store.dispatch(logout());
+  });
+
+  it('should handle successful registration', async () => {
+    (AuthService.register as jest.Mock).mockResolvedValueOnce({
+      data: { token: 'test-token' },
     });
 
-    it('should handle successful registration', async () => {
+    await store.dispatch(
+      register({
+        firstName: 'John',
+        lastName: 'Doe',
+        email: 'test@example.com',
+        password: 'password',
+        confirmedPassword: 'password',
+      })
+    );
 
-        (AuthService.register as jest.Mock).mockResolvedValueOnce({ data: { token: 'test-token' } });
+    const { auth } = store.getState();
+    expect(auth.isLoggedIn).toBe(true);
+    expect(auth.token).toEqual('test-token');
+    expect(auth.message).toBe(null);
+  });
 
-        await store.dispatch(register({ firstName: 'John', lastName: 'Doe', email: 'test@example.com', password: 'password', confirmedPassword: 'password' }));
-
-        const { auth } = store.getState();
-        expect(auth.isLoggedIn).toBe(true);
-        expect(auth.token).toEqual('test-token');
-        expect(auth.message).toBe(null);
-    });
-
-    // Add similar tests for the other actions (login and logout)
+  // Add similar tests for the other actions (login and logout)
 });
