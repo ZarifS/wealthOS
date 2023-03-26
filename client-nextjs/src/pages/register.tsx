@@ -24,7 +24,7 @@ const Register: NextPage = () => {
     // Route back to app once we are registered and logged in
     useEffect(() => {
         if (isLoggedIn) router.push('/')
-    }, [isLoggedIn])
+    }, [isLoggedIn, router])
 
     const [formFields, setFormFields] = useState<RegisterPayload>({
         firstName: '',

@@ -14,7 +14,7 @@ const Home: NextPage = () => {
     if (!isLoggedIn) {
       router.push('/login')
     }
-  }, [isLoggedIn])
+  }, [isLoggedIn, router])
 
   return (
     <div className="">

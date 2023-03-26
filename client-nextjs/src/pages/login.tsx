@@ -24,7 +24,7 @@ const Login: NextPage = () => {
     // Route back to app once we are logged in
     useEffect(() => {
         if (isLoggedIn) router.push('/')
-    }, [isLoggedIn])
+    }, [isLoggedIn, router])
 
     const [formFields, setFormFields] = useState<LoginPayload>({
         email: '',
@@ -64,7 +64,7 @@ const Login: NextPage = () => {
             </form>
             <div className={styles.switchAuth}>
                 <Link href="/register">
-                    <p>Don't have an account? Register now!</p>
+                    <p>Don`&apos;`t have an account? Register now!</p>
                 </Link>
             </div>
         </div>

@@ -57,9 +57,11 @@ export function authHeader() {
   }
 }
 
-export default {
+const service = {
   register,
   login,
   logout,
   authHeader,
-};
+}
+
+export default service
