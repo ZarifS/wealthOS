@@ -1,13 +1,13 @@
-import * as express from "express";
-import * as AuthController from "../controllers/auth";
+import * as express from 'express';
+import * as AuthController from '../controllers/auth';
 
 const router = express.Router();
 
 // Routes
-router.post("/signUp", async (req: express.Request, res: express.Response) => {
+router.post('/signUp', async (req: express.Request, res: express.Response) => {
   try {
-    const { email, password } = req.body;
-    const token = await AuthController.signUpViaEmail(email, password);
+    const { email, password, firstName, lastName } = req.body;
+    const token = await AuthController.signUpViaEmail(email, password, firstName, lastName);
     return res.json({
       token: token,
     });
@@ -16,7 +16,7 @@ router.post("/signUp", async (req: express.Request, res: express.Response) => {
   }
 });
 
-router.post("/signIn", async (req: express.Request, res: express.Response) => {
+router.post('/signIn', async (req: express.Request, res: express.Response) => {
   try {
     const { email, password } = req.body;
     const token = await AuthController.signInViaEmail(email, password);
@@ -28,9 +28,8 @@ router.post("/signIn", async (req: express.Request, res: express.Response) => {
   }
 });
 
-router.post("/verifyToken", async (req: express.Request, res: express.Response) => {
+router.post('/verifyToken', async (req: express.Request, res: express.Response) => {
   const token = req?.headers?.authorization;
-  console.log(token);
   if (token) {
     const uid = await AuthController.verifyToken(token);
     res.json({

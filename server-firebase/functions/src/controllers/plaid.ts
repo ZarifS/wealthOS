@@ -1,23 +1,22 @@
-import * as Plaid from "plaid";
-import * as moment from "moment";
-import {PLAID_CLIENT_ID, PLAID_SECRET} from "../utils/secrets";
+import * as Plaid from 'plaid';
+import * as moment from 'moment';
+import { PLAID_CLIENT_ID, PLAID_SECRET } from '../utils/secrets';
 
 type TokenResponse = {
-  itemId: string,
-  accessToken: string
-}
+  itemId: string;
+  accessToken: string;
+};
 
 // Plaid Types
-export {AccountBase} from "plaid";
-
+export { AccountBase } from 'plaid';
 
 // Initialize the Plaid client
 const configuration = new Plaid.Configuration({
   basePath: Plaid.PlaidEnvironments.sandbox,
   baseOptions: {
     headers: {
-      "PLAID-CLIENT-ID": PLAID_CLIENT_ID,
-      "PLAID-SECRET": PLAID_SECRET,
+      'PLAID-CLIENT-ID': PLAID_CLIENT_ID,
+      'PLAID-SECRET': PLAID_SECRET,
     },
   },
 });
@@ -25,9 +24,11 @@ const configuration = new Plaid.Configuration({
 const client = new Plaid.PlaidApi(configuration);
 
 // Sandbox create a new public token
-export const createPublicToken = async (institutionId = "ins_37",
-    initialProducts = [Plaid.Products.Transactions]) : Promise<string> => {
-  const publicTokenRequest : Plaid.SandboxPublicTokenCreateRequest = {
+export const createPublicToken = async (
+  institutionId = 'ins_37',
+  initialProducts = [Plaid.Products.Transactions]
+): Promise<string> => {
+  const publicTokenRequest: Plaid.SandboxPublicTokenCreateRequest = {
     institution_id: institutionId,
     initial_products: initialProducts,
   };
@@ -42,7 +43,7 @@ export const createPublicToken = async (institutionId = "ins_37",
 
 // Exchange public token
 export const exchangeToken = async (publicToken: string): Promise<TokenResponse> => {
-  const tokenResponse = await client.itemPublicTokenExchange({public_token: publicToken});
+  const tokenResponse = await client.itemPublicTokenExchange({ public_token: publicToken });
   return {
     itemId: tokenResponse.data.item_id,
     accessToken: tokenResponse.data.access_token,
@@ -52,8 +53,8 @@ export const exchangeToken = async (publicToken: string): Promise<TokenResponse>
 // Makes a call to the Plaids Transactions API for Account information for a given Item/Institution
 export const getAccounts = async (accessToken: string): Promise<Plaid.AccountBase[]> => {
   // Last 30 Days
-  const startDate = moment().subtract(1, "days").format("YYYY-MM-DD");
-  const endDate = moment().format("YYYY-MM-DD");
+  const startDate = moment().subtract(1, 'days').format('YYYY-MM-DD');
+  const endDate = moment().format('YYYY-MM-DD');
 
   // Call Plaid API Transactions
   const transactionsRequest: Plaid.TransactionsGetRequest = {
@@ -67,7 +68,6 @@ export const getAccounts = async (accessToken: string): Promise<Plaid.AccountBas
   });
   return response.data.accounts;
 };
-
 
 // Makes a call to the Plaids Transactions API for a given Item/Institution
 // export const getTransactions = async (accessToken: string, startDate, endDate) => {

@@ -2,7 +2,9 @@
   "name": "functions",
   "scripts": {
     "lint": "eslint --ext .js,.ts .",
-    "build": "tsc --watch",
+    "lint-fix": "eslint --ext .js,.ts . --fix",
+    "build": "tsc --build",
+    "build-watch": "tsc --build --watch",
     "serve-functions": "npm run build && firebase emulators:start --only functions",
     "dev": "firebase emulators:start",
     "shell": "npm run build && firebase functions:shell",
@@ -20,7 +22,7 @@
     "firebase": "9.17.1",
     "firebase-admin": "11.5.0",
     "firebase-functions": "4.2.1",
-    "moment": "2.29.1",
+    "moment": "2.29.4",
     "morgan": "1.10.0",
     "plaid": "9.10.0"
   },
@@ -29,7 +31,9 @@
     "@typescript-eslint/eslint-plugin": "5.52.0",
     "@typescript-eslint/parser": "5.52.0",
     "eslint": "8.34.0",
+    "eslint-config-prettier": "8.8.0",
     "eslint-plugin-import": "2.27.5",
+    "eslint-plugin-prettier": "4.2.1",
     "firebase-functions-test": "3.0.0",
     "typescript": "4.9.5"
   },

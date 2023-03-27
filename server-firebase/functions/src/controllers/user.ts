@@ -1,37 +1,37 @@
-import * as moment from "moment";
-import { db as Database } from "../utils/firebase";
-import * as Plaid from "./plaid";
+import * as moment from 'moment';
+import { db as Database } from '../utils/firebase';
+import * as Plaid from './plaid';
 
 type Link = {
-  accessToken: string,
-  institutionName: string,
-  institutionId: string,
-}
+  accessToken: string;
+  institutionName: string;
+  institutionId: string;
+};
 
 type Transactions = {
-  _id: string,
-  name: string,
-  category: string[],
-  amount: number,
-  accountId: string,
-  date: Date,
-  pending: boolean,
-  pendingId?: string
-  currency: string,
-  aggregated: boolean,
-  cash: boolean,
-}
+  _id: string;
+  name: string;
+  category: string[];
+  amount: number;
+  accountId: string;
+  date: Date;
+  pending: boolean;
+  pendingId?: string;
+  currency: string;
+  aggregated: boolean;
+  cash: boolean;
+};
 
 export type User = {
-  uuid: string,
-  firstName?: string,
-  lastName?: string,
-  email: string,
-  links: Record<string, Link>
-  balance: number,
-  transactions: Transactions[],
-  accounts: Record<string, any>
-}
+  uuid: string;
+  firstName?: string;
+  lastName?: string;
+  email: string;
+  links: Record<string, Link>;
+  balance: number;
+  transactions: Transactions[];
+  accounts: Record<string, unknown>;
+};
 
 // Get user collection slice from database
 export const db = Database.users;
@@ -41,18 +41,17 @@ export const db = Database.users;
  * @param {String} userId:
  * @return {Promise<User | undefined>}
  */
-export async function getUserById(userId: string): Promise<any | undefined> {
+export async function getUserById(userId: string): Promise<User | undefined> {
   try {
-    const user = (await db.doc(userId).get()).data();
+    const user = (await db.doc(userId).get()).data() as User;
     if (user) {
       return user;
     } else return undefined;
   } catch (error) {
-    console.error("Error trying to get user:", error);
+    console.error('Error trying to get user:', error);
     throw error;
   }
 }
-
 
 /**
  * Create a new user with a specific docId matching authentications uuid
@@ -61,10 +60,12 @@ export async function getUserById(userId: string): Promise<any | undefined> {
  * @param {Partial<User>} data
  * @return {Promise<FirebaseFirestore.WriteResult>}
  */
-export async function createUser(uuid: string, data: Partial<User>):
-  Promise<FirebaseFirestore.WriteResult> {
+export async function createUser(
+  uuid: string,
+  data: Partial<User>
+): Promise<FirebaseFirestore.WriteResult> {
   try {
-    if (!uuid) throw new Error("Missing or invalid uuid.");
+    if (!uuid) throw new Error('Missing or invalid uuid.');
     return await db.doc(uuid).set({
       email: data.email as string,
       firstName: data.firstName,
@@ -76,7 +77,7 @@ export async function createUser(uuid: string, data: Partial<User>):
       uuid,
     });
   } catch (error) {
-    console.error("Error trying to create a new user:", error);
+    console.error('Error trying to create a new user:', error);
     throw error;
   }
 }
@@ -87,12 +88,14 @@ export async function createUser(uuid: string, data: Partial<User>):
  * @param {Partial<User>} data
  * @return {Promise<FirebaseFirestore.WriteResult>}
  */
-export async function updateUser(userId: string, data: Partial<User>):
-  Promise<FirebaseFirestore.WriteResult> {
+export async function updateUser(
+  userId: string,
+  data: Partial<User>
+): Promise<FirebaseFirestore.WriteResult> {
   try {
     return await db.doc(userId).update(data);
   } catch (error) {
-    console.error("Error updating user", error);
+    console.error('Error updating user', error);
     throw error;
   }
 }
@@ -109,7 +112,7 @@ export async function fetchAndUpdateAccounts(user: User) {
       // First get the account balances for this accessToken
       const accounts = await Plaid.getAccounts(accessToken);
       // Update the user.accounts with the new information
-      user.accounts[institutionName] = accounts.map(account => {
+      user.accounts[institutionName] = accounts.map((account) => {
         return {
           name: account.name,
           balance: account.balances.current,
@@ -117,7 +120,7 @@ export async function fetchAndUpdateAccounts(user: User) {
           currency: account.balances.iso_currency_code,
           mask: account.mask,
           accountId: account.account_id,
-          lastUpdated: moment(Date.now()).format("YYYY-MM-DD, h:mm:ss a"),
+          lastUpdated: moment(Date.now()).format('YYYY-MM-DD, h:mm:ss a'),
         };
       });
     }
@@ -128,19 +131,3 @@ export async function fetchAndUpdateAccounts(user: User) {
     throw error;
   }
 }
-
-// Whenever accounts are modified, update.
-// const calculateUserBalance = (accounts: any) => {
-//   let sum = 0;
-//   accounts.forEach((institution: any) => {
-//     institution.forEach((account: any) => {
-//       const {balance, type} = account;
-//       if (type === "depository") {
-//         sum += balance;
-//       } else if (type === "credit") {
-//         sum -= balance;
-//       }
-//     });
-//   });
-//   return sum;
-// };
