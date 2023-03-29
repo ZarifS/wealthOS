@@ -25,13 +25,14 @@ const register = async ({
   password,
   confirmedPassword,
 }: RegisterPayload) => {
-  return axios.post(API_URL + '/signUp', {
+  const response = await axios.post(API_URL + '/signUp', {
     firstName,
     lastName,
     email,
     password,
     password2: confirmedPassword,
   });
+  return response.data;
 };
 
 const login = async ({ email, password }: LoginPayload) => {

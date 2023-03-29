@@ -25,14 +25,15 @@ describe('authService', () => {
       confirmedPassword: 'password123',
     };
 
+    const mockToken = 'fake-token';
+
     axiosMock.onPost(getAPIServerURL + '/auth/signUp').reply(201, {
-      message: 'User registered successfully',
+      token: mockToken,
     });
 
     const response = await authService.register(payload);
 
-    expect(response.status).toEqual(201);
-    expect(response.data).toEqual({ message: 'User registered successfully' });
+    expect(response).toEqual({ token: mockToken });
   });
 
   it('logs in a user successfully', async () => {

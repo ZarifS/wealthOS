@@ -26,14 +26,14 @@ export const register = createAsyncThunk(
     thunkAPI
   ) => {
     try {
-      const response = await AuthService.register({
+      const { token } = await AuthService.register({
         firstName,
         lastName,
         email,
         password,
         confirmedPassword,
       });
-      return response.data;
+      return { token };
     } catch (error: any) {
       const message =
         (error.response && error.response.data && error.response.data.message) ||

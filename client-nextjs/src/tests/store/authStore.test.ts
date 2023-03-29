@@ -25,9 +25,7 @@ describe('authStore', () => {
   });
 
   it('should handle successful registration', async () => {
-    (AuthService.register as jest.Mock).mockResolvedValueOnce({
-      data: { token: 'test-token' },
-    });
+    (AuthService.register as jest.Mock).mockResolvedValueOnce({ token: 'test-token' });
 
     await store.dispatch(
       register({
