@@ -1,40 +1,32 @@
-import * as moment from 'moment';
 import { db as Database } from '../utils/firebase';
-import * as Plaid from './plaid';
 
-type Link = {
-  accessToken: string;
-  institutionName: string;
-  institutionId: string;
-};
+// type Budget = {
+//   id: string;
+//   category: string;
+//   amount: number;
+//   period: 'weekly' | 'monthly' | 'yearly';
+// };
 
-type Transactions = {
-  _id: string;
-  name: string;
-  category: string[];
-  amount: number;
-  accountId: string;
-  date: Date;
-  pending: boolean;
-  pendingId?: string;
-  currency: string;
-  aggregated: boolean;
-  cash: boolean;
-};
+// type Account = {
+//   id: string;
+//   name: string;
+//   type: 'chequing' | 'loan' | 'investment' | 'credit';
+//   assets: Array<{
+//     name: string;
+//     value: number;
+//   }>;
+//   balance: number;
+// };
 
 export type User = {
   uuid: string;
   firstName?: string;
   lastName?: string;
   email: string;
-  links: Record<string, Link>;
-  balance: number;
-  transactions: Transactions[];
-  accounts: Record<string, unknown>;
 };
 
 // Get user collection slice from database
-export const db = Database.users;
+const db = Database.users;
 
 /**
  * Retrieve a user from the database
@@ -71,9 +63,6 @@ export async function createUser(
       firstName: data.firstName,
       lastName: data.lastName,
       links: {},
-      balance: 0,
-      transactions: [],
-      accounts: {},
       uuid,
     });
   } catch (error) {
@@ -96,38 +85,6 @@ export async function updateUser(
     return await db.doc(userId).update(data);
   } catch (error) {
     console.error('Error updating user', error);
-    throw error;
-  }
-}
-
-/**
- * Fetches and updates all account balances for a user
- * @export
- * @param {User} user
- */
-export async function fetchAndUpdateAccounts(user: User) {
-  try {
-    for (const key in user.links) {
-      const { accessToken, institutionName } = user.links[key];
-      // First get the account balances for this accessToken
-      const accounts = await Plaid.getAccounts(accessToken);
-      // Update the user.accounts with the new information
-      user.accounts[institutionName] = accounts.map((account) => {
-        return {
-          name: account.name,
-          balance: account.balances.current,
-          type: account.type,
-          currency: account.balances.iso_currency_code,
-          mask: account.mask,
-          accountId: account.account_id,
-          lastUpdated: moment(Date.now()).format('YYYY-MM-DD, h:mm:ss a'),
-        };
-      });
-    }
-    // All user accounts updated, update balance
-    return await updateUser(user.uuid, { accounts: user.accounts });
-  } catch (error) {
-    console.error(error);
     throw error;
   }
 }

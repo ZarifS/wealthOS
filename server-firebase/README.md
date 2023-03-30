@@ -27,7 +27,7 @@ Each database follows the model principles.
 - When a user signs up a new record is created
 - A users links item holds the institutions a user has linked via plaid
 - Holds a snapshot of the users balances and holdings alongside a map of the users accounts
-- When a user links a account via plaid, a record is also created or updated in the itemLinks model
+- When a user links an account via plaid, a record is also created or updated in the itemLinks model
 
 ## User Accounts
 

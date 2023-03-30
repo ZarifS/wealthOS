@@ -3,6 +3,7 @@ import * as AuthController from '../controllers/auth';
 
 const router = express.Router();
 
+// TO-DO: Add validation middleware
 // Routes
 router.post('/signUp', async (req: express.Request, res: express.Response) => {
   try {

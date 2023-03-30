@@ -11,8 +11,6 @@ import {
   connectAuthEmulator,
   signInWithCustomToken,
 } from 'firebase/auth';
-// import { User } from "../controllers/user";
-// import { ItemLinks } from "../controllers/itemLinks";
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const serviceAccount = require('../../serviceAccountCredentials.json');
@@ -45,27 +43,6 @@ const auth = getAuth(client);
 
 // Setup emulator for when running in local development
 connectAuthEmulator(auth, 'http://localhost:9099');
-
-/**
- * Takes a specific data object and sets its type to whatever is passed.
- * Use this to setup typesafe firestore collections
- * @template T
- * @return {FirebaseFirestore.FirestoreDataConverter<T>}
- */
-// const converter = <T>() => ({
-//   toFirestore: (data: T) => data,
-//   fromFirestore: (snap: FirebaseFirestore.QueryDocumentSnapshot) =>
-//     snap.data() as T,
-// });
-
-/**
- * Returns a firebase collection using a data converter
- * @template T
- * @param {string} collectionPath
- * @return {FirebaseFirestore.CollectionReference<T>}
- */
-// const dataPoint = <T>(collectionPath: string) =>
-//   admin.firestore().collection(collectionPath).withConverter(null);
 
 // Setup DB objects
 const db = {

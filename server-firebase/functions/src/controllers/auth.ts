@@ -35,11 +35,9 @@ export async function signInViaEmail(email: string, password: string): Promise<s
   }
 }
 
-// TODO: Check if we can use the clientSDKs verifyToken instead of admin
 export async function verifyToken(token: string): Promise<string> {
   try {
     const decodedToken = await adminAuth.verifyIdToken(token);
-    console.log(decodedToken);
     return decodedToken.uid;
   } catch (error) {
     console.error('Error trying to verify token:', error);
