@@ -37,11 +37,26 @@ router.get('/', async (req: express.Request, res: express.Response) => {
 });
 
 router.put('/:id', async (req: express.Request, res: express.Response) => {
-  // ... handle updateTransaction
+  const transactionId = req.params.id;
+  const data = req.body;
+
+  try {
+    await TransactionsController.updateTransaction(req.user.uuid, transactionId, data);
+    return res.status(200).json({ message: 'Transaction updated successfully.' });
+  } catch (err: any) {
+    return res.status(400).json({ error: err.message });
+  }
 });
 
 router.delete('/:id', async (req: express.Request, res: express.Response) => {
-  // ... handle deleteTransaction
+  const transactionId = req.params.id;
+
+  try {
+    await TransactionsController.deleteTransaction(req.user.uuid, transactionId);
+    return res.status(200).json({ message: 'Transaction deleted successfully.' });
+  } catch (err: any) {
+    return res.status(400).json({ error: err.message });
+  }
 });
 
 export default router;

@@ -116,10 +116,15 @@ export async function getTransaction(userId: string, transactionId: string): Pro
 export async function updateTransaction(
   userId: string,
   transactionId: string,
-  data: Partial<Transaction>
+  data: Omit<Transaction, 'id'>
 ): Promise<void> {
   try {
-    await db.doc(userId).collection(TRANSACTIONS_SUBCOLLECTION).doc(transactionId).update(data);
+    const transaction = mapTransactionToDB(data);
+    await db
+      .doc(userId)
+      .collection(TRANSACTIONS_SUBCOLLECTION)
+      .doc(transactionId)
+      .update(transaction);
   } catch (error) {
     console.error('Error updating transaction:', error);
     throw error;
