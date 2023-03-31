@@ -17,7 +17,7 @@ export interface TransactionFilter {
   startDate?: string;
   endDate?: string;
   category?: string;
-  descriptionContains?: string;
+  descriptionStartsWith?: string;
   type?: 'expense' | 'income';
 }
 
@@ -80,10 +80,10 @@ export async function getAllTransactions(
       query = query.where('category', 'array-contains', filters.category);
     }
 
-    if (filters.descriptionContains) {
+    if (filters.descriptionStartsWith) {
       query = query
-        .where('description', '>=', filters.descriptionContains)
-        .where('description', '<=', filters.descriptionContains + '\uf8ff');
+        .where('description', '>=', filters.descriptionStartsWith)
+        .where('description', '<=', filters.descriptionStartsWith + '\uf8ff');
     }
 
     if (filters.type) {

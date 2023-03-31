@@ -17,14 +17,14 @@ router.post('/', async (req: express.Request, res: express.Response) => {
 // Gets all transactions
 router.get('/', async (req: express.Request, res: express.Response) => {
   // Extract query parameters
-  const { startDate, endDate, category, descriptionContains, type } = req.query;
+  const { startDate, endDate, category, descriptionStartsWith, type } = req.query;
 
   // Create filter object
   const filters: TransactionsController.TransactionFilter = {
     startDate: startDate ? String(startDate) : undefined,
     endDate: endDate ? String(endDate) : undefined,
     category: category ? String(category) : undefined,
-    descriptionContains: descriptionContains ? String(descriptionContains) : undefined,
+    descriptionStartsWith: descriptionStartsWith ? String(descriptionStartsWith) : undefined,
     type: type ? (String(type) as 'expense' | 'income') : undefined,
   };
 
