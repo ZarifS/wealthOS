@@ -3,7 +3,7 @@ import * as TransactionsController from '../controllers/transactions';
 
 const router = express.Router();
 
-// Transaction routes
+// Creates a new transaction
 router.post('/', async (req: express.Request, res: express.Response) => {
   try {
     const data = req.body;
@@ -14,22 +14,23 @@ router.post('/', async (req: express.Request, res: express.Response) => {
   }
 });
 
+// Gets all transactions
 router.get('/', async (req: express.Request, res: express.Response) => {
-  // ... handle getTransactions
-  try {
-    const data = await TransactionsController.getAllTransactions(req.user.uuid);
-    return res.status(201).json(data);
-  } catch (err: any) {
-    return res.status(400).json({ error: err.message });
-  }
-});
+  // Extract query parameters
+  const { startDate, endDate, category, descriptionContains, type } = req.query;
 
-router.get('/afterDate', async (req: express.Request, res: express.Response) => {
-  // ... handle getTransactions
+  // Create filter object
+  const filters: TransactionsController.TransactionFilter = {
+    startDate: startDate ? String(startDate) : undefined,
+    endDate: endDate ? String(endDate) : undefined,
+    category: category ? String(category) : undefined,
+    descriptionContains: descriptionContains ? String(descriptionContains) : undefined,
+    type: type ? (String(type) as 'expense' | 'income') : undefined,
+  };
+
   try {
-    const date = req.body.date;
-    const data = await TransactionsController.getTransactionsAfterDateRange(req.user.uuid, date);
-    return res.status(201).json(data);
+    const data = await TransactionsController.getAllTransactions(req.user.uuid, filters);
+    return res.status(200).json(data);
   } catch (err: any) {
     return res.status(400).json({ error: err.message });
   }

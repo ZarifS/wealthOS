@@ -13,21 +13,42 @@ export interface Transaction {
   accountId?: string;
 }
 
+export interface TransactionFilter {
+  startDate?: string;
+  endDate?: string;
+  category?: string;
+  descriptionContains?: string;
+  type?: 'expense' | 'income';
+}
+
 const TRANSACTIONS_SUBCOLLECTION = 'transactions';
 
 // Get user collection slice from database
 const db = Database.users;
+
+const mapTransactionFromDB = (doc: FirebaseFirestore.DocumentData): Transaction => {
+  const data = doc.data() as Transaction;
+  return {
+    ...data,
+    id: doc.id,
+    date: (data.date as Timestamp).toDate().toISOString(),
+  };
+};
+
+const mapTransactionToDB = (data: Omit<Transaction, 'id'>): Omit<Transaction, 'id'> => {
+  return {
+    ...data,
+    category: data.category || [],
+    date: new Date(data.date as string),
+  };
+};
 
 export async function createTransaction(
   uuid: string,
   data: Omit<Transaction, 'id'>
 ): Promise<void> {
   try {
-    const transaction: Omit<Transaction, 'id'> = {
-      ...data,
-      category: data.category || [],
-      date: new Date(data.date as string),
-    };
+    const transaction = mapTransactionToDB(data);
     await db.doc(uuid).collection(TRANSACTIONS_SUBCOLLECTION).add(transaction);
   } catch (error) {
     console.error('Error creating transaction:', error);
@@ -35,18 +56,42 @@ export async function createTransaction(
   }
 }
 
-// Get all transactions
-export async function getAllTransactions(userId: string): Promise<Transaction[]> {
+// Get all transactions with filters
+export async function getAllTransactions(
+  userId: string,
+  filters: TransactionFilter = {}
+): Promise<Transaction[]> {
   try {
-    const snapshot = await db.doc(userId).collection(TRANSACTIONS_SUBCOLLECTION).get();
-    return snapshot.docs.map((doc) => {
-      const data = doc.data() as Transaction;
-      return {
-        ...data,
-        id: doc.id,
-        date: (data.date as Timestamp).toDate().toISOString(),
-      };
-    }) as Transaction[];
+    let query: FirebaseFirestore.Query<FirebaseFirestore.DocumentData> = db
+      .doc(userId)
+      .collection(TRANSACTIONS_SUBCOLLECTION);
+
+    if (filters.startDate) {
+      const startTimestamp = new Date(filters.startDate);
+      query = query.where('date', '>=', startTimestamp);
+    }
+
+    if (filters.endDate) {
+      const endTimestamp = new Date(filters.endDate);
+      query = query.where('date', '<=', endTimestamp);
+    }
+
+    if (filters.category) {
+      query = query.where('category', 'array-contains', filters.category);
+    }
+
+    if (filters.descriptionContains) {
+      query = query
+        .where('description', '>=', filters.descriptionContains)
+        .where('description', '<=', filters.descriptionContains + '\uf8ff');
+    }
+
+    if (filters.type) {
+      query = query.where('type', '==', filters.type);
+    }
+
+    const snapshot = await query.get();
+    return snapshot.docs.map((doc) => mapTransactionFromDB(doc));
   } catch (error) {
     console.error('Error fetching transactions:', error);
     throw error;
@@ -61,32 +106,9 @@ export async function getTransaction(userId: string, transactionId: string): Pro
       .collection(TRANSACTIONS_SUBCOLLECTION)
       .doc(transactionId)
       .get();
-    return { id: doc.id, ...doc.data() } as Transaction;
+    return mapTransactionFromDB(doc);
   } catch (error) {
     console.error('Error fetching transaction:', error);
-    throw error;
-  }
-}
-
-// Get transactions by date range
-export async function getTransactionsAfterDateRange(userId: string, date: string): Promise<any[]> {
-  try {
-    const dateTimestamp = new Date(date);
-    const snapshot = await db
-      .doc(userId)
-      .collection(TRANSACTIONS_SUBCOLLECTION)
-      .where('date', '>', dateTimestamp)
-      .get();
-    return snapshot.docs.map((doc) => {
-      const data = doc.data() as Transaction;
-      return {
-        ...data,
-        id: doc.id,
-        date: (data.date as Timestamp).toDate().toISOString(),
-      };
-    });
-  } catch (error) {
-    console.error('Error fetching transactions:', error);
     throw error;
   }
 }
