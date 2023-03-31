@@ -1,15 +1,17 @@
+import { Timestamp } from 'firebase-admin/firestore';
 import { db as Database } from '../utils/firebase';
 
-type Transaction = {
+export interface Transaction {
   id: string;
   type: 'expense' | 'income';
   amount: number;
   description: string;
-  category?: string;
-  date: Date;
+  category: string[];
+  // String in JOSN payload, Date in Server, Timestamp in Firestore
+  date: string | Date | Timestamp;
   label?: string;
   accountId?: string;
-};
+}
 
 const TRANSACTIONS_SUBCOLLECTION = 'transactions';
 
@@ -17,11 +19,16 @@ const TRANSACTIONS_SUBCOLLECTION = 'transactions';
 const db = Database.users;
 
 export async function createTransaction(
-  userId: string,
+  uuid: string,
   data: Omit<Transaction, 'id'>
 ): Promise<void> {
   try {
-    await db.doc(userId).collection(TRANSACTIONS_SUBCOLLECTION).add(data);
+    const transaction: Omit<Transaction, 'id'> = {
+      ...data,
+      category: data.category || [],
+      date: new Date(data.date as string),
+    };
+    await db.doc(uuid).collection(TRANSACTIONS_SUBCOLLECTION).add(transaction);
   } catch (error) {
     console.error('Error creating transaction:', error);
     throw error;
@@ -32,7 +39,14 @@ export async function createTransaction(
 export async function getAllTransactions(userId: string): Promise<Transaction[]> {
   try {
     const snapshot = await db.doc(userId).collection(TRANSACTIONS_SUBCOLLECTION).get();
-    return snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() })) as Transaction[];
+    return snapshot.docs.map((doc) => {
+      const data = doc.data() as Transaction;
+      return {
+        ...data,
+        id: doc.id,
+        date: (data.date as Timestamp).toDate().toISOString(),
+      };
+    }) as Transaction[];
   } catch (error) {
     console.error('Error fetching transactions:', error);
     throw error;
@@ -55,17 +69,22 @@ export async function getTransaction(userId: string, transactionId: string): Pro
 }
 
 // Get transactions by date range
-export async function getTransactionsAfterDateRange(
-  userId: string,
-  dateRange: string
-): Promise<Transaction[]> {
+export async function getTransactionsAfterDateRange(userId: string, date: string): Promise<any[]> {
   try {
+    const dateTimestamp = new Date(date);
     const snapshot = await db
       .doc(userId)
       .collection(TRANSACTIONS_SUBCOLLECTION)
-      .where('date', '>=', dateRange)
+      .where('date', '>', dateTimestamp)
       .get();
-    return snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() })) as Transaction[];
+    return snapshot.docs.map((doc) => {
+      const data = doc.data() as Transaction;
+      return {
+        ...data,
+        id: doc.id,
+        date: (data.date as Timestamp).toDate().toISOString(),
+      };
+    });
   } catch (error) {
     console.error('Error fetching transactions:', error);
     throw error;

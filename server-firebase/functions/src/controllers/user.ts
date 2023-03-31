@@ -18,12 +18,12 @@ import { db as Database } from '../utils/firebase';
 //   balance: number;
 // };
 
-export type User = {
+export interface User {
   uuid: string;
   firstName?: string;
   lastName?: string;
   email: string;
-};
+}
 
 // Get user collection slice from database
 const db = Database.users;

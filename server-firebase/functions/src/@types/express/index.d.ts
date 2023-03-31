@@ -1,9 +1,10 @@
 import * as express from 'express';
+import { User } from '../../controllers/user';
 
 declare global {
   namespace Express {
     interface Request {
-      user?: Record<string, any>;
+      user: User;
     }
   }
 }
