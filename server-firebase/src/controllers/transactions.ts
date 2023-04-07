@@ -21,9 +21,12 @@ export interface TransactionFilter {
   type?: 'expense' | 'income';
 }
 
-const TRANSACTIONS_SUBCOLLECTION = 'transactions';
+export const TRANSACTIONS_SUBCOLLECTION = 'transactions';
 
-// Get user collection slice from database
+/**
+ * Firestore database collection of the users, used by default in all functions
+ * When running tests a mocked database can be passed in instead
+ */
 const db = Database.users;
 
 const mapTransactionFromDB = (doc: FirebaseFirestore.DocumentData): Transaction => {
@@ -45,11 +48,12 @@ const mapTransactionToDB = (data: Omit<Transaction, 'id'>): Omit<Transaction, 'i
 
 export async function createTransaction(
   uuid: string,
-  data: Omit<Transaction, 'id'>
+  data: Omit<Transaction, 'id'>,
+  database = db
 ): Promise<void> {
   try {
     const transaction = mapTransactionToDB(data);
-    await db.doc(uuid).collection(TRANSACTIONS_SUBCOLLECTION).add(transaction);
+    await database.doc(uuid).collection(TRANSACTIONS_SUBCOLLECTION).add(transaction);
   } catch (error) {
     console.error('Error creating transaction:', error);
     throw error;
@@ -59,10 +63,11 @@ export async function createTransaction(
 // Get all transactions with filters
 export async function getAllTransactions(
   userId: string,
-  filters: TransactionFilter = {}
+  filters: TransactionFilter = {},
+  database = db
 ): Promise<Transaction[]> {
   try {
-    let query: FirebaseFirestore.Query<FirebaseFirestore.DocumentData> = db
+    let query: FirebaseFirestore.Query<FirebaseFirestore.DocumentData> = database
       .doc(userId)
       .collection(TRANSACTIONS_SUBCOLLECTION);
 
@@ -99,9 +104,13 @@ export async function getAllTransactions(
 }
 
 // Get a single transaction
-export async function getTransaction(userId: string, transactionId: string): Promise<Transaction> {
+export async function getTransaction(
+  userId: string,
+  transactionId: string,
+  database = db
+): Promise<Transaction> {
   try {
-    const doc = await db
+    const doc = await database
       .doc(userId)
       .collection(TRANSACTIONS_SUBCOLLECTION)
       .doc(transactionId)
@@ -116,11 +125,12 @@ export async function getTransaction(userId: string, transactionId: string): Pro
 export async function updateTransaction(
   userId: string,
   transactionId: string,
-  data: Omit<Transaction, 'id'>
+  data: Omit<Transaction, 'id'>,
+  database = db
 ): Promise<void> {
   try {
     const transaction = mapTransactionToDB(data);
-    await db
+    await database
       .doc(userId)
       .collection(TRANSACTIONS_SUBCOLLECTION)
       .doc(transactionId)
@@ -131,9 +141,13 @@ export async function updateTransaction(
   }
 }
 
-export async function deleteTransaction(userId: string, transactionId: string): Promise<void> {
+export async function deleteTransaction(
+  userId: string,
+  transactionId: string,
+  database = db
+): Promise<void> {
   try {
-    await db.doc(userId).collection('transactions').doc(transactionId).delete();
+    await database.doc(userId).collection('transactions').doc(transactionId).delete();
   } catch (error) {
     console.error('Error deleting transaction:', error);
     throw error;
