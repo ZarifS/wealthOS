@@ -3,6 +3,7 @@ import { db as Database } from '../utils/firebase';
 
 export interface Transaction {
   id: string;
+  ownerId: string;
   type: 'expense' | 'income';
   amount: number;
   description: string;
@@ -21,28 +22,36 @@ export interface TransactionFilter {
   type?: 'expense' | 'income';
 }
 
-export const TRANSACTIONS_SUBCOLLECTION = 'transactions';
-
 /**
  * Firestore database collection of the users, used by default in all functions
  * When running tests a mocked database can be passed in instead
  */
-const db = Database.users;
+const db = Database.transactions;
 
-const mapTransactionFromDB = (doc: FirebaseFirestore.DocumentData): Transaction => {
+export const mapTransactionFromDB = (doc: FirebaseFirestore.DocumentData): Transaction => {
   const data = doc.data() as Transaction;
   return {
     ...data,
     id: doc.id,
+    // Revert the timestamp from firestore back to a date object and then to a string
     date: (data.date as Timestamp).toDate().toISOString(),
   };
 };
 
-const mapTransactionToDB = (data: Omit<Transaction, 'id'>): Omit<Transaction, 'id'> => {
+export const mapTransactionToDB = (
+  data: Omit<Transaction, 'id'>,
+  uuid: string
+): Omit<Transaction, 'id'> => {
   return {
-    ...data,
+    ownerId: data.ownerId || uuid,
+    type: data.type || 'expense',
+    amount: data.amount || 0,
+    description: data.description || '',
     category: data.category || [],
-    date: new Date(data.date as string),
+    // We send a date object to firestore but it's stored as a timestamp
+    date: new Date(data.date as string) as Date,
+    label: data.label || undefined,
+    accountId: data.accountId || undefined,
   };
 };
 
@@ -52,10 +61,10 @@ export async function createTransaction(
   database = db
 ): Promise<void> {
   try {
-    const transaction = mapTransactionToDB(data);
-    await database.doc(uuid).collection(TRANSACTIONS_SUBCOLLECTION).add(transaction);
-  } catch (error) {
-    console.error('Error creating transaction:', error);
+    const transaction = mapTransactionToDB(data, uuid);
+    await database.doc().set(transaction);
+  } catch (error: any) {
+    console.error('Error creating transaction:', error.message);
     throw error;
   }
 }
@@ -67,9 +76,11 @@ export async function getAllTransactions(
   database = db
 ): Promise<Transaction[]> {
   try {
-    let query: FirebaseFirestore.Query<FirebaseFirestore.DocumentData> = database
-      .doc(userId)
-      .collection(TRANSACTIONS_SUBCOLLECTION);
+    let query: FirebaseFirestore.Query<FirebaseFirestore.DocumentData> = database.where(
+      'ownerId',
+      '==',
+      userId
+    );
 
     if (filters.startDate) {
       const startTimestamp = new Date(filters.startDate);
@@ -97,8 +108,8 @@ export async function getAllTransactions(
 
     const snapshot = await query.get();
     return snapshot.docs.map((doc) => mapTransactionFromDB(doc));
-  } catch (error) {
-    console.error('Error fetching transactions:', error);
+  } catch (error: any) {
+    console.error('Error fetching transactions:', error.message);
     throw error;
   }
 }
@@ -110,14 +121,16 @@ export async function getTransaction(
   database = db
 ): Promise<Transaction> {
   try {
-    const doc = await database
-      .doc(userId)
-      .collection(TRANSACTIONS_SUBCOLLECTION)
-      .doc(transactionId)
-      .get();
-    return mapTransactionFromDB(doc);
-  } catch (error) {
-    console.error('Error fetching transaction:', error);
+    const doc = await database.doc(transactionId).get();
+    const transaction = mapTransactionFromDB(doc);
+
+    if (transaction.ownerId !== userId) {
+      throw new Error('Unauthorized access.');
+    }
+
+    return transaction;
+  } catch (error: any) {
+    console.error('Error fetching transaction:', error.message);
     throw error;
   }
 }
@@ -125,18 +138,25 @@ export async function getTransaction(
 export async function updateTransaction(
   userId: string,
   transactionId: string,
-  data: Omit<Transaction, 'id'>,
+  data: Partial<Transaction>,
   database = db
 ): Promise<void> {
   try {
-    const transaction = mapTransactionToDB(data);
-    await database
-      .doc(userId)
-      .collection(TRANSACTIONS_SUBCOLLECTION)
-      .doc(transactionId)
-      .update(transaction);
-  } catch (error) {
-    console.error('Error updating transaction:', error);
+    const doc = await database.doc(transactionId).get();
+    let transaction = mapTransactionFromDB(doc);
+
+    if (transaction.ownerId !== userId) {
+      throw new Error('Unauthorized access.');
+    }
+
+    // Change the data based on the update
+    transaction = { ...transaction, ...data };
+    // Ensures only valid fields are updated
+    const transactionToUpdate = mapTransactionToDB(transaction, userId);
+
+    await database.doc(transactionId).update(transactionToUpdate);
+  } catch (error: any) {
+    console.error('Error updating transaction:', error.message);
     throw error;
   }
 }
@@ -147,9 +167,16 @@ export async function deleteTransaction(
   database = db
 ): Promise<void> {
   try {
-    await database.doc(userId).collection('transactions').doc(transactionId).delete();
-  } catch (error) {
-    console.error('Error deleting transaction:', error);
+    const doc = await database.doc(transactionId).get();
+    const transaction = mapTransactionFromDB(doc);
+
+    if (transaction.ownerId !== userId) {
+      throw new Error('Unauthorized access.');
+    }
+
+    await database.doc(transactionId).delete();
+  } catch (error: any) {
+    console.error('Error deleting transaction:', error.message);
     throw error;
   }
 }

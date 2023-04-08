@@ -42,12 +42,15 @@ const client = initializeApp(firebaseConfig);
 const auth = getAuth(client);
 
 // Setup emulator for when running in local development
-connectAuthEmulator(auth, 'http://localhost:9099');
+if (process.env.NODE_ENV === 'development') {
+  connectAuthEmulator(auth, 'http://localhost:9099');
+}
 
 // Setup DB objects
 const db = {
   users: admin.firestore().collection('users'),
   itemLinks: admin.firestore().collection('itemLinks'),
+  transactions: admin.firestore().collection('transactions'),
 };
 
 export {
