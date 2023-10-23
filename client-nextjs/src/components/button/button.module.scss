@@ -1,0 +1,30 @@
+@import '../../styles/colors.scss';
+@import '../../styles/fonts.scss';
+
+.customButton {
+    background-color: $primary;
+    border: none;
+    color: $onSurface;
+    padding: 12px 24px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: $font-size-sm;
+    font-weight: 600;
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 25px;
+    transition: background-color 0.3s;
+    width: 200px;
+  
+    &:hover {
+      background-color: $primaryOnHover;
+    }
+  
+    &:disabled {
+      background-color: #cccccc;
+      color: #666666;
+      cursor: not-allowed;
+    }
+  }
+  

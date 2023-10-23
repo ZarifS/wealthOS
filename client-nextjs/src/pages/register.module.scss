@@ -1,0 +1,28 @@
+@import '../styles/colors.scss';
+
+.main {
+    display: flex;
+    background-color: $background;
+    height: 100vh;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;;
+    color: $onBackground;
+}
+
+.form { 
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.switchAuth {
+    margin-top: 1rem;
+    text-align: center;
+    color: $secondary;
+}
+
+.switchAuth:hover {
+    transition: color 0.3s;
+    color: $secondaryOnHover;
+}
