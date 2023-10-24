@@ -1,23 +1,5 @@
 import { db as Database } from '../utils/firebase';
 
-// type Budget = {
-//   id: string;
-//   category: string;
-//   amount: number;
-//   period: 'weekly' | 'monthly' | 'yearly';
-// };
-
-// type Account = {
-//   id: string;
-//   name: string;
-//   type: 'chequing' | 'loan' | 'investment' | 'credit';
-//   assets: Array<{
-//     name: string;
-//     value: number;
-//   }>;
-//   balance: number;
-// };
-
 export interface User {
   uuid: string;
   firstName?: string;
