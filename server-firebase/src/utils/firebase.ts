@@ -43,7 +43,7 @@ const auth = getAuth(client);
 
 // Setup emulator for when running in local development
 if (process.env.NODE_ENV === 'development') {
-  connectAuthEmulator(auth, 'http://localhost:9099');
+  connectAuthEmulator(auth, 'http://127.0.0.1:9099');
 }
 
 // Setup DB objects
