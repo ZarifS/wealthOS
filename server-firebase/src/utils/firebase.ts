@@ -51,6 +51,7 @@ const db = {
   users: admin.firestore().collection('users'),
   itemLinks: admin.firestore().collection('itemLinks'),
   transactions: admin.firestore().collection('transactions'),
+  spaces: admin.firestore().collection('spaces'),
 };
 
 export {
