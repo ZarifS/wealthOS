@@ -3,12 +3,10 @@ import * as AuthController from '../controllers/auth';
 
 const router = express.Router();
 
-// TO-DO: Add validation middleware
-// Routes
 router.post('/signUp', async (req: express.Request, res: express.Response) => {
   try {
     const { email, password, firstName, lastName } = req.body;
-    const token = await AuthController.signUpViaEmail(email, password, firstName, lastName);
+    const token = await AuthController.signUpWithEmail(email, password, firstName, lastName);
     return res.json({
       token: token,
     });
@@ -20,7 +18,7 @@ router.post('/signUp', async (req: express.Request, res: express.Response) => {
 router.post('/signIn', async (req: express.Request, res: express.Response) => {
   try {
     const { email, password } = req.body;
-    const token = await AuthController.signInViaEmail(email, password);
+    const token = await AuthController.signInWithEmail(email, password);
     return res.json({
       token: token,
     });
