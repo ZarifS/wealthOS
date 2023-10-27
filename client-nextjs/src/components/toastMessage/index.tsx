@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import styles from './toastMessage.module.scss';
+const styles: any = {};
 
 export type ToastState = 'success' | 'warning' | 'error';
 

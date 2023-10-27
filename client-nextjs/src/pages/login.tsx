@@ -10,7 +10,7 @@ import ToastMessage from '../components/toastMessage';
 
 import { useRouter } from 'next/router';
 
-import styles from './login.module.scss';
+const styles: any = {};
 import { LoginPayload } from '../services/authService';
 
 const Login: NextPage = () => {
@@ -48,7 +48,7 @@ const Login: NextPage = () => {
 
   return (
     <div className={styles.main}>
-      <h1 className={styles.header}>Sign In</h1>
+      <h1 className="text-3xl font-bold underline ">Sign In</h1>
       <form onSubmit={(event) => onSubmit(event)} className={styles.form}>
         <div className={styles.formInputs}>
           <Input

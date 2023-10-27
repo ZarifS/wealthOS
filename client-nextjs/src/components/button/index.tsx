@@ -1,4 +1,4 @@
-import styles from './button.module.scss';
+const styles: any = {};
 
 export interface ButtonProps {
   text: string;

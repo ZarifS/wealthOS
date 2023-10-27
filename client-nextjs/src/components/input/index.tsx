@@ -1,5 +1,5 @@
 import { HTMLInputTypeAttribute } from 'react';
-import styles from './input.module.scss';
+const styles: any = {};
 
 interface InputProps {
   label: string;

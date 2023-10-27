@@ -1,5 +1,5 @@
 import type { NextPage } from 'next';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { RootState } from '../store';

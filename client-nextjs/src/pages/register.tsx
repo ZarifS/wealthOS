@@ -10,7 +10,7 @@ import ToastMessage from '../components/toastMessage';
 
 import { useRouter } from 'next/router';
 
-import styles from './register.module.scss';
+const styles: any = {};
 import { RegisterPayload } from '../services/authService';
 
 const Register: NextPage = () => {
@@ -47,12 +47,6 @@ const Register: NextPage = () => {
       ...formFields,
       [key]: val,
     });
-  };
-
-  const Message = () => {
-    if (loading) return <h2>Loading...</h2>;
-    else if (message) return <h2>{message}</h2>;
-    else return null;
   };
 
   return (
