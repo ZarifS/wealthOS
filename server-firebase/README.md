@@ -3,7 +3,7 @@
 # Getting Started
 
 ## Running Locally
-- Install Node version 18 using `nvm use 18`
+- Install Node version 21 using `nvm use 21`
 - Intall firebase command line tools globally `npm install -g firebase-tools`
 - You will also need a Java SDK to run the firebase-tools, so make sure it is installed on your machine
   - Use `brew install java`. 
@@ -12,7 +12,7 @@
   - Then verify it works with `java --version` afterwards
 - Go into functions directory `cd functions`
 - Intall npm modules `npm install`
-- Run the firebase emulators `npm run serve`, you will need to authenticate to the firebase console initiallty. Once that is done you can run the `npm run serve` command again to view emulators.
+- Run the firebase emulators `npm run dev`, you will need to authenticate to the firebase console initiallty. Once that is done you can run the `npm run dev` command again to view emulators.
 - Firestore, Functions and Auth emulators will be live at `http://localhost:4000/`
 - You can make API calls to the endpoint at `http://localhost:5001/wealthos/us-central1/app` 
 
