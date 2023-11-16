@@ -4,27 +4,42 @@ import type { NextPage } from 'next';
 import Link from 'next/link';
 import { RootState, AppDispatch } from '../store';
 import { register } from '../store/authStore';
-import Input from '../components/input';
-import Button from '../components/button';
-import ToastMessage from '../components/toastMessage';
+import Input from 'components/input';
+import Button from 'components/button';
+import { useToast } from 'components/toast';
+import Label from 'components/label';
 
 import { useRouter } from 'next/router';
 
-import styles from './register.module.scss';
+const styles: any = {};
 import { RegisterPayload } from '../services/authService';
 
 const Register: NextPage = () => {
   // Get hooks
   const dispatch = useDispatch<AppDispatch>();
   const router = useRouter();
+  const { toast, dismiss } = useToast();
 
   // Setup state
   const { loading, isLoggedIn, message } = useSelector((state: RootState) => state.auth);
 
   // Route back to app once we are registered and logged in
   useEffect(() => {
-    if (isLoggedIn) router.push('/');
+    if (isLoggedIn) {
+      dismiss()
+      router.push('/')
+    };
   }, [isLoggedIn, router]);
+
+  // Show toast messages
+  useEffect(() => {
+    if (loading) {
+      toast({ title: 'Loading..', description: 'Getting stuff setup!' });
+    }
+    else if (message) {
+      toast({ title: 'Oops!', description: message });
+    }
+  }, [loading, message]);
 
   const [formFields, setFormFields] = useState<RegisterPayload>({
     firstName: '',
@@ -49,57 +64,61 @@ const Register: NextPage = () => {
     });
   };
 
-  const Message = () => {
-    if (loading) return <h2>Loading...</h2>;
-    else if (message) return <h2>{message}</h2>;
-    else return null;
-  };
 
   return (
-    <div className={styles.main}>
-      <h1 className={styles.header}>Sign Up</h1>
+    <div className="flex flex-col items-center justify-center min-h-screen py-2">
+      <h1 className="text-xl font-bold my-5">Sign Up</h1>
       <form onSubmit={(event) => onSubmit(event)} className={styles.form}>
-        <div className={styles.formInputs}>
-          <Input
-            label="First Name"
-            name="firstName"
-            placeholder="John"
-            inputType="text"
-            onChange={onChange}
-          />
-          <Input
-            label="Last Name"
-            name="lastName"
-            placeholder="Doe"
-            inputType="text"
-            onChange={onChange}
-          />
-          <Input
-            label="Email"
-            name="email"
-            placeholder="john.doe@gmail.com"
-            inputType="email"
-            onChange={onChange}
-          />
-          <Input label="Password" name="password" inputType="password" onChange={onChange} />
-          <Input
-            label="Confirm Password"
-            name="confirmedPassword"
-            inputType="password"
-            onChange={onChange}
-          />
+        <div className="flex flex-col items-center justify-center">
+          <div className="flex flex-col gap-4">
+            <div>
+              <Label htmlFor='firstName'>First Name</Label>
+              <Input
+                name="firstName"
+                placeholder="John"
+                type="text"
+                id="firstName"
+                onChange={(event) => onChange({ key: event.target.name, val: event.target.value })}
+              />
+            </div>
+            <div>
+              <Label htmlFor='lastName'>Last Name</Label>
+              <Input
+                name="lastName"
+                placeholder="Doe"
+                type="text"
+                id='lastName'
+                onChange={(event) => onChange({ key: event.target.name, val: event.target.value })} />
+            </div>
+            <div>
+              <Label htmlFor='email'>Email</Label>
+              <Input
+                name="email"
+                placeholder="john.doe@gmail.com"
+                type="email"
+                id="email"
+                onChange={(event) => onChange({ key: event.target.name, val: event.target.value })} />
+            </div>
+            <div>
+              <Label htmlFor='password'>Password</Label>
+              <Input name="password" id="password" type="password" placeholder="*******" onChange={(event) => onChange({ key: event.target.name, val: event.target.value })} />
+            </div>
+            <div>
+              <Label htmlFor='confirmedPassword'>Confirm Password</Label>
+              <Input
+                name="confirmedPassword"
+                type="password"
+                id='confirmedPassword'
+                placeholder="*******"
+                onChange={(event) => onChange({ key: event.target.name, val: event.target.value })} />
+            </div>
+            <Button>Sign Up</Button>
+          </div>
         </div>
-        <div className={styles.message}>
-          {loading && <ToastMessage message="Loading..." state="warning" />}
-          {message && <ToastMessage message={message} state="error" />}
-        </div>
-        <Button type="submit" text="Sign Up" onClick={onSubmit} />
       </form>
-      <div className={styles.switchAuth}>
-        <Link href="/login">
-          <p>Already have an account? Login now!</p>
-        </Link>
-      </div>
+      <Link href="/login">
+        <p className="text-sm my-4">Already have an account? <span className='underline'>Sign in.</span></p>
+      </Link>
     </div>
   );
 };

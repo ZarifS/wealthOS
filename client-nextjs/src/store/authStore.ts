@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
-import { getLocalStorageWithExpiry } from '../util';
+import { getLocalStorageWithExpiry } from '../utils';
 import AuthService, { RegisterPayload, LoginPayload, TOKEN_KEY } from '../services/authService';
 
 let token;

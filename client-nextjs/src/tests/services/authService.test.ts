@@ -2,7 +2,7 @@ import axios from 'axios';
 import MockAdapter from 'axios-mock-adapter';
 import { mockLocalStorage } from '../testUtils';
 import authService, { RegisterPayload, LoginPayload, TOKEN_KEY } from '../../services/authService';
-import { getLocalStorageWithExpiry, getAPIServerURL } from '../../util';
+import { getLocalStorageWithExpiry, getAPIServerURL } from 'utils';
 
 const axiosMock = new MockAdapter(axios);
 

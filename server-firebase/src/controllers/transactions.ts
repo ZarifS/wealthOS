@@ -3,6 +3,7 @@ import { db as Database } from '../utils/firebase';
 
 export interface Transaction {
   id: string;
+  spaceId: string;
   ownerId: string;
   type: 'expense' | 'income';
   amount: number;
@@ -43,6 +44,7 @@ export const mapTransactionToDB = (
   uuid: string
 ): Omit<Transaction, 'id'> => {
   return {
+    spaceId: data.spaceId,
     ownerId: data.ownerId || uuid,
     type: data.type || 'expense',
     amount: data.amount || 0,
@@ -69,17 +71,16 @@ export async function createTransaction(
   }
 }
 
-// Get all transactions with filters
 export async function getAllTransactions(
-  userId: string,
+  spaceId: string,
   filters: TransactionFilter = {},
   database = db
 ): Promise<Transaction[]> {
   try {
     let query: FirebaseFirestore.Query<FirebaseFirestore.DocumentData> = database.where(
-      'ownerId',
+      'spaceId',
       '==',
-      userId
+      spaceId
     );
 
     if (filters.startDate) {
@@ -114,7 +115,6 @@ export async function getAllTransactions(
   }
 }
 
-// Get a single transaction
 export async function getTransaction(
   userId: string,
   transactionId: string,

@@ -6,7 +6,7 @@ import {
 } from '../utils/firebase';
 import * as UserController from './user';
 
-export async function signUpViaEmail(
+export async function signUpWithEmail(
   email: string,
   password: string,
   firstName: string,
@@ -24,7 +24,7 @@ export async function signUpViaEmail(
   }
 }
 
-export async function signInViaEmail(email: string, password: string): Promise<string> {
+export async function signInWithEmail(email: string, password: string): Promise<string> {
   try {
     const credentials = await signInWithEmailAndPassword(auth, email, password);
     const token = await credentials.user.getIdToken(); // Token is created...

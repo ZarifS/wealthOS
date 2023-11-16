@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { setLocalStorageWithExpiry, getAPIServerURL } from '../util';
+import { setLocalStorageWithExpiry, getAPIServerURL } from '../utils';
 const API_URL = getAPIServerURL + '/auth';
 
 const TOKEN_EXPIRY = 15 * 1000; // in milliseconds

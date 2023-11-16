@@ -44,7 +44,6 @@ export async function createUser(
       email: data.email as string,
       firstName: data.firstName,
       lastName: data.lastName,
-      links: {},
       uuid,
     });
   } catch (error) {
