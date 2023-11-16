@@ -2,7 +2,7 @@ import axios from 'axios';
 import { setLocalStorageWithExpiry, getAPIServerURL } from '../utils';
 const API_URL = getAPIServerURL + '/auth';
 
-const TOKEN_EXPIRY = 15 * 1000; // in milliseconds
+const TOKEN_EXPIRY = 30 * 60 * 1000; // in minutes
 export const TOKEN_KEY = 'WEALTHOS-USER-TOKEN';
 
 export interface RegisterPayload {

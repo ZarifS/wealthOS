@@ -5,8 +5,8 @@
     "lint-fix": "eslint --ext .js,.ts . --fix",
     "build": "tsc --build",
     "build-watch": "tsc --build --watch",
-    "firebase-dev": "NODE_ENV=development firebase emulators:start",
-    "dev": "concurrently \"npm run build-watch\" \"npm run firebase-dev\"",
+    "firebase-dev": "NODE_ENV=development firebase emulators:start --import=local-db --export-on-exit",
+    "dev": "concurrently \"npm run build-watch\" ",
     "shell": "firebase functions:shell",
     "deploy": "firebase deploy --only functions",
     "logs": "firebase functions:log"

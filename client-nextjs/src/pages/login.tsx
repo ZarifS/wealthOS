@@ -77,7 +77,7 @@ const Login: NextPage = () => {
               placeholder='********'
               onChange={(event) => onChange({ key: event.target.name, val: event.target.value })}
             />
-            <Button>Sign Up</Button>
+            <Button>Sign In</Button>
           </div>
         </div>
       </form>
