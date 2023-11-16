@@ -3,7 +3,8 @@ import type { AppProps } from 'next/app';
 import { Provider } from 'react-redux';
 import store from '../store';
 import { Inter as FontSans } from "next/font/google"
-import { cn } from '../../@shadcn/lib/utils';
+import { cn } from 'utils';
+import { Toaster } from 'components/toast';
 
 export const fontSans = FontSans({
   subsets: ["latin"],
@@ -13,12 +14,13 @@ export const fontSans = FontSans({
 function MyApp({ Component, pageProps }: AppProps) {
   return (
     <Provider store={store}>
-      <div className={cn(
-        "min-h-screen bg-background font-sans antialiased",
+      <main className={cn(
+        "font-sans antialiased",
         fontSans.variable
       )}>
         <Component {...pageProps} />
-      </div>
+        <Toaster />
+      </main>
     </Provider>
   );
 }

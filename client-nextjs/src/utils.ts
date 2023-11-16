@@ -1,5 +1,13 @@
 // Helpful utility functions used throughout the app
+import { type ClassValue, clsx } from 'clsx';
+import { twMerge } from 'tailwind-merge';
 
+// Used to merge tailwind classes
+export function cn(...inputs: ClassValue[]) {
+  return twMerge(clsx(inputs));
+}
+
+// Used to set the local storage with an expiry time
 export function setLocalStorageWithExpiry(key: string, value: any, ttl: number) {
   const now = new Date();
 
@@ -12,6 +20,7 @@ export function setLocalStorageWithExpiry(key: string, value: any, ttl: number) 
   localStorage.setItem(key, JSON.stringify(item));
 }
 
+// Used to get the local storage with an expiry time
 export function getLocalStorageWithExpiry(key: string): any | null {
   const itemStr = localStorage.getItem(key);
   // if the item doesn't exist, return null

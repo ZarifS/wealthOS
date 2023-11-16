@@ -1,34 +1,25 @@
-import { HTMLInputTypeAttribute } from 'react';
-const styles: any = {};
+import * as React from "react"
 
-interface InputProps {
-  label: string;
-  name: string;
-  inputType: HTMLInputTypeAttribute;
-  initialValue?: string;
-  onChange: Function;
-  placeholder?: string;
-}
+import { cn } from "utils"
 
-const Input = ({ label, name, inputType, initialValue, onChange, placeholder }: InputProps) => {
-  return (
-    <div className={styles.main}>
-      <label className={styles.label} htmlFor={name}>
-        {label}
-      </label>
+export interface InputProps
+  extends React.InputHTMLAttributes<HTMLInputElement> { }
+
+const Input = React.forwardRef<HTMLInputElement, InputProps>(
+  ({ className, type, ...props }, ref) => {
+    return (
       <input
-        className={styles.input}
-        type={inputType}
-        id={name}
-        name="password"
-        value={initialValue}
-        onChange={(event) => {
-          onChange({ key: name, val: event.target.value });
-        }}
-        placeholder={placeholder}
+        type={type}
+        className={cn(
+          "flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring focus-visible:ring-opacity-10 disabled:cursor-not-allowed disabled:opacity-50",
+          className
+        )}
+        ref={ref}
+        {...props}
       />
-    </div>
-  );
-};
+    )
+  }
+)
+Input.displayName = "Input"
 
-export default Input;
+export default Input
