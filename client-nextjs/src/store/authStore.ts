@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
-import { getLocalStorageWithExpiry } from '../utils';
+import { getLocalStorageWithExpiry } from 'utils';
 import AuthService, { RegisterPayload, LoginPayload, TOKEN_KEY } from '../services/authService';
 
 let token;
@@ -60,9 +60,6 @@ export const login = createAsyncThunk(
   }
 );
 
-export const logout = createAsyncThunk('auth/logout', async () => {
-  return AuthService.logout();
-});
 
 const authSlice = createSlice({
   name: 'auth',

@@ -28,13 +28,17 @@ router.post('/signIn', async (req: express.Request, res: express.Response) => {
 });
 
 router.post('/verifyToken', async (req: express.Request, res: express.Response) => {
-  const token = req?.headers?.authorization;
-  if (token) {
-    const uid = await AuthController.verifyToken(token);
-    res.json({
-      userId: uid,
-    });
-  } else res.status(401).send();
+  try {
+    const token = req?.headers?.authorization;
+    if (token) {
+      const uid = await AuthController.verifyToken(token);
+      return res.json({
+        userId: uid,
+      });
+    } else return res.status(400).json({ error: 'No token provided.' });
+  } catch (error) {
+    return res.status(400).json(error);
+  }
 });
 
 export default router;

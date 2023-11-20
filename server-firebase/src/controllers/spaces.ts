@@ -5,7 +5,7 @@ export interface Space {
   name: string;
   ownerId: string;
   description: string;
-  users: { [key: string]: 'viewer' | 'editor' };
+  users: { [userId: string]: 'viewer' | 'editor' };
   type: 'private' | 'public' | 'protected';
   password?: string;
 }

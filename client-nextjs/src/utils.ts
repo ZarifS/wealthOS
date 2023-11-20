@@ -1,6 +1,17 @@
 // Helpful utility functions used throughout the app
 import { type ClassValue, clsx } from 'clsx';
 import { twMerge } from 'tailwind-merge';
+import jwtDecode from 'jsonwebtoken'
+
+export const getTokenExpiry = (token: string) => {
+  try {
+    const decoded: any = jwtDecode.decode(token);
+    return decoded?.exp as number;
+  } catch (error) {
+    console.error('Error decoding token:', error);
+    return Date.now()
+  }
+};
 
 // Used to merge tailwind classes
 export function cn(...inputs: ClassValue[]) {
@@ -10,7 +21,6 @@ export function cn(...inputs: ClassValue[]) {
 // Used to set the local storage with an expiry time
 export function setLocalStorageWithExpiry(key: string, value: any, ttl: number) {
   const now = new Date();
-
   // `item` is an object which contains the original value
   // as well as the time when it's supposed to expire
   const item = {
@@ -39,5 +49,5 @@ export function getLocalStorageWithExpiry(key: string): any | null {
   return item.value;
 }
 
-export const getAPIServerURL =
+export const getAPIServerURL = () =>
   process.env.API_SERVER_URL || 'http://localhost:5001/wealthos/us-central1/app';

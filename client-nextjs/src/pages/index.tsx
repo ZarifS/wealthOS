@@ -1,22 +1,30 @@
 import type { NextPage } from 'next';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { useEffect } from 'react';
 import { useRouter } from 'next/router';
-import { RootState } from '../store';
+import { AppDispatch, RootState } from '../store';
+import { fetchUserData } from '../store/userStore';
 
 const Home: NextPage = () => {
-  const { isLoggedIn } = useSelector((state: RootState) => state.auth);
-  const router = useRouter();
+  const { isLoggedIn, token } = useSelector((state: RootState) => state.auth);
+  const { user, loading, error } = useSelector((state: RootState) => state.user);
 
+  const router = useRouter();
+  const dispatch = useDispatch<AppDispatch>();
+
+  // Redirect to login if not logged in or token is invalid
   useEffect(() => {
-    if (!isLoggedIn) {
+    if (!isLoggedIn || error) {
       router.push('/login');
     }
-  }, [isLoggedIn, router]);
+    else {
+      dispatch(fetchUserData(token as string));
+    }
+  }, [isLoggedIn, router, token, error, dispatch]);
 
   return (
-    <div className="">
-      <h1>wealthOS</h1>
+    <div>
+      <h1>Welcome, {user?.firstName}</h1>
     </div>
   );
 };

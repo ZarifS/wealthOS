@@ -5,6 +5,7 @@ export interface User {
   firstName?: string;
   lastName?: string;
   email: string;
+  spaces: [string];
 }
 
 // Get user collection slice from database
@@ -45,6 +46,7 @@ export async function createUser(
       firstName: data.firstName,
       lastName: data.lastName,
       uuid,
+      spaces: [],
     });
   } catch (error) {
     console.error('Error trying to create a new user:', error);
