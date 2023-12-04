@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
-import { getLocalStorageWithExpiry } from 'utils';
-import AuthService, { RegisterPayload, LoginPayload, TOKEN_KEY } from '../services/authService';
+import { getLocalStorageWithExpiry, getTokenExpiry, setLocalStorageWithExpiry, TOKEN_KEY } from 'utils';
+import AuthService, { RegisterPayload, LoginPayload } from '../services/authService';
 
 let token;
 
@@ -12,12 +12,12 @@ interface AuthState {
   isLoggedIn: boolean;
   loading: boolean;
   token: string | null;
-  message: string | null;
+  error: {status?: number, message: string} | null;
 }
 
 const initialState: AuthState = token
-  ? { isLoggedIn: true, token, loading: false, message: null }
-  : { isLoggedIn: false, token: null, loading: false, message: null };
+  ? { isLoggedIn: true, token, loading: false, error: null }
+  : { isLoggedIn: false, token: null, loading: false, error: null };
 
 export const register = createAsyncThunk(
   'auth/register',
@@ -33,6 +33,11 @@ export const register = createAsyncThunk(
         password,
         confirmedPassword,
       });
+      if (!token) {
+        throw new Error('No token received');
+      }
+      const tokenTTL = getTokenExpiry(token) - Date.now();
+      setLocalStorageWithExpiry(TOKEN_KEY, token, tokenTTL);
       return { token };
     } catch (error: any) {
       const message =
@@ -49,6 +54,11 @@ export const login = createAsyncThunk(
   async ({ email, password }: LoginPayload, thunkAPI) => {
     try {
       const { token } = await AuthService.login({ email, password });
+      if (!token) {
+        throw new Error('No token received');
+      }
+      const tokenTTL = getTokenExpiry(token) - Date.now();
+      setLocalStorageWithExpiry(TOKEN_KEY, token, tokenTTL);
       return { token };
     } catch (error: any) {
       const message =
@@ -64,19 +74,11 @@ export const login = createAsyncThunk(
 const authSlice = createSlice({
   name: 'auth',
   initialState,
-  reducers: {
-    logout: (state) => {
-      AuthService.logout();
-      state.isLoggedIn = false;
-      state.token = null;
-      state.loading = false;
-      state.message = null;
-    },
-  },
+  reducers: {},
   extraReducers: (builder) => {
     builder.addCase(register.pending, (state: AuthState) => {
       state.loading = true;
-      state.message = null;
+      state.error = null;
       state.isLoggedIn = false;
       state.token = null;
     });
@@ -87,11 +89,11 @@ const authSlice = createSlice({
     });
     builder.addCase(register.rejected, (state: AuthState, action: PayloadAction<any>) => {
       state.loading = false;
-      state.message = action.payload;
+      state.error = {message: action.payload};
     });
     builder.addCase(login.pending, (state: AuthState) => {
       state.loading = true;
-      state.message = null;
+      state.error = null;
       state.token = null;
       state.isLoggedIn = false;
     });
@@ -102,7 +104,7 @@ const authSlice = createSlice({
     });
     builder.addCase(login.rejected, (state: AuthState, action: PayloadAction<any>) => {
       state.loading = false;
-      state.message = action.payload;
+      state.error = {message: action.payload};
     });
   },
 });

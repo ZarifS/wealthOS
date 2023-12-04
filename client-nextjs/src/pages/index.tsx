@@ -14,13 +14,17 @@ const Home: NextPage = () => {
 
   // Redirect to login if not logged in or token is invalid
   useEffect(() => {
-    if (!isLoggedIn || error) {
+    if (!isLoggedIn || !token) {
       router.push('/login');
     }
     else {
       dispatch(fetchUserData(token as string));
     }
   }, [isLoggedIn, router, token, error, dispatch]);
+
+  if (loading) {
+    return <h1>Loading...</h1>
+  }
 
   return (
     <div>

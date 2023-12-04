@@ -18,7 +18,7 @@ const Login: NextPage = () => {
   const { toast, dismiss } = useToast();
 
   // Setup state
-  const { loading, isLoggedIn, message } = useSelector((state: RootState) => state.auth);
+  const { loading, isLoggedIn, error } = useSelector((state: RootState) => state.auth);
 
   // Route back to app once we are logged in
   useEffect(() => {
@@ -54,10 +54,10 @@ const Login: NextPage = () => {
     if (loading) {
       toast({ title: 'Loading..', description: 'Getting stuff setup!' });
     }
-    else if (message) {
-      toast({ title: 'Oops!', description: message });
+    else if (error) {
+      toast({ title: 'Oops!', description: error.message });
     }
-  }, [loading, message]);
+  }, [loading, error]);
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen py-2">

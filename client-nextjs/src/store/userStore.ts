@@ -1,5 +1,5 @@
 // userStore.ts
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
 import {getUserData} from '../services/userService';
 
 export interface User {
@@ -13,7 +13,7 @@ export interface User {
 interface UserState {
     user: User | null;
     loading: boolean;
-    error: unknown;
+    error: {status?: number, message: string} | null;
   }
 
 // Define the initial state
@@ -31,8 +31,11 @@ export const fetchUserData = createAsyncThunk(
       const response = await getUserData(token);
       return response.data;
     } catch (error: any) {
-      console.log('Error trying to fetch user data:', error);
-      return thunkApi.rejectWithValue(error.response.data);
+      const message =
+      (error.response && error.response.data && error.response.data.message) ||
+        error.message || error.toString();
+      console.log('Error trying to fetch user data:', message);
+      return thunkApi.rejectWithValue(message);
     }
   }
 );
@@ -44,17 +47,17 @@ const userSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
-      .addCase(fetchUserData.pending, (state) => {
+      .addCase(fetchUserData.pending, (state: UserState) => {
         state.loading = true;
         state.error = null;
       })
-      .addCase(fetchUserData.fulfilled, (state, action) => {
+      .addCase(fetchUserData.fulfilled, (state: UserState, action: PayloadAction<any>) => {
         state.loading = false;
         state.user = action.payload;
       })
-      .addCase(fetchUserData.rejected, (state, action) => {
+      .addCase(fetchUserData.rejected, (state: UserState, action: PayloadAction<any>) => {
         state.loading = false;
-        state.error = action.payload;
+        state.error = {message: action.payload};
       });
   },
 });

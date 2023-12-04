@@ -3,10 +3,12 @@ import { type ClassValue, clsx } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 import jwtDecode from 'jsonwebtoken'
 
+export const TOKEN_KEY = 'WEALTHOS-USER-TOKEN';
+
 export const getTokenExpiry = (token: string) => {
   try {
     const decoded: any = jwtDecode.decode(token);
-    return decoded?.exp as number;
+    return decoded?.exp*1000 as number; // In milliseconds
   } catch (error) {
     console.error('Error decoding token:', error);
     return Date.now()
@@ -43,6 +45,7 @@ export function getLocalStorageWithExpiry(key: string): any | null {
   if (now.getTime() > item.expiry) {
     // If the item is expired, delete the item from storage
     // and return null
+    console.log('Removing token due to expiry', item.expiry, now.getTime());
     localStorage.removeItem(key);
     return null;
   }

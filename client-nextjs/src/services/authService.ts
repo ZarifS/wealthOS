@@ -1,8 +1,6 @@
 import axios from 'axios';
-import { setLocalStorageWithExpiry, getAPIServerURL, getTokenExpiry } from '../utils';
+import { getAPIServerURL } from '../utils';
 const API_URL = getAPIServerURL() + '/auth';
-
-export const TOKEN_KEY = 'WEALTHOS-USER-TOKEN';
 
 export interface RegisterPayload {
   firstName: string;
@@ -39,17 +37,12 @@ const login = async ({ email, password }: LoginPayload) => {
     email,
     password,
   });
-  if (response.data.token) {
-    const tokenTTL = getTokenExpiry(response.data.token) - Date.now();
-    setLocalStorageWithExpiry(TOKEN_KEY, response.data.token, tokenTTL);
-  }
   return response.data;
 };
 
 const service = {
   register,
   login,
-  logout,
 };
 
 export default service;
