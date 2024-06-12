@@ -1,9 +1,6 @@
 import { FormEvent, useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 import type { NextPage } from 'next';
 import Link from 'next/link';
-import { RootState, AppDispatch } from '../store';
-import { register } from '../store/authStore';
 import Input from 'components/input';
 import Button from 'components/button';
 import { useToast } from 'components/toast';
@@ -12,34 +9,15 @@ import Label from 'components/label';
 import { useRouter } from 'next/router';
 
 const styles: any = {};
-import { RegisterPayload } from '../services/authService';
+import AuthService, { RegisterPayload } from '../services/authService';
 
 const Register: NextPage = () => {
+  // Setup state
+  const [isLoading, setIsLoading] = useState(false);
+
   // Get hooks
-  const dispatch = useDispatch<AppDispatch>();
   const router = useRouter();
   const { toast, dismiss } = useToast();
-
-  // Setup state
-  const { loading, isLoggedIn, error } = useSelector((state: RootState) => state.auth);
-
-  // Route back to app once we are registered and logged in
-  useEffect(() => {
-    if (isLoggedIn) {
-      dismiss()
-      router.push('/')
-    };
-  }, [isLoggedIn, router]);
-
-  // Show toast messages
-  useEffect(() => {
-    if (loading) {
-      toast({ title: 'Loading..', description: 'Getting stuff setup!' });
-    }
-    else if (error) {
-      toast({ title: 'Oops!', description: error.message });
-    }
-  }, [loading, error]);
 
   const [formFields, setFormFields] = useState<RegisterPayload>({
     firstName: '',
@@ -50,10 +28,24 @@ const Register: NextPage = () => {
   });
 
   // Handle submit
-  const onSubmit = (event: FormEvent) => {
-    event.preventDefault();
-    const { firstName, lastName, email, password, confirmedPassword } = formFields;
-    dispatch(register({ firstName, lastName, email, password, confirmedPassword }));
+  const onSubmit = async (event: FormEvent) => {
+    try {
+      event.preventDefault();
+
+      setIsLoading(true);
+      toast({ title: 'Loading..', description: 'Getting your stuff setup!' });
+
+      const { firstName, lastName, email, password, confirmedPassword } = formFields;
+      await AuthService.signUp({ firstName, lastName, email, password, confirmedPassword });
+
+      dismiss();
+      router.push('/');
+    } catch (error: Error | any) {
+      console.log('Error signing up:', error);
+      toast({ title: 'Oops!', description: error.message, variant: 'destructive' });
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   // Handle field updates
@@ -112,7 +104,7 @@ const Register: NextPage = () => {
                 placeholder="*******"
                 onChange={(event) => onChange({ key: event.target.name, val: event.target.value })} />
             </div>
-            <Button>Sign Up</Button>
+            <Button disabled={isLoading}>Sign Up</Button>
           </div>
         </div>
       </form>

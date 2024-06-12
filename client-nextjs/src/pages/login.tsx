@@ -1,33 +1,32 @@
 import { FormEvent, useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 import type { NextPage } from 'next';
 import Link from 'next/link';
-import { RootState, AppDispatch } from '../store';
-import { login } from '../store/authStore';
 import Input from '../components/input';
 import Button from '../components/button';
 import { useToast } from 'components/toast';
 import { useRouter } from 'next/router';
 
-import { LoginPayload } from '../services/authService';
+import AuthService, { LoginPayload } from '../services/authService';
+import Label from 'components/label';
+import { Checkbox } from 'components/checkbox';
 
 const Login: NextPage = () => {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
   // Get hooks
-  const dispatch = useDispatch<AppDispatch>();
   const router = useRouter();
   const { toast, dismiss } = useToast();
 
   // Setup state
-  const { loading, isLoggedIn, error } = useSelector((state: RootState) => state.auth);
 
   // Route back to app once we are logged in
   useEffect(() => {
     if (isLoggedIn) {
       // Hide all toasts
+      console.log('Logged in! Redirecting to home page...')
       dismiss()
       router.push('/')
-    }
-    ;
+    };
   }, [isLoggedIn, router]);
 
   const [formFields, setFormFields] = useState<LoginPayload>({
@@ -36,10 +35,17 @@ const Login: NextPage = () => {
   });
 
   // Handle submit
-  const onSubmit = (event: FormEvent) => {
-    event.preventDefault();
-    const { email, password } = formFields;
-    dispatch(login({ email, password }));
+  const onSubmit = async (event: FormEvent) => {
+    try {
+      event.preventDefault();
+      toast({ title: 'Loading..', description: 'Getting stuff setup!' });
+      const { email, password, preserveLogin } = formFields;
+      await AuthService.signIn({ email, password, preserveLogin });
+      setIsLoggedIn(true);
+    } catch (error: Error | any) {
+      console.log('Error signing in:', error);
+      toast({ title: 'Oops!', description: error.message, variant: 'destructive' });
+    }
   };
 
   // Handle field updates
@@ -49,15 +55,6 @@ const Login: NextPage = () => {
       [key]: val,
     });
   };
-
-  useEffect(() => {
-    if (loading) {
-      toast({ title: 'Loading..', description: 'Getting stuff setup!' });
-    }
-    else if (error) {
-      toast({ title: 'Oops!', description: error.message });
-    }
-  }, [loading, error]);
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen py-2">
@@ -77,6 +74,10 @@ const Login: NextPage = () => {
               placeholder='********'
               onChange={(event) => onChange({ key: event.target.name, val: event.target.value })}
             />
+            <div className="flex items-center space-x-2 px-1">
+              <Checkbox id="preserveLogin" checked />
+              <Label htmlFor="preserveLogin" className='text-sm'>Keep me signed in</Label>
+            </div>
             <Button>Sign In</Button>
           </div>
         </div>
