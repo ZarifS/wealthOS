@@ -1,4 +1,5 @@
 import { db as Database } from '../utils/firebase';
+import * as UserController from './user';
 
 export interface Space {
   id: string;
@@ -24,19 +25,43 @@ const mapSpaceFromDB = (doc: FirebaseFirestore.DocumentData): Space => {
 const hasEditAccess = (space: Space, userId: string): boolean =>
   space.ownerId === userId || (space.users[userId] && space.users[userId] === 'editor');
 
+export async function getSpaceById(spaceId: string, database = db): Promise<Space | undefined> {
+  try {
+    const doc = await database.doc(spaceId).get();
+    return mapSpaceFromDB(doc);
+  } catch (error) {
+    console.error('Error fetching space by ID:', error);
+    throw error;
+  }
+}
+
 export async function createSpace(
   ownerId: string,
   data: Omit<Space, 'id'>,
   database = db
 ): Promise<void> {
   try {
+    // Generate a new document reference with an auto-generated ID
+    const newDocRef = database.doc();
+
     const newSpace: Omit<Space, 'id'> = {
       ...data,
       ownerId,
       users: { [ownerId]: 'editor' },
       type: data.type || 'private',
     };
-    await database.doc().set(newSpace);
+
+    // Set the new document with the generated ID
+    await newDocRef.set(newSpace);
+
+    // Get the generated ID
+    const newSpaceId = newDocRef.id;
+
+    // Add space to user's spaces
+    const user = await UserController.getUserById(ownerId);
+    if (user) {
+      await UserController.updateUser(ownerId, { spaces: [...user.spaces, newSpaceId] });
+    }
   } catch (error) {
     console.error('Error creating space:', error);
     throw error;

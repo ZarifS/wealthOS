@@ -3,6 +3,7 @@ import { auth, setPersistence, browserLocalPersistence, signInWithEmailAndPasswo
 import { getAPIServerURL } from '../utils';
 const API_URL = getAPIServerURL() + '/auth';
 const USER_API_URL = getAPIServerURL() + '/user';
+
 export interface RegisterPayload {
   firstName: string;
   lastName: string;
@@ -25,7 +26,6 @@ const signUp = async ({
   confirmedPassword,
   }: RegisterPayload) => {
   try {
-    console.log('Signing up...');
     if (password !== confirmedPassword) {
       throw new Error('Passwords do not match.');
     }

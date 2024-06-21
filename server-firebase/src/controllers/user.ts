@@ -5,7 +5,7 @@ export interface User {
   firstName?: string;
   lastName?: string;
   email: string;
-  spaces: [string];
+  spaces: string[];
 }
 
 // Get user collection slice from database

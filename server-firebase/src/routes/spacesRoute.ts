@@ -7,6 +7,17 @@ const router = express.Router();
 // Middleware to verify user authentication
 router.use(authMiddleware);
 
+// Route to get space information by ID
+router.get('/:spaceId', async (req: express.Request, res: express.Response) => {
+  try {
+    const spaceId = req.params.spaceId;
+    const space = await SpacesController.getSpaceById(spaceId);
+    return res.status(200).json(space);
+  } catch (error: any) {
+    return res.status(400).json({ error: error.message });
+  }
+});
+
 // Route to create a new space
 router.post('/', async (req: express.Request, res: express.Response) => {
   try {

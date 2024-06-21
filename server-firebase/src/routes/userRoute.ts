@@ -14,6 +14,18 @@ router.post('/', async (req: express.Request, res: express.Response) => {
   }
 });
 
+// Update user by id, requires auth token
+router.put('/', AuthMiddleware, async (req: express.Request, res: express.Response) => {
+  try {
+    const user = req.user;
+    const data = req.body;
+    await UserController.updateUser(user.uuid, data);
+    return res.json({ message: 'User updated successfully.' });
+  } catch (error) {
+    return res.status(400).json(error);
+  }
+});
+
 // Get user by id, requires auth token
 router.get('/', AuthMiddleware, async (req: express.Request, res: express.Response) => {
   try {

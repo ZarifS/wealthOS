@@ -5,6 +5,7 @@ import { functions } from './utils/firebase';
 import AuthRouter from './routes/authRoute';
 import UserRouter from './routes/userRoute';
 import TransactionsRouter from './routes/transactionsRoute';
+import SpacesRouter from './routes/spacesRoute';
 
 const app: express.Application = express();
 
@@ -15,6 +16,7 @@ app.use(cors({ origin: true })); //Enable CORS
 // Routes
 app.use('/auth', AuthRouter);
 app.use('/user', UserRouter);
+app.use('/spaces', SpacesRouter);
 app.use('/transactions', TransactionsRouter);
 
 exports.app = functions.https.onRequest(app);

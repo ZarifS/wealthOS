@@ -11,14 +11,6 @@ const getUserData = async (token: string) => {
   });
 };
 
-const createSpace = async (token: string, data: any) => {
-  return axios.post(API_URL + '/spaces', data, {
-    headers: {
-      Authorization: token,
-    },
-  });
-}
-
 export default {
   getUserData,
 };

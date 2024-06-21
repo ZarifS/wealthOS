@@ -1,12 +1,14 @@
 import type { NextPage } from 'next';
-import { useEffect, useState } from 'react';
+import { use, useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { Button } from 'components/button';
 import { Input } from 'components/input';
 
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from 'components/dialog';
 import UserService from '../services/userService';
+import SpacesService from '../services/spacesService';
 import Label from 'components/label';
+import { useToast } from 'components/toast';
 
 interface Space {
   name: string;
@@ -45,7 +47,7 @@ const CreateNewSpaceDialogWithButton = ({ onCreateSpace }: { onCreateSpace: (nam
             </Label>
             <Input
               id="name"
-              defaultValue="Personal"
+              placeholder="Personal"
               className="col-span-3"
               onChange={(e) => setName(e.target.value)}
             />
@@ -56,7 +58,7 @@ const CreateNewSpaceDialogWithButton = ({ onCreateSpace }: { onCreateSpace: (nam
             </Label>
             <Input
               id="description"
-              defaultValue="Tracks my personal spendings."
+              placeholder="Tracks my personal spendings."
               className="col-span-3"
               onChange={(e) => setDescription(e.target.value)}
             />
@@ -78,42 +80,67 @@ const CreateNewSpaceDialogWithButton = ({ onCreateSpace }: { onCreateSpace: (nam
   )
 }
 
+const EmptySpacesState = ({ user, handleCreateSpace, handleLogout }: {
+  user: any,
+  handleCreateSpace: (name: string, description: string) => void,
+  handleLogout: () => void
+}) => {
+  return (
+    <div className='flex flex-col w-100 h-[100vh] items-center justify-center'>
+      <div className='m-4 text-center'>
+        <h2 className='text-3xl mb-2'>Welcome, {user?.firstName}.</h2>
+        <p className='text-md'>Let's begin by adding a new space to track your spendings.</p>
+      </div>
+      <div className='flex gap-2'>
+        <CreateNewSpaceDialogWithButton onCreateSpace={handleCreateSpace} />
+        <Button variant='secondary' className='w-48' onClick={() => handleLogout()}>Log Out</Button>
+      </div>
+    </div>
+  )
+}
+
 
 const Home: NextPage = () => {
   const [user, setUser] = useState<any>(null);
   const [loading, setLoading] = useState(false);
 
   const router = useRouter();
+  const { toast } = useToast();
 
   const handleLogout = () => {
     localStorage.removeItem('authToken');
     router.push('/login');
   };
 
+  const fetchUserData = async () => {
+    try {
+      setLoading(true);
+      const token = localStorage.getItem('authToken');
+      if (token) {
+        const response = await UserService.getUserData(token);
+        setUser(response.data);
+        setLoading(false);
+      }
+      else {
+        router.push('/login');
+      }
+    } catch (error: Error | any) {
+      console.log('Error fetching user data:', error);
+      handleLogout();
+    }
+  }
+
   // Redirect to login if not logged in or token is invalid
   useEffect(() => {
-
-    const fetchUserData = async () => {
-      try {
-        setLoading(true);
-        const token = localStorage.getItem('authToken');
-        if (token) {
-          const response = await UserService.getUserData(token);
-          console.log('User data:', response.data);
-          setUser(response.data);
-          setLoading(false);
-        }
-        else {
-          router.push('/login');
-        }
-      } catch (error: Error | any) {
-        console.log('Error fetching user data:', error);
-        handleLogout();
-      }
-    }
-
     fetchUserData();
   }, []);
+
+  useEffect(() => {
+    if (user && user.spaces && user.spaces.length > 0) {
+      console.log('User spaces:', user.spaces);
+      router.push(`/spaces/${user.spaces[0]}`);
+    }
+  }, [user]);
 
   const handleCreateSpace = async (name: string, description: string) => {
     try {
@@ -122,31 +149,32 @@ const Home: NextPage = () => {
         router.push('/login');
         return;
       }
-      const response = await UserService.createSpace(token, { name, description, type: 'private' });
-      console.log('Space created:', response.data);
-      router.push(`/spaces/${response.data.id}`);
+      toast({
+        title: 'Creating space...',
+      });
+      await SpacesService.createSpace(token, { name, description });
+      toast({
+        title: 'Space created successfully.',
+      });
+      // Refetch user data to update spaces
+      fetchUserData();
     } catch (error: Error | any) {
       console.log('Error creating space:', error);
+      toast({
+        title: 'Error creating space.',
+        description: error.message,
+        variant: 'destructive',
+      });
     }
-
   }
 
   if (loading || !user) {
     return <h1>Loading...</h1>
   }
 
-  return (
-    <div className='flex flex-col w-100 h-[100vh] items-center justify-center'>
-      <div className='m-4 text-center'>
-        <h2 className='text-3xl mb-2'>Welcome, {user?.firstName}.</h2>
-        <p className='text-md'>Let's begin by adding a new space to track your spendings.</p>
-      </div>
-      <div className='flex gap-2'>
-        <CreateNewSpaceDialogWithButton />
-        <Button variant='secondary' className='w-48' onClick={() => handleLogout()}>Log Out</Button>
-      </div>
-    </div>
-  );
+  if (!user.spaces || user.spaces.length === 0) {
+    return <EmptySpacesState user={user} handleCreateSpace={handleCreateSpace} handleLogout={handleLogout} />
+  }
 };
 
 
