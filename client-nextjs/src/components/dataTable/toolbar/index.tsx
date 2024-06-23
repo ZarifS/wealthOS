@@ -3,8 +3,8 @@
 import { CrossIcon } from "lucide-react"
 import { Table } from "@tanstack/react-table"
 
-import { Button } from "components/button"
-import { Input } from "components/input"
+import { Button } from "components/ui/button"
+import { Input } from "components/ui/input"
 import { TOP_LEVEL_CATEGORIES } from "types/transactions"
 import { DataTableFacetedFilter } from "../facetedFilter"
 

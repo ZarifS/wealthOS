@@ -3,8 +3,8 @@ import { CheckIcon, PlusCircleIcon } from "lucide-react"
 import { Column } from "@tanstack/react-table"
 
 import { cn } from "utils"
-import { Badge } from "components/badge"
-import { Button } from "components/button"
+import { Badge } from "components/ui/badge"
+import { Button } from "components/ui/button"
 import {
     Command,
     CommandEmpty,
@@ -13,13 +13,13 @@ import {
     CommandItem,
     CommandList,
     CommandSeparator,
-} from "components/command"
+} from "components/ui/command"
 import {
     Popover,
     PopoverContent,
     PopoverTrigger,
-} from "components/popover"
-import { Separator } from "components/separator"
+} from "components/ui/popover"
+import { Separator } from "components/ui/separator"
 
 interface DataTableFacetedFilterProps<TData, TValue> {
     column?: Column<TData, TValue>

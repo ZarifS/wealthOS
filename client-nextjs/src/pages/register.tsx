@@ -1,10 +1,10 @@
 import { FormEvent, useEffect, useState } from 'react';
 import type { NextPage } from 'next';
 import Link from 'next/link';
-import Input from 'components/input';
-import Button from 'components/button';
-import { useToast } from 'components/toast';
-import Label from 'components/label';
+import Input from 'components/ui/input';
+import Button from 'components/ui/button';
+import { useToast } from 'components/ui/toast';
+import Label from 'components/ui/label';
 
 import { useRouter } from 'next/router';
 

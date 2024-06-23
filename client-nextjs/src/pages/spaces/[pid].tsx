@@ -3,17 +3,9 @@ import { useRouter } from 'next/router';
 import SpacesService from '../../services/spacesService';
 import UserService from '../../services/userService';
 import TransactionsService from '../../services/transactionsService';
-import Button from 'components/button';
+import Button from 'components/ui/button';
 import AddTransactionModal from 'components/transactions/addTransactionModal';
-import {
-    Table,
-    TableBody,
-    TableCell,
-    TableHead,
-    TableHeader,
-    TableRow,
-} from 'components/table';
-import ThemeToggle from 'components/themeToggle';
+import ThemeToggle from 'components/ui/themeToggle';
 import { DataTable, columns } from "components/transactions/transactionsDataTable";
 
 

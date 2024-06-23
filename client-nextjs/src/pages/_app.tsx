@@ -1,7 +1,7 @@
 import '../styles/globals.css';
 import type { AppProps } from 'next/app';
-import { Toaster } from 'components/toast';
-import { ThemeProvider } from 'components/themeProvider';
+import { Toaster } from 'components/ui/toast';
+import { ThemeProvider } from 'components/ui/themeProvider';
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (

@@ -10,7 +10,7 @@ import {
     getSortedRowModel,
     useReactTable,
 } from "@tanstack/react-table"
-import Button from "components/button"
+import Button from "components/ui/button"
 import {
     Table,
     TableBody,
@@ -18,7 +18,7 @@ import {
     TableHead,
     TableHeader,
     TableRow,
-} from "components/table"
+} from "components/ui/table"
 import { DataTableToolbar } from "components/dataTable/toolbar"
 import { ArrowUpDown } from "lucide-react"
 import { useState } from "react"

@@ -1,8 +1,8 @@
-import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from 'components/dialog';
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from 'components/ui/dialog';
 import { SUB_CATEGORIES, TOP_LEVEL_CATEGORIES } from '../../types/transactions';
 import { Label } from '@radix-ui/react-label';
-import Button from 'components/button';
-import Input from 'components/input';
+import Button from 'components/ui/button';
+import Input from 'components/ui/input';
 import { ChangeEvent, useState } from 'react';
 import {
     Select,
@@ -11,9 +11,9 @@ import {
     SelectItem,
     SelectTrigger,
     SelectValue,
-} from 'components/select';
+} from 'components/ui/select';
 import TransactionsService from '../../services/transactionsService';
-import { useToast } from 'components/toast';
+import { useToast } from 'components/ui/toast';
 
 interface CreateTransactionDialogProps {
     open: boolean;

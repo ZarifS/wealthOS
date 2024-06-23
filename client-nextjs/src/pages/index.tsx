@@ -1,14 +1,14 @@
 import type { NextPage } from 'next';
 import { use, useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
-import { Button } from 'components/button';
-import { Input } from 'components/input';
+import { Button } from 'components/ui/button';
+import { Input } from 'components/ui/input';
 
-import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from 'components/dialog';
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from 'components/ui/dialog';
 import UserService from '../services/userService';
 import SpacesService from '../services/spacesService';
-import Label from 'components/label';
-import { useToast } from 'components/toast';
+import Label from 'components/ui/label';
+import { useToast } from 'components/ui/toast';
 
 interface Space {
   name: string;

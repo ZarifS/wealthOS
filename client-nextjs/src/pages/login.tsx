@@ -1,14 +1,14 @@
 import { FormEvent, useEffect, useState } from 'react';
 import type { NextPage } from 'next';
 import Link from 'next/link';
-import Input from '../components/input';
-import Button from '../components/button';
-import { useToast } from 'components/toast';
+import Input from '../components/ui/input';
+import Button from '../components/ui/button';
+import { useToast } from 'components/ui/toast';
 import { useRouter } from 'next/router';
 
 import AuthService, { LoginPayload } from '../services/authService';
-import Label from 'components/label';
-import { Checkbox } from 'components/checkbox';
+import Label from 'components/ui/label';
+import { Checkbox } from 'components/ui/checkbox';
 
 const Login: NextPage = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
